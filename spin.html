@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SOPERA - Spin & Win</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo">SOPERA</div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mood.html">Mood</a></li>
+        <li><a href="reels.html">Reels</a></li>
+        <li><a href="spin.html">Spin & Win 🎁</a></li>
+        <li><a href="cart.html">Cart 🛒</a></li>
+        <li><a href="orders.html">Orders 📦</a></li>
+    </ul>
+</nav>
+
+<section class="products">
+    <h2>Spin & Win</h2>
+    <div class="spin-popup active" id="spinPopup">
+        <div class="spin-box">
+            <span class="close-btn" onclick="closeSpin()">✖</span>
+            <h2>🎁 Spin & Win</h2>
+            <div class="wheel" id="wheel"><div class="wheel-text">SPIN</div></div>
+            <button onclick="spinWheel()">Spin Now</button>
+            <p id="spinResult"></p>
+        </div>
+    </div>
+</section>
+
+<script src="js/spin.js"></script>
+<script>
+function closeSpin(){
+    document.getElementById("spinPopup").classList.remove("active");
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SOPERA - Cart</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo">SOPERA</div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mood.html">Mood</a></li>
+        <li><a href="reels.html">Reels</a></li>
+        <li><a href="spin.html">Spin & Win 🎁</a></li>
+        <li><a href="cart.html">Cart 🛒</a></li>
+        <li><a href="orders.html">Orders 📦</a></li>
+    </ul>
+</nav>
+
+<section class="cart-section">
+    <h1>Your Cart</h1>
+    <div id="cartItems"></div>
+
+    <div class="price-summary">
+        <p>Subtotal: ₹<span id="subtotal"></span></p>
+        <p>Discount: <span id="discountText"></span></p>
+        <p>Total Payable: ₹<span id="finalTotal"></span></p>
+        <p>Loyalty Points: <span id="loyaltyPoints"></span></p>
+    </div>
+
+    <button id="placeOrderBtn">Place Order</button>
+</section>
+
+<script src="js/cart.js"></script>
+</body>
+</html>
