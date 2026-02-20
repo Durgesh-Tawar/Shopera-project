@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOPERA - My Wishlist</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .wishlist-section {
+            padding: 40px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .wishlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .wishlist-header h1 {
+            color: #ff3f6c;
+            font-size: 2rem;
+        }
+
+        .wishlist-count {
+            background: #f0f0f5;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .wishlist-item {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .wishlist-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .wishlist-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .wishlist-item-info {
+            padding: 20px;
+        }
+
+        .wishlist-item-info h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #1a1a2e;
+        }
+
+        .wishlist-item-info .price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ff3f6c;
+            margin-bottom: 15px;
+        }
+
+        .wishlist-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .move-to-cart-btn {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .move-to-cart-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(255, 63, 108, 0.4);
+        }
+
+        .remove-wishlist-btn {
+            padding: 12px 15px;
+            background: #f0f0f5;
+            color: #666;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .remove-wishlist-btn:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        .empty-wishlist {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-wishlist span {
+            font-size: 80px;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .empty-wishlist p {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        .empty-wishlist a button {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .empty-wishlist a button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 63, 108, 0.4);
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo">SOPERA</div>
+    <div class="nav-search">
+        <input type="text" placeholder="Search products...">
+    </div>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mood.html">Mood</a></li>
+        <li><a href="reels.html">Reels</a></li>
+        <li><a href="spin.html">Spin & Win 🎁</a></li>
+        <li><a href="cart.html">Cart 🛒</a></li>
+        <li><a href="wishlist.html">Wishlist ❤️</a></li>
+        <li><a href="orders.html">Orders 📦</a></li>
+    </ul>
+</nav>
+
+<section class="wishlist-section">
+    <div class="wishlist-header">
+        <h1>My Wishlist</h1>
+        <span class="wishlist-count" id="wishlistCount">0 items</span>
+    </div>
+    <div class="wishlist-grid" id="wishlistGrid"></div>
+</section>
+
+<script src="js/data.js"></script>
+<script>
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const wishlistGrid = document.getElementById('wishlistGrid');
+    const wishlistCount = document.getElementById('wishlistCount');
+
+    wishlistCount.innerText = wishlist.length + ' items';
+
+    function renderWishlist() {
+        wishlistGrid.innerHTML = '';
+        
+        if (wishlist.length === 0) {
+            wishlistGrid.innerHTML = `
+                <div class="empty-wishlist" style="grid-column: 1/-1;">
+                    <span>❤️</span>
+                    <p>Your wishlist is empty</p>
+                    <a href="index.html"><button>Start Shopping</button></a>
+                </div>
+            `;
+            return;
+        }
+
+        wishlist.forEach((p, index) => {
+            let div = document.createElement('div');
+            div.classList.add('wishlist-item');
+            div.innerHTML = `
+                <img src="${p.image}" alt="${p.name}">
+                <div class="wishlist-item-info">
+                    <h3>${p.name}</h3>
+                    <span class="price">₹${p.price.toLocaleString()}</span>
+                    <div class="wishlist-actions">
+                        <button class="move-to-cart-btn" onclick="moveToCart(${index})">Add to Cart 🛒</button>
+                        <button class="remove-wishlist-btn" onclick="removeFromWishlist(${index})">✕</button>
+                    </div>
+                </div>
+            `;
+            wishlistGrid.appendChild(div);
+        });
+    }
+
+    function removeFromWishlist(index) {
+        wishlist.splice(index, 1);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        renderWishlist();
+        wishlistCount.innerText = wishlist.length + ' items';
+        updateWishlistBadge();
+    }
+
+    function moveToCart(index) {
+        let product = wishlist[index];
+        cart.push(product);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        
+        // Remove from wishlist
+        wishlist.splice(index, 1);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        
+        renderWishlist();
+        wishlistCount.innerText = wishlist.length + ' items';
+        updateWishlistBadge();
+        
+        alert(product.name + ' added to cart!');
+    }
+
+    function updateWishlistBadge() {
+        // Update badge if exists
+        let badge = document.getElementById('wishlistBadge');
+        if (badge) {
+            badge.innerText = wishlist.length;
+        }
+    }
+
+    renderWishlist();
+</script>
+</body>
+</html>

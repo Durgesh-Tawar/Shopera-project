@@ -5,18 +5,158 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SOPERA - Fashion Store</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* Welcome Popup Styles */
+.welcome-popup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.welcome-popup.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.welcome-content {
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    padding: 40px;
+    border-radius: 30px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.5s ease;
+    position: relative;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.welcome-avatar {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    box-shadow: 0 10px 30px rgba(255, 63, 108, 0.4);
+    animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.welcome-content h2 {
+    color: #1a1a2e;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.welcome-content p {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.welcome-btn {
+    padding: 15px 40px;
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(255, 63, 108, 0.4);
+}
+
+.welcome-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 63, 108, 0.5);
+}
+
+.welcome-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #f0f0f5;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.welcome-close:hover {
+    background: #ff3f6c;
+    color: white;
+}
+
+.dont-show {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: #888;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.dont-show input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
+
+<!-- Welcome Popup -->
+<div class="welcome-popup" id="welcomePopup">
+    <div class="welcome-content">
+        <button class="welcome-close" id="closeBtn">✕</button>
+        <div class="welcome-avatar">😊</div>
+        <h2>Hello! Welcome to SOPERA 👋</h2>
+        <p>Your favorite fashion destination! Browse our latest collection and find your perfect style.</p>
+        <button class="welcome-btn" id="startBtn">Start Shopping 🛍️</button>
+        <label class="dont-show">
+            <input type="checkbox" id="dontShowAgain"> Don't show again
+        </label>
+    </div>
+</div>
 
 <!-- Navbar -->
 <nav class="navbar">
     <div class="logo">SOPERA</div>
-
     <div class="nav-search">
         <input type="text" id="searchBar" placeholder="Search products...">
     </div>
 
-    <!-- Hamburger icon for mobile -->
     <div class="hamburger" id="hamburger">
         <span></span>
         <span></span>
@@ -29,19 +169,94 @@
         <li><a href="reels.html">Reels</a></li>
         <li><a href="spin.html">Spin & Win 🎁</a></li>
         <li><a href="cart.html">Cart 🛒</a></li>
+        <li><a href="wishlist.html">Wishlist ❤️</a></li>
         <li><a href="orders.html">Orders 📦</a></li>
         <li><a href="#">Profile 👤</a></li>
     </ul>
 </nav>
 
 <!-- Hero Section -->
-<section class="hero">
-    <h1>Upgrade Your Style</h1>
-    <p>Discover Trending Fashion</p>
-    <a href="#products"><button class="hero-btn">Shop Now</button></a>
+<section class="hero-slider" id="heroSlider">
+    <div class="slide active">
+        <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600" alt="Clothing Fashion">
+        <div class="slide-content">
+            <h1>New Season Arrivals</h1>
+            <p>Discover the latest trends in clothing</p>
+            <a href="#products"><button class="hero-btn">Shop Now</button></a>
+        </div>
+    </div>
+    <div class="slide">
+        <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1600" alt="Clothing Fashion">
+        <div class="slide-content">
+            <h1>Premium Quality</h1>
+            <p>Style meets comfort</p>
+            <a href="#products"><button class="hero-btn">Explore</button></a>
+        </div>
+    </div>
+    <div class="slide">
+        <img src="https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=1600" alt="Clothing Fashion">
+        <div class="slide-content">
+            <h1>Biggest Sale</h1>
+            <p>Up to 50% Off on clothing</p>
+            <a href="#products"><button class="hero-btn">Grab Deal</button></a>
+        </div>
+    </div>
+    
+    <button class="slider-arrow prev" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="slider-arrow next" onclick="moveSlide(1)">&#10095;</button>
+    
+    <div class="slider-dots" id="sliderDots"></div>
 </section>
 
-<!-- Categories & Products -->
+<!-- Category Banners - Above Products -->
+<section class="category-banners">
+    <div class="category-card" onclick="filterCategory('men')">
+        <div class="category-card-image">
+            <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800" alt="Men's Clothing">
+            <div class="category-card-badge">👔</div>
+        </div>
+        <div class="category-card-content">
+            <h3>Men's Clothing</h3>
+            <p>Shirts, Jeans, Party Wear & More</p>
+            <div class="category-card-stats">
+                <span>15+ Products</span>
+            </div>
+            <button class="shop-now-btn" onclick="filterCategory('men'); event.stopPropagation();">Shop Now →</button>
+        </div>
+    </div>
+    
+    <div class="category-card" onclick="filterCategory('women')">
+        <div class="category-card-image">
+            <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800" alt="Women's Clothing">
+            <div class="category-card-badge">👗</div>
+        </div>
+        <div class="category-card-content">
+            <h3>Women's Clothing</h3>
+            <p>Dresses, Sarees, Tops & More</p>
+            <div class="category-card-stats">
+                <span>18+ Products</span>
+            </div>
+            <button class="shop-now-btn" onclick="filterCategory('women'); event.stopPropagation();">Shop Now →</button>
+        </div>
+    </div>
+    
+    <div class="category-card" onclick="filterCategory('kids')">
+        <div class="category-card-image">
+            <img src="https://images.unsplash.com/photo-1519235106638-35e35556b40d?w=800" alt="Kids Clothing">
+            <div class="category-card-badge">🧸</div>
+        </div>
+        <div class="category-card-content">
+            <h3>Kids Clothing</h3>
+            <p>Frocks, Suits, T-Shirts & More</p>
+            <div class="category-card-stats">
+                <span>12+ Products</span>
+            </div>
+            <button class="shop-now-btn" onclick="filterCategory('kids'); event.stopPropagation();">Shop Now →</button>
+        </div>
+    </div>
+</section>
+
+<!-- Trending Products -->
 <section class="products" id="products">
     <h2>Trending Products</h2>
 
@@ -53,26 +268,349 @@
     </div>
 
     <div class="product-grid" id="productGrid">
-        <!-- JS will render products here -->
     </div>
 </section>
 
 <!-- Footer -->
 <footer>
-    <p>© 2026 SOPERA | All Rights Reserved</p>
+    <div class="footer-container">
+        <div class="footer-brand">
+            <div class="footer-logo">SOPERA</div>
+            <p class="footer-desc">Your favorite fashion destination for modern styles. Quality clothing for men, women, and kids.</p>
+            <div class="social-links">
+                <a href="#" class="social-icon">📘</a>
+                <a href="#" class="social-icon">📸</a>
+                <a href="#" class="social-icon">🐦</a>
+                <a href="#" class="social-icon">📺</a>
+            </div>
+        </div>
+        
+        <div class="footer-links">
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="mood.html">Mood Shop</a></li>
+                    <li><a href="reels.html">Reels</a></li>
+                    <li><a href="spin.html">Spin & Win</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Account</h4>
+                <ul>
+                    <li><a href="cart.html">My Cart</a></li>
+                    <li><a href="wishlist.html">Wishlist</a></li>
+                    <li><a href="orders.html">My Orders</a></li>
+                    <li><a href="#">Track Order</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Contact</h4>
+                <ul>
+                    <li>📞 +91 98765 43210</li>
+                    <li>✉️ support@sopera.com</li>
+                    <li>📍 Mumbai, India</li>
+                </ul>
+            </div>
+            
+            <div class="footer-column newsletter-column">
+                <h4>Newsletter</h4>
+                <p>Subscribe for exclusive offers!</p>
+                <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                    <input type="email" placeholder="Your email" required>
+                    <button type="submit">➤</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>© 2026 SOPERA | All Rights Reserved</p>
+        <div class="payment-methods">
+            <span>💳 Visa</span>
+            <span>💳 MasterCard</span>
+            <span>💳 UPI</span>
+            <span>💳 Paytm</span>
+        </div>
+    </div>
 </footer>
 
-<!-- Scripts -->
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
-<script>
-    // Hamburger toggle
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
+<style>
+/* Enhanced Footer Styles */
+footer {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    padding: 60px 5% 20px;
+    margin-top: 60px;
+}
 
-    hamburger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.footer-brand {
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+}
+
+.footer-logo {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+}
+
+.footer-desc {
+    color: #aaa;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 12px;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.social-icon:hover {
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    transform: translateY(-3px);
+}
+
+.footer-links {
+    flex: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.footer-column {
+    min-width: 150px;
+    flex: 1;
+}
+
+.footer-column h4 {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-column h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    border-radius: 2px;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 12px;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.footer-column ul li a {
+    color: #aaa;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.footer-column ul li a:hover {
+    color: #ff3f6c;
+    padding-left: 5px;
+}
+
+.newsletter-column p {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 10px;
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 25px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 0.9rem;
+}
+
+.newsletter-form input::placeholder {
+    color: #888;
+}
+
+.newsletter-form input:focus {
+    outline: none;
+    background: rgba(255,255,255,0.2);
+}
+
+.newsletter-form button {
+    padding: 12px 20px;
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.newsletter-form button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(255,63,108,0.4);
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 30px;
+    margin-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-bottom p {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.payment-methods {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.payment-methods span {
+    padding: 5px 12px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+    }
+    
+    .footer-brand {
+        max-width: 100%;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+    }
+    
+    .footer-column {
+        width: 100%;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>
+
+<script>
+function subscribeNewsletter(e) {
+    e.preventDefault();
+    const email = e.target.querySelector('input').value;
+    alert('Thank you for subscribing! You will receive our latest updates at ' + email);
+    e.target.reset();
+}
+</script>
+
+<script src="js/data.js"></script>
+<script>
+    // Make products available globally before main.js runs
+    if (typeof products !== 'undefined') {
+        window.products = products;
+    }
+</script>
+<script src="js/main.js"></script>
+<script src="js/chatbot.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var popup = document.getElementById('welcomePopup');
+    var closeBtn = document.getElementById('closeBtn');
+    var startBtn = document.getElementById('startBtn');
+    var dontShow = document.getElementById('dontShowAgain');
+    
+    var hasSeenWelcome = localStorage.getItem('sopera_welcomed');
+    if (hasSeenWelcome) {
+        popup.classList.add('hidden');
+    }
+    
+    function closePopup() {
+        if (dontShow.checked) {
+            localStorage.setItem('sopera_welcomed', 'true');
+        }
+        popup.classList.add('hidden');
+    }
+    
+    closeBtn.onclick = closePopup;
+    startBtn.onclick = closePopup;
+    
+    popup.onclick = function(e) {
+        if (e.target === popup) {
+            closePopup();
+        }
+    };
+});
+
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+});
 </script>
 
 </body>

@@ -6,53 +6,377 @@
 <title>SOPERA - Reels Shop</title>
 <link rel="stylesheet" href="css/style.css">
 <style>
-/* Reels scroll section */
-.reel-feed {
+/* Reels Container - TikTok/Instagram Style */
+.reels-container {
+    padding: 20px;
+    background: #000;
+    min-height: calc(100vh - 80px);
+}
+
+.reels-wrapper {
     display: flex;
-    flex-direction: column;
     gap: 20px;
-    max-height: 80vh;
-    overflow-y: auto;
-    padding: 10px;
-    scroll-behavior: smooth;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 20px;
+}
+
+.reels-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 .reel-card {
-    position: relative;
-    background: #f8f8f8;
-    border-radius: 10px;
+    min-width: 300px;
+    max-width: 300px;
+    height: 550px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    position: relative;
+    scroll-snap-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
-.reel-card video {
+.reel-card:hover {
+    transform: scale(1.02);
+}
+
+.reel-card img {
     width: 100%;
-    border-radius: 10px 10px 0 0;
+    height: 100%;
+    object-fit: cover;
 }
 
-.reel-card .reel-info {
-    padding: 10px;
+/* Reel Overlay */
+.reel-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    padding: 80px 20px 25px;
 }
 
-.reel-card .reel-info h3 {
-    margin: 0 0 5px 0;
+/* Reel Info */
+.reel-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
-.reel-card .reel-info p {
-    margin: 0 0 10px 0;
-}
-
-.reel-card .reel-info button {
-    background: #ff3c78;
+.reel-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.reel-username {
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.reel-title {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.reel-price {
+    color: #ff3f6c;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.reel-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.reel-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
     cursor: pointer;
 }
 
-.reel-card .reel-info button:hover {
-    background: #e6326b;
+.reel-action span:first-child {
+    font-size: 24px;
+}
+
+.reel-action span:last-child {
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Mood Badge */
+.mood-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.mood-tag.party {
+    background: linear-gradient(45deg, #ff6b6b, #ffa500);
+    color: white;
+}
+
+.mood-tag.casual {
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    color: white;
+}
+
+.mood-tag.formal {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+}
+
+/* Category Tag */
+.category-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 6px 14px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.9);
+    color: #333;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Add to Cart Button */
+.add-cart-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.add-cart-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 20px rgba(255, 63, 108, 0.4);
+}
+
+/* Mood Filter */
+.reels-header {
+    background: #000;
+    padding: 20px 20px 10px;
+}
+
+.reels-header h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+.mood-filter {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.mood-btn {
+    padding: 10px 22px;
+    border: 2px solid #ff3f6c;
+    background: transparent;
+    color: #ff3f6c;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 13px;
+}
+
+.mood-btn.active, .mood-btn:hover {
+    background: #ff3f6c;
+    color: white;
+}
+
+/* Similar Products Fullscreen View */
+.similar-view {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000;
+    z-index: 10000;
+    overflow-y: auto;
+}
+
+.similar-view.active {
+    display: block;
+}
+
+.similar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #1a1a1a;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.similar-header h3 {
+    color: white;
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.similar-header .subtitle {
+    color: #888;
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+
+.close-similar {
+    background: #ff3f6c;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Selected Product */
+.selected-product {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    background: #1a1a1a;
+    margin: 20px;
+    border-radius: 15px;
+}
+
+.selected-product img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.selected-info h4 {
+    color: white;
+    font-size: 1.1rem;
+    margin: 0 0 5px 0;
+}
+
+.selected-info .price {
+    color: #ff3f6c;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.selected-info .add-btn {
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 25px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Similar Products Grid */
+.similar-section {
+    padding: 0 20px 20px;
+}
+
+.similar-section h4 {
+    color: white;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.similar-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.similar-card {
+    background: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.similar-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 20px rgba(255, 63, 108, 0.3);
+}
+
+.similar-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.similar-info {
+    padding: 10px;
+}
+
+.similar-info h5 {
+    color: white;
+    font-size: 12px;
+    margin: 0 0 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.similar-info .price {
+    color: #ff3f6c;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .reel-card {
+        min-width: 260px;
+        height: 480px;
+    }
+    
+    .similar-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 </style>
 </head>
@@ -61,50 +385,233 @@
 <!-- Navbar -->
 <nav class="navbar">
     <div class="logo">SOPERA</div>
-    <ul class="nav-links">
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
         <li><a href="mood.html">Mood</a></li>
         <li><a href="reels.html">Reels</a></li>
         <li><a href="spin.html">Spin & Win 🎁</a></li>
         <li><a href="cart.html">Cart 🛒</a></li>
         <li><a href="orders.html">Orders 📦</a></li>
-        <li><a href="#">Profile 👤</a></li>
     </ul>
 </nav>
 
-<section class="products">
-    <h2>Reels Shopping</h2>
-    <div class="reel-feed" id="reelFeed">
-        <!-- JS will render video reels here -->
+<!-- Reels Header with Filters -->
+<div class="reels-header">
+    <h2>📱 Reels Shopping</h2>
+    <div class="mood-filter">
+        <button class="mood-btn active" data-mood="all">All</button>
+        <button class="mood-btn" data-mood="party">🎉 Party</button>
+        <button class="mood-btn" data-mood="casual">👕 Casual</button>
+        <button class="mood-btn" data-mood="formal">👔 Formal</button>
     </div>
-</section>
+</div>
+
+<!-- Reels Container -->
+<div class="reels-container">
+    <div class="reels-wrapper" id="reelFeed">
+        <!-- JS will render reels here -->
+    </div>
+</div>
+
+<!-- Similar Products Fullscreen View -->
+<div class="similar-view" id="similarView">
+    <div class="similar-header">
+        <div>
+            <h3 id="viewTitle">Similar Products</h3>
+            <span class="subtitle" id="viewSubtitle">Tap any product to see more</span>
+        </div>
+        <button class="close-similar" onclick="closeSimilarView()">✕ Close</button>
+    </div>
+    
+    <!-- Selected Product -->
+    <div class="selected-product" id="selectedProduct">
+        <!-- Will be populated by JS -->
+    </div>
+    
+    <!-- Similar Products -->
+    <div class="similar-section">
+        <h4>🔥 More Like This</h4>
+        <div class="similar-grid" id="similarGrid">
+            <!-- Similar products will be shown here -->
+        </div>
+    </div>
+</div>
 
 <script src="js/data.js"></script>
 <script>
-const reelFeed = document.getElementById("reelFeed");
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-// Render each product as a reel card
-products.forEach(p => {
-    const div = document.createElement("div");
-    div.classList.add("reel-card");
-    div.innerHTML = `
-        <video src="${p.video}" autoplay muted loop></video>
-        <div class="reel-info">
-            <h3>${p.name}</h3>
-            <p>₹${p.price}</p>
-            <button onclick="addToCart(${p.id})">Add to Cart</button>
-        </div>
-    `;
-    reelFeed.appendChild(div);
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
 });
 
-// Add to Cart
-function addToCart(id){
+const reelFeed = document.getElementById("reelFeed");
+const moodBtns = document.querySelectorAll('.mood-btn');
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// Render reels with mood filter
+function renderReels(mood = 'all') {
+    reelFeed.innerHTML = "";
+    
+    let filtered = (mood === 'all') ? products : products.filter(p => p.mood === mood);
+    
+    filtered.forEach(p => {
+        const div = document.createElement("div");
+        div.classList.add("reel-card");
+        div.onclick = () => openSimilarView(p);
+        
+        let moodClass = p.mood;
+        let category = p.category === 'men' ? "Men" : p.category === 'women' ? "Women" : "Kids";
+        let initial = p.name.charAt(0);
+        
+        div.innerHTML = `
+            <img src="${p.image}" alt="${p.name}">
+            <span class="mood-tag ${moodClass}">${p.mood}</span>
+            <span class="category-tag">${category}</span>
+            <div class="reel-overlay">
+                <div class="reel-user">
+                    <div class="reel-avatar">${initial}</div>
+                    <span class="reel-username">@sopera_fashion</span>
+                </div>
+                <h3 class="reel-title">${p.name}</h3>
+                <p class="reel-price">₹${p.price.toLocaleString()}</p>
+                <div class="reel-actions">
+                    <div class="reel-action" onclick="event.stopPropagation(); addToCart(${p.id})">
+                        <span>🛒</span>
+                        <span>Add to Cart</span>
+                    </div>
+                    <div class="reel-action">
+                        <span>❤️</span>
+                        <span>Like</span>
+                    </div>
+                    <div class="reel-action">
+                        <span>📤</span>
+                        <span>Share</span>
+                    </div>
+                </div>
+                <button class="add-cart-btn" onclick="event.stopPropagation(); addToCart(${p.id})">Add to Cart - ₹${p.price.toLocaleString()}</button>
+            </div>
+        `;
+        reelFeed.appendChild(div);
+    });
+}
+
+// Open similar products view
+function openSimilarView(product) {
+    const view = document.getElementById('similarView');
+    const selectedDiv = document.getElementById('selectedProduct');
+    const grid = document.getElementById('similarGrid');
+    const title = document.getElementById('viewTitle');
+    const subtitle = document.getElementById('viewSubtitle');
+    
+    // Get similar products (same category and mood, excluding current)
+    let similar = products.filter(p => 
+        p.id !== product.id && 
+        p.category === product.category && 
+        p.mood === product.mood
+    );
+    
+    // If not enough, add more from same category
+    if (similar.length < 4) {
+        let more = products.filter(p => 
+            p.id !== product.id && 
+            p.category === product.category
+        );
+        similar = [...similar, ...more].slice(0, 6);
+    }
+    
+    // Set title
+    title.textContent = `${product.mood.charAt(0).toUpperCase() + product.mood.slice(1)} ${product.category.charAt(0).toUpperCase() + product.category.slice(1)} Collection`;
+    subtitle.textContent = `${similar.length + 1} products found`;
+    
+    // Show selected product
+    selectedDiv.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+        <div class="selected-info">
+            <h4>${product.name}</h4>
+            <p class="price">₹${product.price.toLocaleString()}</p>
+            <span class="mood-tag ${product.mood}" style="position:static;display:inline-block;margin-bottom:10px;">${product.mood}</span>
+            <br>
+            <button class="add-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+        </div>
+    `;
+    
+    // Show similar products grid
+    grid.innerHTML = "";
+    similar.forEach(p => {
+        const card = document.createElement("div");
+        card.classList.add("similar-card");
+        card.onclick = () => openSimilarView(p);
+        
+        card.innerHTML = `
+            <img src="${p.image}" alt="${p.name}">
+            <div class="similar-info">
+                <h5>${p.name}</h5>
+                <p class="price">₹${p.price.toLocaleString()}</p>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+    
+    view.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close similar view
+function closeSimilarView() {
+    const view = document.getElementById('similarView');
+    view.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Mood button click handlers
+moodBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        moodBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderReels(btn.dataset.mood);
+    });
+});
+
+// Initial render
+renderReels();
+
+// Add to Cart function
+function addToCart(id) {
     const product = products.find(p => p.id === id);
     cart.push(product);
     localStorage.setItem("cart", JSON.stringify(cart));
-    alert(`${product.name} added to cart!`);
+    showToast(`${product.name} added to cart!`);
+}
+
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+        color: white;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        z-index: 9999;
+        animation: slideUp 0.3s ease;
+        box-shadow: 0 10px 30px rgba(255, 63, 108, 0.4);
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = "slideDown 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
 }
 </script>
 </body>

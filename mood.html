@@ -5,12 +5,67 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SOPERA - Mood Shop</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* Mood Filter Styles */
+.mood-filter {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.mood-btn {
+    padding: 12px 25px;
+    border: 2px solid #ff3f6c;
+    background: transparent;
+    color: #ff3f6c;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.mood-btn.active, .mood-btn:hover {
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 5px 20px rgba(255, 63, 108, 0.3);
+}
+
+.mood-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.mood-header h2 {
+    font-size: 2rem;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+}
+
+.mood-header p {
+    color: #666;
+}
+
+/* Product grid override for mood page */
+.products {
+    padding: 40px 5%;
+}
+
+.products h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+</style>
 </head>
 <body>
 <nav class="navbar">
     <div class="logo">SOPERA</div>
     <div class="nav-search">
-        <input type="text" placeholder="Search products...">
+        <input type="text" id="searchBar" placeholder="Search products...">
     </div>
     <div class="hamburger" id="hamburger">
         <span></span>
@@ -28,15 +83,18 @@
 </nav>
 
 <section class="products">
-    <h2>Mood-based Picks</h2>
+    <div class="mood-header">
+        <h2>🎯 Shop by Mood</h2>
+        <p>Find the perfect outfit for any occasion</p>
+    </div>
 
-    <label for="moodSelect">Select Mood: </label>
-    <select id="moodSelect">
-        <option value="all">All</option>
-        <option value="casual">Casual</option>
-        <option value="party">Party</option>
-        <option value="formal">Formal</option>
-    </select>
+    <!-- Mood Filter Buttons -->
+    <div class="mood-filter">
+        <button class="mood-btn active" data-mood="all">All</button>
+        <button class="mood-btn" data-mood="party">🎉 Party Wear</button>
+        <button class="mood-btn" data-mood="casual">👕 Casual Wear</button>
+        <button class="mood-btn" data-mood="formal">👔 Formal Wear</button>
+    </div>
 
     <div class="product-grid" id="moodGrid"></div>
 </section>
@@ -50,31 +108,108 @@ hamburger.addEventListener('click', () => {
 });
 
 const moodGrid = document.getElementById("moodGrid");
-const moodSelect = document.getElementById("moodSelect");
+const moodBtns = document.querySelectorAll('.mood-btn');
+const searchBar = document.getElementById("searchBar");
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-function renderMoodProducts(filter){
+// Render products with mood filter
+function renderMoodProducts(mood = 'all', search = '') {
     moodGrid.innerHTML = "";
-    let filtered = (filter==="all") ? products : products.filter(p=>p.mood===filter);
-    filtered.forEach(p=>{
+    
+    let filtered = products.filter(p => {
+        let moodMatch = (mood === 'all') ? true : p.mood === mood;
+        let searchMatch = p.name.toLowerCase().includes(search.toLowerCase());
+        return moodMatch && searchMatch;
+    });
+
+    if (filtered.length === 0) {
+        moodGrid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: #888;">No products found</p>';
+        return;
+    }
+
+    filtered.forEach(p => {
         const div = document.createElement("div");
         div.classList.add("product-card");
-        div.innerHTML = `<img src="${p.image}" alt="${p.name}">
-                         <h3>${p.name}</h3>
-                         <p>₹${p.price}</p>
-                         <button onclick="addToCart(${p.id})">Add to Cart</button>`;
+        
+        // Get category badge
+        let catBadge = "";
+        if (p.category === 'men') catBadge = "Men's";
+        else if (p.category === 'women') catBadge = "Women's";
+        else if (p.category === 'kids') catBadge = "Kids";
+        
+        // Get mood badge
+        let moodBadge = "";
+        if (p.mood === 'party') moodBadge = "🎉 Party";
+        else if (p.mood === 'casual') moodBadge = "👕 Casual";
+        else if (p.mood === 'formal') moodBadge = "👔 Formal";
+        
+        div.innerHTML = `
+            <div class="product-image">
+                <span class="product-badge">${catBadge}</span>
+                <span class="mood-badge" style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:white;padding:3px 8px;border-radius:10px;font-size:10px;">${moodBadge}</span>
+                <img src="${p.image}" alt="${p.name}">
+            </div>
+            <div class="product-info">
+                <h3>${p.name}</h3>
+                <span class="price">₹${p.price.toLocaleString()}</span>
+                <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+            </div>
+        `;
         moodGrid.appendChild(div);
     });
 }
 
-moodSelect.addEventListener("change", ()=> renderMoodProducts(moodSelect.value));
-renderMoodProducts("all");
+// Mood button click handlers
+moodBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        moodBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderMoodProducts(btn.dataset.mood, searchBar.value);
+    });
+});
 
-function addToCart(id){
-    const product = products.find(p=>p.id===id);
+// Search functionality
+if (searchBar) {
+    searchBar.addEventListener('input', () => {
+        let activeMood = document.querySelector(".mood-btn.active").dataset.mood;
+        renderMoodProducts(activeMood, searchBar.value);
+    });
+}
+
+// Initial render
+renderMoodProducts();
+
+// Add to Cart function
+function addToCart(id) {
+    const product = products.find(p => p.id === id);
     cart.push(product);
     localStorage.setItem("cart", JSON.stringify(cart));
-    alert(`${product.name} added to cart!`);
+    showToast(`${product.name} added to cart!`);
+}
+
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+        color: white;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        z-index: 9999;
+        animation: slideUp 0.3s ease;
+        box-shadow: 0 10px 30px rgba(255, 63, 108, 0.4);
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = "slideDown 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
 }
 </script>
 </body>

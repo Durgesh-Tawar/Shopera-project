@@ -5,6 +5,179 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SOPERA - My Orders</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Order Tracking Styles */
+        .order-tracking-section {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tracking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tracking-number {
+            background: #e9ecef;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+
+        .tracking-progress {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .tracking-progress::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+
+        .tracking-progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff3f6c, #ff6b9d);
+            z-index: 2;
+            transition: width 0.5s ease;
+        }
+
+        .tracking-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+            flex: 1;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .tracking-step.active .step-icon {
+            background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 63, 108, 0.4);
+        }
+
+        .tracking-step.completed .step-icon {
+            background: #28a745;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .tracking-step.active .step-label {
+            color: #ff3f6c;
+            font-weight: 600;
+        }
+
+        .estimated-delivery {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .estimated-delivery h4 {
+            color: #495057;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .estimated-delivery p {
+            color: #ff3f6c;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .order-status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-processing { background: #fff3cd; color: #856404; }
+        .status-shipped { background: #cce5ff; color: #004085; }
+        .status-delivered { background: #d4edda; color: #155724; }
+.status-placed { background: #e2e3e5; color: #383d41; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+
+        .cancel-order-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cancel-order-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 576px) {
+            .tracking-progress {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .tracking-progress::before,
+            .tracking-progress-line {
+                display: none;
+            }
+            
+            .tracking-step {
+                flex-direction: row;
+                gap: 15px;
+            }
+            
+            .step-icon {
+                margin-bottom: 0;
+            }
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar">
@@ -29,8 +202,11 @@
 
 <section class="orders-section">
     <h1>My Orders</h1>
+    <div class="total-points">
+        <h3>Total Loyalty Points</h3>
+        <p><span id="totalPoints">0</span> pts</p>
+    </div>
     <div id="ordersList"></div>
-    <p>Total Loyalty Points: <span id="totalPoints"></span></p>
 </section>
 
 <script src="js/orders.js"></script>

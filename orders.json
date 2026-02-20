@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1771615035441,
+    "items": [
+      {
+        "id": 2,
+        "name": "Navy Blazer",
+        "price": 3499,
+        "image": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500",
+        "category": "men",
+        "mood": "formal",
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Navy Blazer",
+        "price": 3499,
+        "image": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500",
+        "category": "men",
+        "mood": "formal",
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Navy Blazer",
+        "price": 3499,
+        "image": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500",
+        "category": "men",
+        "mood": "formal",
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      }
+    ],
+    "total": 10497,
+    "loyalty": 104,
+    "status": "placed",
+    "date": "2026-02-20T19:17:15.441Z",
+    "customerInfo": {},
+    "trackingNumber": "SOPJ1Y5QXNJJ"
+  },
+  {
+    "id": 1771615784741,
+    "items": [
+      {
+        "id": 11,
+        "name": "Kids Denim Set",
+        "price": 999,
+        "image": "https://images.unsplash.com/photo-1519235106638-35e35556b40d?w=500",
+        "category": "kids",
+        "mood": "casual",
+        "description": "Cute denim set for kids.",
+        "stock": 15,
+        "sizes": [
+          "2-3Y",
+          "4-5Y",
+          "6-7Y",
+          "8-9Y"
+        ]
+      }
+    ],
+    "total": 999,
+    "loyalty": 9,
+    "status": "cancelled",
+    "date": "2026-02-20T19:29:44.741Z",
+    "customerInfo": {},
+    "trackingNumber": "SOP1LIGIS5DS",
+    "cancelled": true
+  }
+]
