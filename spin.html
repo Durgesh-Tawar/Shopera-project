@@ -2,13 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SOPERA - Spin & Win</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <nav class="navbar">
     <div class="logo">SOPERA</div>
-    <ul class="nav-links">
+    <div class="nav-search">
+        <input type="text" placeholder="Search products...">
+    </div>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
         <li><a href="mood.html">Mood</a></li>
         <li><a href="reels.html">Reels</a></li>
@@ -36,6 +45,13 @@
 function closeSpin(){
     document.getElementById("spinPopup").classList.remove("active");
 }
+</script>
+<script>
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
 </script>
 </body>
 </html>
