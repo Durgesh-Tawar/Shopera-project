@@ -2,7 +2,7 @@
 // SOPERA - AI Shopping Assistant Chatbot (API Connected)
 // =========================================
 
-const API_URL = 'http://localhost:3000/api';
+// Note: API_URL is already declared in main.js
 
 // Chatbot state
 let chatOpen = false;
@@ -10,9 +10,12 @@ let chatProducts = []; // Products fetched from API
 
 // Initialize chatbot
 async function initChatbot() {
+    console.log('Chatbot: Initializing...');
     createChatButton();
     createChatWindow();
+    console.log('Chatbot: UI created');
     await loadProductsForChat();
+    console.log('Chatbot: Products loaded, count:', chatProducts.length);
     
     // Add greeting after page loads
     setTimeout(() => {
@@ -27,11 +30,50 @@ async function initChatbot() {
 async function loadProductsForChat() {
     try {
         const response = await fetch(`${API_URL}/products`);
-        chatProducts = await response.json();
+        if (response.ok) {
+            chatProducts = await response.json();
+        } else {
+            throw new Error('API response not ok');
+        }
     } catch (error) {
-        console.log('API not available, chatbot will use local fallback');
-        chatProducts = [];
+        console.log('API not available, using local product data');
+        // Use local products from data.js as fallback
+        if (typeof products !== 'undefined' && products.length > 0) {
+            chatProducts = products;
+        } else {
+            // Fallback to hardcoded products if data.js not loaded
+            chatProducts = getDefaultProducts();
+        }
     }
+}
+
+// Default products as final fallback
+function getDefaultProducts() {
+    return [
+        // Men - Formal
+        {id:1, name:"Classic White Shirt", price:1299, image:"https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500", category:"men", mood:"formal"},
+        {id:2, name:"Navy Blazer", price:3499, image:"https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500", category:"men", mood:"formal"},
+        {id:3, name:"Formal Trousers", price:1899, image:"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500", category:"men", mood:"formal"},
+        // Men - Casual
+        {id:7, name:"Slim Fit Jeans", price:1899, image:"https://images.unsplash.com/photo-1542272604-787c3835535d?w=500", category:"men", mood:"casual"},
+        {id:8, name:"Casual T-Shirt", price:599, image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500", category:"men", mood:"casual"},
+        // Men - Party
+        {id:13, name:"Party Blazer", price:3999, image:"https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500", category:"men", mood:"party"},
+        // Women - Party
+        {id:16, name:"Floral Summer Dress", price:1599, image:"https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=500", category:"women", mood:"party"},
+        {id:18, name:"Sequin Party Dress", price:2999, image:"https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=500", category:"women", mood:"party"},
+        // Women - Casual
+        {id:22, name:"High-Waist Jeans", price:1799, image:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500", category:"women", mood:"casual"},
+        // Women - Formal
+        {id:28, name:"Elegant Silk Saree", price:3999, image:"https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500", category:"women", mood:"formal"},
+        // Kids - Party
+        {id:34, name:"Kids Party Frock", price:1199, image:"https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=500", category:"kids", mood:"party"},
+        // Kids - Casual
+        {id:38, name:"Kids Denim Set", price:999, image:"https://images.unsplash.com/photo-1519235106638-35e35556b40d?w=500", category:"kids", mood:"casual"},
+        {id:39, name:"Cartoon T-Shirt", price:499, image:"https://images.unsplash.com/photo-1519457431-44ccd64a579b?w=500", category:"kids", mood:"casual"},
+        // Kids - Formal
+        {id:44, name:"Kids Formal Suit", price:1999, image:"https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500", category:"kids", mood:"formal"},
+    ];
 }
 
 // Create chat button

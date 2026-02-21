@@ -50,10 +50,11 @@
     ],
     "total": 10497,
     "loyalty": 104,
-    "status": "placed",
+    "status": "cancelled",
     "date": "2026-02-20T19:17:15.441Z",
     "customerInfo": {},
-    "trackingNumber": "SOPJ1Y5QXNJJ"
+    "trackingNumber": "SOPJ1Y5QXNJJ",
+    "cancelled": true
   },
   {
     "id": 1771615784741,
@@ -82,5 +83,126 @@
     "customerInfo": {},
     "trackingNumber": "SOP1LIGIS5DS",
     "cancelled": true
+  },
+  {
+    "id": 1771616590203,
+    "items": [
+      {
+        "id": 2,
+        "name": "Slim Fit Jeans",
+        "price": 1899,
+        "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
+        "category": "men",
+        "mood": "casual",
+        "description": "Modern slim fit jeans with comfortable stretch.",
+        "stock": 20,
+        "sizes": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36"
+        ]
+      }
+    ],
+    "total": 1804.05,
+    "loyalty": 18,
+    "status": "placed",
+    "date": "2026-02-20T19:43:10.203Z",
+    "customerInfo": {},
+    "trackingNumber": "SOP0VO7B0GP9"
+  },
+  {
+    "id": 1771650098855,
+    "items": [
+      {
+        "id": 1,
+        "name": "Classic White Shirt",
+        "price": 1299,
+        "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500",
+        "category": "men",
+        "mood": "formal",
+        "description": "Premium quality cotton white shirt, perfect for formal occasions.",
+        "stock": 15,
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ],
+        "selectedSize": "S",
+        "quantity": 1
+      }
+    ],
+    "total": 1299,
+    "loyalty": 12,
+    "status": "cancelled",
+    "date": "2026-02-21T05:01:38.855Z",
+    "customerInfo": {},
+    "trackingNumber": "SOPA5VZ592WO",
+    "cancelled": true
+  },
+  {
+    "id": 1771650440773,
+    "items": [
+      {
+        "id": 1,
+        "name": "Classic White Shirt",
+        "price": 1299,
+        "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500",
+        "category": "men",
+        "mood": "formal",
+        "description": "Premium quality cotton white shirt, perfect for formal occasions.",
+        "stock": 15,
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      },
+      {
+        "id": 1,
+        "name": "Classic White Shirt",
+        "price": 1299,
+        "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500",
+        "category": "men",
+        "mood": "formal",
+        "description": "Premium quality cotton white shirt, perfect for formal occasions.",
+        "stock": 15,
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      },
+      {
+        "id": 1,
+        "name": "Classic White Shirt",
+        "price": 1299,
+        "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500",
+        "category": "men",
+        "mood": "formal",
+        "description": "Premium quality cotton white shirt, perfect for formal occasions.",
+        "stock": 15,
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      }
+    ],
+    "total": 3897,
+    "loyalty": 38,
+    "status": "placed",
+    "date": "2026-02-21T05:07:20.773Z",
+    "customerInfo": {},
+    "trackingNumber": "SOP3PL02EGMR"
   }
 ]
