@@ -78,6 +78,134 @@ app.get('/api/products', (req, res) => {
     res.json(filtered);
 });
 
+// =========================================
+// SEARCH API ROUTES
+// =========================================
+
+// Dedicated search endpoint with intelligent matching
+app.get('/api/search', (req, res) => {
+    const query = (req.query.q || req.query.search || '').trim().toLowerCase();
+    
+    if (!query) {
+        return res.json({ success: true, products: [], message: 'No search query provided' });
+    }
+    
+    // Search aliases mapping for intelligent matching
+    const aliases = {
+        'men': ['men', 'man', 'male', 'boys', 'gentleman'],
+        'women': ['women', 'woman', 'female', 'girls', 'ladies'],
+        'kids': ['kids', 'kid', 'child', 'children', 'baby'],
+        'shirts': ['shirt', 'shirts', 'tshirt', 't-shirt', 'tee', 'polo'],
+        'dresses': ['dress', 'dresses', 'gown', 'frock'],
+        'jeans': ['jeans', 'jean', 'pants', 'denim'],
+        'jackets': ['jacket', 'coat', 'blazer', 'sweater'],
+        'sarees': ['saree', 'sari', 'lehenga'],
+        'tops': ['top', 'blouse', 'crop top'],
+        'party': ['party', 'celebration', 'festive', 'wedding'],
+        'formal': ['formal', 'office', 'professional', 'business'],
+        'casual': ['casual', 'everyday', 'daily']
+    };
+    
+    // Determine search type
+    let searchType = 'products';
+    let matchedCategory = null;
+    let matchedSection = null;
+    
+    // Check for category match (men/women/kids)
+    for (const [category, keywords] of Object.entries(aliases)) {
+        if (['men', 'women', 'kids'].includes(category)) {
+            if (keywords.some(kw => query === kw || query.includes(kw))) {
+                searchType = 'category';
+                matchedCategory = category;
+                break;
+            }
+        }
+    }
+    
+    // Check for section match (shirts, jeans, etc.)
+    if (searchType === 'products') {
+        for (const [section, keywords] of Object.entries(aliases)) {
+            if (!['men', 'women', 'kids', 'party', 'formal', 'casual'].includes(section)) {
+                if (keywords.some(kw => query === kw || query.includes(kw))) {
+                    searchType = 'section';
+                    matchedSection = section;
+                    break;
+                }
+            }
+        }
+    }
+    
+    // Check for mood match (party/formal/casual)
+    if (searchType === 'products') {
+        for (const [mood, keywords] of Object.entries(aliases)) {
+            if (['party', 'formal', 'casual'].includes(mood)) {
+                if (keywords.some(kw => query === kw || query.includes(kw))) {
+                    searchType = 'mood';
+                    matchedCategory = mood;
+                    break;
+                }
+            }
+        }
+    }
+    
+    // Filter products based on search type
+    let filteredProducts = [];
+    
+    if (searchType === 'category') {
+        filteredProducts = products.filter(p => p.category === matchedCategory);
+    } else if (searchType === 'section') {
+        filteredProducts = products.filter(p => {
+            const nameMatch = p.name.toLowerCase().includes(matchedSection) || p.name.toLowerCase().includes(query);
+            return nameMatch;
+        });
+    } else if (searchType === 'mood') {
+        filteredProducts = products.filter(p => p.mood === matchedCategory);
+    } else {
+        filteredProducts = products.filter(p => {
+            const nameMatch = p.name.toLowerCase().includes(query);
+            const categoryMatch = p.category.toLowerCase().includes(query);
+            const moodMatch = p.mood && p.mood.toLowerCase().includes(query);
+            return nameMatch || categoryMatch || moodMatch;
+        });
+    }
+    
+    // Remove duplicates
+    const uniqueProducts = [...new Map(filteredProducts.map(p => [p.id, p])).values()];
+    
+    // Generate suggestions
+    const suggestions = [...new Set(products.filter(p => 
+        p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)
+    ).map(p => p.name))].slice(0, 5);
+    
+    res.json({
+        success: true,
+        query: query,
+        searchType: searchType,
+        category: matchedCategory,
+        section: matchedSection,
+        count: uniqueProducts.length,
+        products: uniqueProducts,
+        suggestions: suggestions
+    });
+});
+
+// Search suggestions for autocomplete dropdown
+app.get('/api/search/suggestions', (req, res) => {
+    const query = (req.query.q || '').trim().toLowerCase();
+    
+    if (!query || query.length < 2) {
+        return res.json({ suggestions: [] });
+    }
+    
+    const suggestions = [...new Set(products.filter(p => 
+        p.name.toLowerCase().includes(query) ||
+        p.category.toLowerCase().includes(query) ||
+        p.mood.toLowerCase().includes(query)
+    ).map(p => ({ name: p.name, category: p.category, mood: p.mood })))].slice(0, 8);
+    
+    res.json({ suggestions: suggestions });
+});
+
 // Get single product
 app.get('/api/products/:id', (req, res) => {
     const product = products.find(p => p.id === parseInt(req.params.id));
