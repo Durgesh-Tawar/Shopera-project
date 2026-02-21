@@ -12,12 +12,571 @@ const tabBtns = document.querySelectorAll(".tab-btn");
 // API Base URL
 const API_URL = 'http://localhost:3000/api';
 
+// =========================================
+// SEARCH ALIASES & MAPPING CONFIGURATION
+// =========================================
+
+// Smart section navigation keywords
+const sectionKeywords = {
+    'men': ['men', 'man', 'male', 'boys', 'gentleman', 'gentlemen'],
+    'women': ['women', 'woman', 'female', 'girls', 'ladies', 'lady'],
+    'kids': ['kids', 'kid', 'child', 'children', 'baby', 'infant', 'little'],
+    'shirts': ['shirt', 'shirts', 'tshirt', 't-shirt', 't shirt', 'tee', 'tees', 'polo', 'formal shirt', 'casual shirt'],
+    'dresses': ['dress', 'dresses', 'gown', 'gowns', 'frock', 'frocks', 'maxi', ' Midi'],
+    'jeans': ['jeans', 'jean', 'pants', 'trousers', 'denim', 'joggers', 'leggings'],
+    'jackets': ['jacket', 'jackets', 'coat', 'coats', 'blazer', 'blazers', 'sweater', 'sweaters', 'hoodie'],
+    'sarees': ['saree', 'sari', 'sarees', 'saris', 'lehenga', 'lehengas'],
+    'tops': ['top', 'tops', 'blouse', 'blouses', 'crop top', 'tunic', 'tunics'],
+    'shorts': ['shorts', 'short', 'skirt', 'skirts'],
+    'party': ['party', 'party wear', 'partywear', 'celebration', 'festive', 'wedding', 'function'],
+    'formal': ['formal', 'office', 'professional', 'business', 'workwear', 'corporate'],
+    'casual': ['casual', 'everyday', 'daily', 'relaxed', 'weekend']
+};
+
+// Category to section mapping
+const categorySections = {
+    'men': 'men',
+    'women': 'women', 
+    'kids': 'kids'
+};
+
+// All aliases flat array for matching
+const allAliases = [];
+Object.keys(sectionKeywords).forEach(key => {
+    sectionKeywords[key].forEach(alias => {
+        allAliases.push({ alias: alias, target: key });
+    });
+});
+
+// =========================================
+// DEBOUNCE FUNCTION
+// =========================================
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 // Update cart and wishlist badges on page load
 updateCartBadge();
 updateWishlistBadge();
 
 // Check wishlist reminder (7 days)
 checkWishlistReminder();
+
+// =========================================
+// ENHANCED SEARCH FUNCTIONALITY
+// =========================================
+
+// Create search container and dropdown
+function initializeSearch() {
+    if (!searchBar) return;
+    
+    // Create search container wrapper
+    const navSearch = searchBar.parentElement;
+    navSearch.classList.add('search-container');
+    
+    // Create search wrapper
+    const searchWrapper = document.createElement('div');
+    searchWrapper.className = 'search-wrapper';
+    searchBar.parentNode.insertBefore(searchWrapper, searchBar);
+    searchWrapper.appendChild(searchBar);
+    
+    // Create search icon button
+    const searchBtn = document.createElement('button');
+    searchBtn.className = 'search-icon-btn';
+    searchBtn.innerHTML = '🔍';
+    searchBtn.title = 'Search';
+    searchWrapper.appendChild(searchBtn);
+    
+    // Create dropdown container
+    const dropdown = document.createElement('div');
+    dropdown.className = 'search-results-dropdown';
+    dropdown.id = 'searchResultsDropdown';
+    navSearch.appendChild(dropdown);
+    
+    // Debounced live search
+    const debouncedLiveSearch = debounce((query) => {
+        performSearch(query, true);
+    }, 300);
+    
+    // Search on Enter key - Smart Navigation
+    searchBar.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const query = searchBar.value.trim();
+            if (query) {
+                handleSmartSearch(query);
+            }
+        }
+    });
+    
+    // Search on icon click - Smart Navigation
+    searchBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const query = searchBar.value.trim();
+        if (query) {
+            handleSmartSearch(query);
+        }
+    });
+    
+    // Live search with debounce
+    searchBar.addEventListener('input', (e) => {
+        const query = e.target.value.trim();
+        if (query.length >= 2) {
+            debouncedLiveSearch(query);
+        } else if (query.length === 0) {
+            hideSearchDropdown();
+        }
+    });
+    
+    // Handle focus
+    searchBar.addEventListener('focus', () => {
+        if (searchBar.value.trim().length >= 2) {
+            const dropdown = document.getElementById('searchResultsDropdown');
+            if (dropdown && dropdown.children.length > 0) {
+                dropdown.classList.add('active');
+            }
+        }
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!navSearch.contains(e.target)) {
+            hideSearchDropdown();
+        }
+    });
+}
+
+// =========================================
+// SMART SEARCH & NAVIGATION LOGIC
+// =========================================
+
+// Handle smart search - determines where to redirect
+function handleSmartSearch(query) {
+    const searchTerm = query.toLowerCase().trim();
+    
+    // Step 1: Check for exact category matches
+    const categoryMatch = findCategoryMatch(searchTerm);
+    if (categoryMatch) {
+        redirectToCategory(categoryMatch);
+        return;
+    }
+    
+    // Step 2: Check for section matches
+    const sectionMatch = findSectionMatch(searchTerm);
+    if (sectionMatch) {
+        redirectToSection(sectionMatch);
+        return;
+    }
+    
+    // Step 3: Check for specific product
+    const productMatch = findProductMatch(searchTerm);
+    if (productMatch) {
+        redirectToProduct(productMatch);
+        return;
+    }
+    
+    // Step 4: Redirect to search page with filters
+    redirectToSearchPage(searchTerm);
+}
+
+// Find category match (men/women/kids)
+function findCategoryMatch(searchTerm) {
+    const categories = ['men', 'women', 'kids'];
+    for (const cat of categories) {
+        const aliases = sectionKeywords[cat] || [];
+        if (aliases.some(alias => searchTerm === alias || searchTerm.includes(alias))) {
+            return cat;
+        }
+    }
+    return null;
+}
+
+// Find section match (shirts, dresses, etc.)
+function findSectionMatch(searchTerm) {
+    for (const [section, aliases] of Object.entries(sectionKeywords)) {
+        // Skip category keywords
+        if (['men', 'women', 'kids'].includes(section)) continue;
+        
+        // Check if search term matches any alias
+        for (const alias of aliases) {
+            if (searchTerm === alias || searchTerm.includes(alias)) {
+                return section;
+            }
+        }
+    }
+    return null;
+}
+
+// Find specific product by name
+function findProductMatch(searchTerm) {
+    return products.find(product => 
+        product.name.toLowerCase().includes(searchTerm) ||
+        searchTerm.includes(product.name.toLowerCase())
+    );
+}
+
+// =========================================
+// REDIRECTION FUNCTIONS
+// =========================================
+
+// Redirect to category page
+function redirectToCategory(category) {
+    window.location.href = `index.html?category=${category}`;
+}
+
+// Redirect to section page
+function redirectToSection(section) {
+    window.location.href = `index.html?section=${section}`;
+}
+
+// Redirect to specific product
+function redirectToProduct(product) {
+    window.location.href = `product.html?id=${product.id}`;
+}
+
+// Redirect to search results page
+function redirectToSearchPage(searchTerm) {
+    window.location.href = `search.html?q=${encodeURIComponent(searchTerm)}`;
+}
+
+// =========================================
+// URL PARAMETER HANDLING
+// =========================================
+
+// Handle URL parameters on page load
+function handleURLParams() {
+    const params = new URLSearchParams(window.location.search);
+    
+    // Handle category parameter
+    if (params.has('category')) {
+        const category = params.get('category');
+        filterByCategoryFromURL(category);
+    }
+    
+    // Handle section parameter
+    if (params.has('section')) {
+        const section = params.get('section');
+        filterBySectionFromURL(section);
+    }
+    
+    // Handle search parameter (for search page)
+    if (params.has('search')) {
+        const searchQuery = params.get('search');
+        performFullSearch(searchQuery);
+    }
+}
+
+// Filter by category from URL
+function filterByCategoryFromURL(category) {
+    // Update tab buttons
+    tabBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.category === category) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Scroll to products section
+    const productsSection = document.getElementById('products');
+    if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Render filtered products
+    renderProducts(category, "");
+}
+
+// Filter by section from URL (filters by mood)
+function filterBySectionFromURL(section) {
+    // Map section to mood
+    const sectionToMood = {
+        'shirts': 'all',
+        'dresses': 'party',
+        'jeans': 'casual',
+        'jackets': 'casual',
+        'sarees': 'formal',
+        'tops': 'party',
+        'shorts': 'casual',
+        'party': 'party',
+        'formal': 'formal',
+        'casual': 'casual'
+    };
+    
+    const mood = sectionToMood[section] || 'all';
+    
+    // Determine category based on section
+    let category = 'all';
+    if (['party', 'formal', 'casual'].includes(section)) {
+        // For mood-based sections, show all categories
+        category = 'all';
+    }
+    
+    // Update tab to show "all" but filter by mood
+    tabBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.category === 'all') {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Render products filtered by mood
+    renderProductsFilteredByMood(category, mood);
+}
+
+// Render products filtered by mood
+function renderProductsFilteredByMood(filter, mood) {
+    if (!productGrid) return;
+    
+    productGrid.innerHTML = "";
+    
+    let filtered = products.filter(p => {
+        let catMatch = (filter === "all") ? true : p.category === filter;
+        let moodMatch = mood === 'all' ? true : p.mood === mood;
+        return catMatch && moodMatch;
+    });
+
+    if (filtered.length === 0) {
+        productGrid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: #888;">No products found</p>';
+        return;
+    }
+
+    filtered.forEach((p, index) => {
+        const div = document.createElement("div");
+        div.classList.add("product-card");
+        div.style.animationDelay = `${index * 0.05}s`;
+        
+        const inWishlist = wishlist.some(w => w.id === p.id);
+        const wishlistBtn = inWishlist ? '❤️' : '🤍';
+        const wishlistClass = inWishlist ? 'active' : '';
+        
+        // Generate rating stars
+        const rating = p.rating || 4;
+        const ratingCount = p.ratingCount || Math.floor(Math.random() * 100) + 10;
+        let starsHTML = '';
+        for (let i = 1; i <= 5; i++) {
+            starsHTML += i <= rating ? '<span class="star">★</span>' : '<span class="star empty">★</span>';
+        }
+        
+        // Generate badges
+        let badgesHTML = '';
+        if (p.category === "men") badgesHTML += `<span class="product-badge">Men's</span>`;
+        else if (p.category === "women") badgesHTML += `<span class="product-badge">Women's</span>`;
+        else if (p.category === "kids") badgesHTML += `<span class="product-badge">Kids</span>`;
+        
+        if (p.discount && p.discount > 0) {
+            badgesHTML += `<span class="discount-badge">-${p.discount}%</span>`;
+        }
+        
+        if (p.isNew) {
+            badgesHTML = `<span class="new-badge">New</span>` + badgesHTML;
+        }
+        
+        // Color swatches
+        let colorSwatchesHTML = '';
+        if (p.colors && p.colors.length > 0) {
+            colorSwatchesHTML = `<div class="color-swatches">`;
+            p.colors.forEach((color, i) => {
+                colorSwatchesHTML += `<div class="color-swatch ${i === 0 ? 'active' : ''}" style="background-color: ${color}" title="${color}"></div>`;
+            });
+            colorSwatchesHTML += `</div>`;
+        }
+        
+        // Price
+        let priceHTML = `<span class="price">₹${p.price.toLocaleString()}</span>`;
+        if (p.originalPrice && p.originalPrice > p.price) {
+            priceHTML = `<div class="price-section"><span class="price">₹${p.price.toLocaleString()}</span><span class="original-price">₹${p.originalPrice.toLocaleString()}</span></div>`;
+        }
+        
+        div.innerHTML = `
+            <div class="product-image">
+                ${badgesHTML}
+                <button class="wishlist-btn ${wishlistClass}" onclick="toggleWishlist(event, ${p.id})" title="Add to Wishlist">${wishlistBtn}</button>
+                <button class="quick-view-btn" onclick="viewProduct(${p.id})">Quick View 👁</button>
+                <img src="${p.image}" alt="${p.name}" onclick="viewProduct(${p.id})">
+            </div>
+            <div class="product-info">
+                <h3 onclick="viewProduct(${p.id})" style="cursor:pointer">${p.name}</h3>
+                <div class="product-rating">${starsHTML}<span class="rating-count">(${ratingCount})</span></div>
+                ${colorSwatchesHTML}
+                ${priceHTML}
+                <div class="product-actions">
+                    <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+                    <button class="buy-now-btn" onclick="buyNow(${p.id})">Buy Now ⚡</button>
+                </div>
+            </div>
+        `;
+        productGrid.appendChild(div);
+    });
+}
+
+// =========================================
+// ORIGINAL SEARCH FUNCTIONS (Live Search Dropdown)
+// =========================================
+
+// Perform search with enhanced matching (for live dropdown)
+function performSearch(query, isLive = false) {
+    const dropdown = document.getElementById('searchResultsDropdown');
+    if (!dropdown || !products.length) return;
+    
+    const searchTerm = query.toLowerCase().trim();
+    if (searchTerm.length === 0) {
+        hideSearchDropdown();
+        // Reset to show all products in current category
+        let activeCat = document.querySelector(".tab-btn.active")?.dataset.category || "all";
+        renderProducts(activeCat, "");
+        return;
+    }
+    
+    // Enhanced search - matches name, category, and mood (tags)
+    const filtered = products.filter(product => {
+        const nameMatch = product.name.toLowerCase().includes(searchTerm);
+        const categoryMatch = product.category.toLowerCase().includes(searchTerm);
+        const moodMatch = product.mood && product.mood.toLowerCase().includes(searchTerm);
+        
+        return nameMatch || categoryMatch || moodMatch;
+    });
+    
+    // Show results
+    if (filtered.length > 0) {
+        showSearchResults(filtered, searchTerm, isLive);
+    } else {
+        showNoResults(searchTerm);
+    }
+}
+
+// Show search results in dropdown
+function showSearchResults(results, searchTerm, isLive) {
+    const dropdown = document.getElementById('searchResultsDropdown');
+    if (!dropdown) return;
+    
+    const maxResults = isLive ? 6 : results.length;
+    const displayResults = results.slice(0, maxResults);
+    
+    let html = `
+        <div class="search-results-header">
+            <span>Search Results</span>
+            <span class="search-results-count">${results.length} product${results.length !== 1 ? 's' : ''} found</span>
+        </div>
+    `;
+    
+    displayResults.forEach(product => {
+        const categoryLabel = product.category.charAt(0).toUpperCase() + product.category.slice(1);
+        const moodLabel = product.mood ? product.mood.charAt(0).toUpperCase() + product.mood.slice(1) : '';
+        
+        html += `
+            <div class="search-result-item" onclick="viewProduct(${product.id})">
+                <img src="${product.image}" alt="${product.name}" class="search-result-image" onerror="this.src='https://via.placeholder.com/60'">
+                <div class="search-result-info">
+                    <div class="search-result-name">${highlightMatch(product.name, searchTerm)}</div>
+                    <div class="search-result-category">
+                        <span>${categoryLabel}</span>
+                        ${moodLabel ? `<span>${moodLabel}</span>` : ''}
+                    </div>
+                </div>
+                <div class="search-result-price">₹${product.price.toLocaleString()}</div>
+                <button class="search-result-add-btn" onclick="event.stopPropagation(); addToCartFromSearch(${product.id})">Add to Cart</button>
+            </div>
+        `;
+    });
+    
+    // Add "View All" button if there are more results
+    if (results.length > maxResults) {
+        html += `
+            <div class="search-view-all" onclick="viewAllSearchResults('${searchTerm}')">
+                View All ${results.length} Results →
+            </div>
+        `;
+    }
+    
+    dropdown.innerHTML = html;
+    dropdown.classList.add('active');
+}
+
+// Show "No results" message
+function showNoResults(searchTerm) {
+    const dropdown = document.getElementById('searchResultsDropdown');
+    if (!dropdown) return;
+    
+    const suggestions = getSearchSuggestions(searchTerm);
+    
+    dropdown.innerHTML = `
+        <div class="search-no-results">
+            <span class="search-no-results-icon">🔍</span>
+            <h3>No products found</h3>
+            <p>Please try a different keyword or browse our categories.</p>
+            <div class="search-suggestions">
+                <p>Popular searches:</p>
+                <div class="search-suggestion-tags">
+                    ${suggestions.map(tag => `<button class="search-suggestion-tag" onclick="useSuggestion('${tag}')">${tag}</button>`).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+    dropdown.classList.add('active');
+}
+
+// Highlight matching text
+function highlightMatch(text, searchTerm) {
+    if (!searchTerm) return text;
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    return text.replace(regex, '<strong style="color: var(--primary);">$1</strong>');
+}
+
+// Get search suggestions based on current query
+function getSearchSuggestions(currentQuery) {
+    const allSuggestions = ['shirt', 'dress', 'jeans', 'jacket', 'party', 'casual', 'formal', 'men', 'women', 'kids', 'saree', 'blazer'];
+    return allSuggestions.filter(s => s.toLowerCase() !== currentQuery.toLowerCase()).slice(0, 5);
+}
+
+// Use a suggestion tag
+function useSuggestion(tag) {
+    searchBar.value = tag;
+    performSearch(tag, true);
+}
+
+// Hide search dropdown
+function hideSearchDropdown() {
+    const dropdown = document.getElementById('searchResultsDropdown');
+    if (dropdown) {
+        dropdown.classList.remove('active');
+    }
+}
+
+// View all search results - filter products on page
+function viewAllSearchResults(searchTerm) {
+    hideSearchDropdown();
+    
+    // Reset to All category when viewing all results
+    tabBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.category === 'all') {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Render all matching products
+    renderProducts('all', searchTerm);
+    
+    // Scroll to products section
+    const productsSection = document.getElementById('products');
+    if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// Add to cart from search results
+function addToCartFromSearch(productId) {
+    addToCart(productId);
+}
 
 // =========================================
 // FETCH PRODUCTS FROM API OR USE LOCAL DATA
@@ -509,3 +1068,8 @@ if (typeof products !== 'undefined' && products.length > 0) {
 } else {
     fetchProducts();
 }
+
+// Initialize enhanced search after products are loaded
+setTimeout(() => {
+    initializeSearch();
+}, 100);

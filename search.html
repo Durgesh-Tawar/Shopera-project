@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOPERA - Search Results</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* Search Page Styles */
+.search-page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.search-page-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.search-page-title {
+    font-size: 2rem;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+}
+
+.search-page-title span {
+    color: #ff3f6c;
+}
+
+.search-query-display {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.search-query-text {
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+}
+
+.results-count {
+    color: #666;
+    font-size: 1rem;
+}
+
+/* Search Filters Sidebar */
+.search-content {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 30px;
+}
+
+.search-sidebar {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.sidebar-title {
+    font-size: 1.2rem;
+    color: #1a1a2e;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ff3f6c;
+}
+
+.filter-group {
+    margin-bottom: 25px;
+}
+
+.filter-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.filter-option:hover {
+    background: #f8f9fa;
+}
+
+.filter-option input {
+    width: 18px;
+    height: 18px;
+    accent-color: #ff3f6c;
+    cursor: pointer;
+}
+
+.filter-option span {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.filter-option .count {
+    margin-left: auto;
+    color: #999;
+    font-size: 0.85rem;
+}
+
+.clear-filters-btn {
+    width: 100%;
+    padding: 12px;
+    background: #f0f0f5;
+    border: none;
+    border-radius: 10px;
+    color: #666;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.clear-filters-btn:hover {
+    background: #ff3f6c;
+    color: white;
+}
+
+/* Search Results Grid */
+.search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+/* No Results Page */
+.no-results-container {
+    text-align: center;
+    padding: 80px 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.no-results-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.no-results-title {
+    font-size: 2rem;
+    color: #1a1a2e;
+    margin-bottom: 15px;
+}
+
+.no-results-text {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+.no-results-suggestions {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.no-results-suggestions h4 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.suggestion-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.suggestion-tag {
+    padding: 10px 20px;
+    background: #f0f0f5;
+    border: none;
+    border-radius: 25px;
+    color: #555;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.suggestion-tag:hover {
+    background: #ff3f6c;
+    color: white;
+}
+
+.browse-categories {
+    margin-top: 40px;
+}
+
+.browse-categories h4 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.category-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.category-card-link {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-decoration: none;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.category-card-link:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.category-card-link.men {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.category-card-link.women {
+    background: linear-gradient(135deg, #ff3f6c 0%, #ff6b9d 100%);
+}
+
+.category-card-link.kids {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* Search Bar in Page */
+.page-search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-search-bar input {
+    flex: 1;
+    padding: 15px 25px;
+    border: 2px solid #e0e0e0;
+    border-radius: 30px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.page-search-bar input:focus {
+    outline: none;
+    border-color: #ff3f6c;
+    box-shadow: 0 5px 20px rgba(255, 63, 108, 0.2);
+}
+
+.page-search-bar button {
+    padding: 15px 30px;
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.page-search-bar button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(255, 63, 108, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .search-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-sidebar {
+        position: static;
+        order: 1;
+    }
+    
+    .search-results-grid {
+        order: 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .search-page-title {
+        font-size: 1.5rem;
+    }
+    
+    .search-results-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-options {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="logo">SOPERA</div>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mood.html">Mood</a></li>
+        <li><a href="reels.html">Reels</a></li>
+        <li><a href="spin.html">Spin & Win 🎁</a></li>
+        <li><a href="cart.html">Cart 🛒</a></li>
+        <li><a href="wishlist.html">Wishlist ❤️</a></li>
+        <li><a href="orders.html">Orders 📦</a></li>
+    </ul>
+</nav>
+
+<!-- Search Page Content -->
+<div class="search-page-container">
+    <!-- Search Bar -->
+    <div class="page-search-bar">
+        <input type="text" id="searchInput" placeholder="Search products...">
+        <button onclick="performPageSearch()">Search</button>
+    </div>
+    
+    <!-- Results Header -->
+    <div class="search-page-header">
+        <h1 class="search-page-title">Search Results for <span id="searchQueryDisplay"></span></h1>
+        <div class="search-query-display">
+            <span class="results-count" id="resultsCount"></span>
+        </div>
+    </div>
+    
+    <!-- Search Content -->
+    <div class="search-content" id="searchContent">
+        <!-- Sidebar -->
+        <aside class="search-sidebar">
+            <h3 class="sidebar-title">Filters</h3>
+            
+            <!-- Category Filter -->
+            <div class="filter-group">
+                <label class="filter-label">Category</label>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" value="men" onchange="applyFilters()">
+                        <span>Men's</span>
+                        <span class="count" id="menCount"></span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" value="women" onchange="applyFilters()">
+                        <span>Women's</span>
+                        <span class="count" id="womenCount"></span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" value="kids" onchange="applyFilters()">
+                        <span>Kids</span>
+                        <span class="count" id="kidsCount"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Mood Filter -->
+            <div class="filter-group">
+                <label class="filter-label">Style</label>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" value="casual" onchange="applyFilters()">
+                        <span>Casual</span>
+                        <span class="count" id="casualCount"></span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" value="formal" onchange="applyFilters()">
+                        <span>Formal</span>
+                        <span class="count" id="formalCount"></span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" value="party" onchange="applyFilters()">
+                        <span>Party</span>
+                        <span class="count" id="partyCount"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Price Range -->
+            <div class="filter-group">
+                <label class="filter-label">Price Range</label>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="radio" name="priceRange" value="0-1000" onchange="applyFilters()">
+                        <span>Under ₹1,000</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="priceRange" value="1000-2000" onchange="applyFilters()">
+                        <span>₹1,000 - ₹2,000</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="priceRange" value="2000-5000" onchange="applyFilters()">
+                        <span>₹2,000 - ₹5,000</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="priceRange" value="5000+" onchange="applyFilters()">
+                        <span>Above ₹5,000</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="priceRange" value="all" checked onchange="applyFilters()">
+                        <span>All Prices</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button class="clear-filters-btn" onclick="clearFilters()">Clear All Filters</button>
+        </aside>
+        
+        <!-- Results Grid -->
+        <main class="search-results-grid" id="searchResultsGrid">
+            <!-- Results will be loaded here -->
+        </main>
+    </div>
+    
+    <!-- No Results Container -->
+    <div class="no-results-container" id="noResultsContainer" style="display: none;">
+        <div class="no-results-icon">🔍</div>
+        <h2 class="no-results-title">No Products Found</h2>
+        <p class="no-results-text">We couldn't find any products matching your search. Try different keywords or browse our categories.</p>
+        
+        <div class="no-results-suggestions">
+            <h4>Popular Searches:</h4>
+            <div class="suggestion-tags">
+                <button class="suggestion-tag" onclick="searchFromSuggestion('shirt')">Shirt</button>
+                <button class="suggestion-tag" onclick="searchFromSuggestion('dress')">Dress</button>
+                <button class="suggestion-tag" onclick="searchFromSuggestion('jeans')">Jeans</button>
+                <button class="suggestion-tag" onclick="searchFromSuggestion('jacket')">Jacket</button>
+                <button class="suggestion-tag" onclick="searchFromSuggestion('saree')">Saree</button>
+            </div>
+        </div>
+        
+        <div class="browse-categories">
+            <h4>Browse by Category:</h4>
+            <div class="category-cards">
+                <a href="index.html?category=men" class="category-card-link men">
+                    <span style="font-size: 30px;">👔</span>
+                    <div>Men's</div>
+                </a>
+                <a href="index.html?category=women" class="category-card-link women">
+                    <span style="font-size: 30px;">👗</span>
+                    <div>Women's</div>
+                </a>
+                <a href="index.html?category=kids" class="category-card-link kids">
+                    <span style="font-size: 30px;">🧸</span>
+                    <div>Kids</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/data.js"></script>
+<script>
+const API_URL = 'http://localhost:3000/api';
+let products = [];
+let filteredProducts = [];
+let currentSearchQuery = '';
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    fetchProducts();
+    
+    // Get search query from URL
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('q') || params.get('search') || '';
+    currentSearchQuery = query;
+    
+    if (query) {
+        document.getElementById('searchInput').value = query;
+    }
+    
+    // Handle Enter key in search input
+    document.getElementById('searchInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            performPageSearch();
+        }
+    });
+});
+
+// Fetch products
+async function fetchProducts() {
+    try {
+        const response = await fetch(`${API_URL}/products`);
+        if (!response.ok) throw new Error('API not available');
+        products = await response.json();
+        performFullSearch();
+    } catch (error) {
+        console.log('Using local data');
+        if (typeof window.products !== 'undefined') {
+            products = window.products;
+            performFullSearch();
+        }
+    }
+}
+
+// Perform full search with filters
+function performFullSearch() {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('q') || params.get('search') || '';
+    currentSearchQuery = query;
+    
+    if (!query) {
+        filteredProducts = products;
+    } else {
+        const searchTerm = query.toLowerCase().trim();
+        
+        // Search with intelligent matching
+        filteredProducts = products.filter(product => {
+            const nameMatch = product.name.toLowerCase().includes(searchTerm);
+            const categoryMatch = product.category.toLowerCase().includes(searchTerm);
+            const moodMatch = product.mood && product.mood.toLowerCase().includes(searchTerm);
+            
+            return nameMatch || categoryMatch || moodMatch;
+        });
+    }
+    
+    // Update display
+    updateSearchDisplay();
+    updateFilterCounts();
+    applyFilters();
+}
+
+// Update search display
+function updateSearchDisplay() {
+    const displayElement = document.getElementById('searchQueryDisplay');
+    const countElement = document.getElementById('resultsCount');
+    
+    if (currentSearchQuery) {
+        displayElement.textContent = `"${currentSearchQuery}"`;
+    } else {
+        displayElement.textContent = "All Products";
+    }
+    
+    countElement.textContent = `${filteredProducts.length} product${filteredProducts.length !== 1 ? 's' : ''} found`;
+}
+
+// Update filter counts
+function updateFilterCounts() {
+    document.getElementById('menCount').textContent = `(${products.filter(p => p.category === 'men').length})`;
+    document.getElementById('womenCount').textContent = `(${products.filter(p => p.category === 'women').length})`;
+    document.getElementById('kidsCount').textContent = `(${products.filter(p => p.category === 'kids').length})`;
+    document.getElementById('casualCount').textContent = `(${products.filter(p => p.mood === 'casual').length})`;
+    document.getElementById('formalCount').textContent = `(${products.filter(p => p.mood === 'formal').length})`;
+    document.getElementById('partyCount').textContent = `(${products.filter(p => p.mood === 'party').length})`;
+}
+
+// Apply filters
+function applyFilters() {
+    // Get selected categories
+    const selectedCategories = Array.from(document.querySelectorAll('.filter-option input[type="checkbox"]:checked'))
+        .filter(cb => ['men', 'women', 'kids'].includes(cb.value))
+        .map(cb => cb.value);
+    
+    // Get selected moods
+    const selectedMoods = Array.from(document.querySelectorAll('.filter-option input[type="checkbox"]:checked'))
+        .filter(cb => ['casual', 'formal', 'party'].includes(cb.value))
+        .map(cb => cb.value);
+    
+    // Get price range
+    const priceRange = document.querySelector('input[name="priceRange"]:checked')?.value || 'all';
+    
+    // Filter products
+    let result = filteredProducts;
+    
+    if (selectedCategories.length > 0) {
+        result = result.filter(p => selectedCategories.includes(p.category));
+    }
+    
+    if (selectedMoods.length > 0) {
+        result = result.filter(p => selectedMoods.includes(p.mood));
+    }
+    
+    if (priceRange !== 'all') {
+        result = result.filter(p => {
+            switch(priceRange) {
+                case '0-1000': return p.price < 1000;
+                case '1000-2000': return p.price >= 1000 && p.price < 2000;
+                case '2000-5000': return p.price >= 2000 && p.price < 5000;
+                case '5000+': return p.price >= 5000;
+                default: return true;
+            }
+        });
+    }
+    
+    renderResults(result);
+}
+
+// Render search results
+function renderResults(results) {
+    const grid = document.getElementById('searchResultsGrid');
+    const noResults = document.getElementById('noResultsContainer');
+    const content = document.getElementById('searchContent');
+    
+    if (results.length === 0) {
+        content.style.display = 'none';
+        noResults.style.display = 'block';
+        return;
+    }
+    
+    content.style.display = 'grid';
+    noResults.style.display = 'none';
+    
+    // Update results count
+    document.getElementById('resultsCount').textContent = `${results.length} product${results.length !== 1 ? 's' : ''} found`;
+    
+    grid.innerHTML = results.map(p => `
+        <div class="product-card" onclick="viewProduct(${p.id})">
+            <div class="product-image">
+                ${getBadges(p)}
+                <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(${p.id})" title="Add to Wishlist">🤍</button>
+                <img src="${p.image}" alt="${p.name}" onclick="viewProduct(${p.id})">
+            </div>
+            <div class="product-info">
+                <h3 onclick="viewProduct(${p.id})" style="cursor:pointer">${p.name}</h3>
+                <div class="product-category">${p.category.charAt(0).toUpperCase() + p.category.slice(1)} • ${p.mood.charAt(0).toUpperCase() + p.mood.slice(1)}</div>
+                <div class="price">₹${p.price.toLocaleString()}</div>
+                <div class="product-actions">
+                    <button class="add-btn" onclick="event.stopPropagation(); addToCart(${p.id})">Add to Cart</button>
+                    <button class="buy-now-btn" onclick="event.stopPropagation(); buyNow(${p.id})">Buy Now</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Get product badges
+function getBadges(p) {
+    let badges = '';
+    if (p.category === "men") badges += `<span class="product-badge">Men's</span>`;
+    else if (p.category === "women") badges += `<span class="product-badge">Women's</span>`;
+    else if (p.category === "kids") badges += `<span class="product-badge">Kids</span>`;
+    
+    if (p.discount && p.discount > 0) {
+        badges += `<span class="discount-badge">-${p.discount}%</span>`;
+    }
+    
+    return badges;
+}
+
+// Clear filters
+function clearFilters() {
+    document.querySelectorAll('.filter-option input[type="checkbox"]').forEach(cb => cb.checked = false);
+    document.querySelector('input[name="priceRange"][value="all"]').checked = true;
+    applyFilters();
+}
+
+// Perform page search
+function performPageSearch() {
+    const query = document.getElementById('searchInput').value.trim();
+    if (query) {
+        window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+    }
+}
+
+// Search from suggestion
+function searchFromSuggestion(tag) {
+    window.location.href = `search.html?q=${encodeURIComponent(tag)}`;
+}
+
+// View product
+function viewProduct(id) {
+    window.location.href = `product.html?id=${id}`;
+}
+
+// Cart functions
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    if (product) {
+        cart.push(product);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        showToast(`${product.name} added to cart!`);
+    }
+}
+
+function buyNow(id) {
+    addToCart(id);
+    window.location.href = 'cart.html';
+}
+
+function toggleWishlist(id) {
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    const product = products.find(p => p.id === id);
+    
+    if (!product) return;
+    
+    const index = wishlist.findIndex(w => w.id === id);
+    
+    if (index > -1) {
+        wishlist.splice(index, 1);
+        showToast(`${product.name} removed from wishlist`);
+    } else {
+        wishlist.push(product);
+        showToast(`${product.name} added to wishlist ❤️`);
+    }
+    
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+}
+
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+        color: white;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        z-index: 9999;
+        animation: slideUp 0.3s ease;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.remove(), 2000);
+}
+
+// Hamburger menu
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+});
+</script>
+
+</body>
+</html>

@@ -575,6 +575,13 @@ function subscribeNewsletter(e) {
     }
 </script>
 <script src="js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        if (typeof handleURLParams === 'function') handleURLParams();
+    }, 200);
+});
+</script>
 <script src="js/chatbot.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
