@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - SOPERA</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">SOPERA</div>
+        <div class="nav-search">
+            <input type="text" id="searchBar" placeholder="Search products...">
+        </div>
+
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="mood.html">Mood</a></li>
+            <li><a href="reels.html">Reels</a></li>
+            <li><a href="spin.html">Spin & Win 🎁</a></li>
+            <li><a href="cart.html">Cart 🛒</a></li>
+            <li><a href="wishlist.html">Wishlist ❤️</a></li>
+            <li><a href="orders.html">Orders 📦</a></li>
+            <li><a href="profile.html" class="active-nav">Profile 👤</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Profile Section -->
+    <section class="profile-section">
+        <!-- Auth Container -->
+        <div class="auth-container" id="authContainer">
+            <!-- Animated Background -->
+            <div class="auth-bg">
+                <div class="auth-bg-shape shape-1"></div>
+                <div class="auth-bg-shape shape-2"></div>
+                <div class="auth-bg-shape shape-3"></div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-box" id="loginBox">
+                <div class="auth-header">
+                    <div class="auth-logo">👗</div>
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to continue shopping</p>
+                </div>
+
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📧</span>
+                            <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                        </div>
+                        <span class="error-message" id="loginEmailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔒</span>
+                            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">👁</button>
+                        </div>
+                        <span class="error-message" id="loginPasswordError"></span>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="rememberMe">
+                            <span class="checkmark"></span>
+                            Remember me
+                        </label>
+                        <a href="#" class="forgot-link" onclick="showForgotPassword(event)">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="auth-btn">
+                        <span>Login</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="#" onclick="showRegister(event)">Register</a></p>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-box register-box" id="registerBox" style="display: none;">
+                <div class="auth-header">
+                    <div class="auth-logo">✨</div>
+                    <h2>Create Account</h2>
+                    <p>Join SOPERA and start shopping</p>
+                </div>
+
+                <form id="registerForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="registerName">Full Name</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">👤</span>
+                            <input type="text" id="registerName" placeholder="Enter your full name" required>
+                        </div>
+                        <span class="error-message" id="registerNameError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📧</span>
+                            <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                        </div>
+                        <span class="error-message" id="registerEmailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPhone">Phone Number <span class="optional">(Optional)</span></label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📱</span>
+                            <input type="tel" id="registerPhone" placeholder="Enter phone number">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔒</span>
+                            <input type="password" id="registerPassword" placeholder="Create a password" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword('registerPassword')">👁</button>
+                        </div>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <span class="strength-text" id="strengthText"></span>
+                        </div>
+                        <span class="password-requirements">
+                            At least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔐</span>
+                            <input type="password" id="registerConfirmPassword" placeholder="Confirm your password" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword('registerConfirmPassword')">👁</button>
+                        </div>
+                        <span class="error-message" id="registerConfirmPasswordError"></span>
+                    </div>
+
+                    <button type="submit" class="auth-btn">
+                        <span>Create Account</span>
+                        <span class="btn-arrow">✨</span>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="#" onclick="showLogin(event)">Login</a></p>
+                </div>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div class="auth-box forgot-box" id="forgotBox" style="display: none;">
+                <div class="auth-header">
+                    <div class="auth-logo">🔐</div>
+                    <h2>Reset Password</h2>
+                    <p>Enter your email to reset password</p>
+                </div>
+
+                <form id="forgotForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="forgotEmail">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📧</span>
+                            <input type="email" id="forgotEmail" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="auth-btn">
+                        <span>Send Reset Link</span>
+                        <span class="btn-arrow">📧</span>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Remember your password? <a href="#" onclick="showLogin(event)">Login</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Dashboard (Hidden by default) -->
+        <div class="profile-dashboard" id="profileDashboard" style="display: none;">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-avatar" id="profileAvatar">
+                    <span id="avatarInitial">U</span>
+                </div>
+                <div class="profile-info">
+                    <h2 id="profileName">User Name</h2>
+                    <p id="profileEmail">user@email.com</p>
+                </div>
+                <button class="edit-profile-btn" onclick="showEditProfile()">
+                    <span>✏️</span> Edit Profile
+                </button>
+            </div>
+
+            <!-- Profile Menu -->
+            <div class="profile-menu">
+                <div class="menu-card" onclick="window.location.href='orders.html'">
+                    <div class="menu-icon">📦</div>
+                    <div class="menu-content">
+                        <h3>My Orders</h3>
+                        <p>View order history</p>
+                    </div>
+                    <span class="menu-arrow">→</span>
+                </div>
+
+                <div class="menu-card" onclick="window.location.href='wishlist.html'">
+                    <div class="menu-icon">❤️</div>
+                    <div class="menu-content">
+                        <h3>Wishlist</h3>
+                        <p>Your saved items</p>
+                    </div>
+                    <span class="menu-arrow">→</span>
+                </div>
+
+                <div class="menu-card" onclick="window.location.href='cart.html'">
+                    <div class="menu-icon">🛒</div>
+                    <div class="menu-content">
+                        <h3>Shopping Cart</h3>
+                        <p>Items in your cart</p>
+                    </div>
+                    <span class="menu-arrow">→</span>
+                </div>
+
+                <div class="menu-card" onclick="showEditProfile()">
+                    <div class="menu-icon">👤</div>
+                    <div class="menu-content">
+                        <h3>Edit Profile</h3>
+                        <p>Update your details</p>
+                    </div>
+                    <span class="menu-arrow">→</span>
+                </div>
+            </div>
+
+            <!-- Logout Button -->
+            <button class="logout-btn" onclick="logout()">
+                <span>🚪</span> Logout
+            </button>
+
+            <!-- Edit Profile Modal -->
+            <div class="edit-profile-modal" id="editProfileModal" style="display: none;">
+                <div class="modal-overlay" onclick="closeEditProfile()"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Edit Profile</h3>
+                        <button class="modal-close" onclick="closeEditProfile()">✕</button>
+                    </div>
+                    <form id="editProfileForm" class="edit-form">
+                        <div class="form-group">
+                            <label for="editName">Full Name</label>
+                            <input type="text" id="editName" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="editPhone">Phone Number</label>
+                            <input type="tel" id="editPhone" placeholder="Enter phone number">
+                        </div>
+                        <button type="submit" class="save-btn">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="js/profile.js"></script>
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -42,9 +42,10 @@ let products = [
 
 // Initialize orders from localStorage file or empty array
 let orders = [];
+const ordersFile = path.join(__dirname, 'orders.json');
 try {
-    if (fs.existsSync('orders.json')) {
-        orders = JSON.parse(fs.readFileSync('orders.json', 'utf8'));
+    if (fs.existsSync(ordersFile)) {
+        orders = JSON.parse(fs.readFileSync(ordersFile, 'utf8'));
     }
 } catch (e) {
     orders = [];
@@ -52,7 +53,7 @@ try {
 
 // Save orders to file
 function saveOrders() {
-    fs.writeFileSync('orders.json', JSON.stringify(orders, null, 2));
+    fs.writeFileSync(ordersFile, JSON.stringify(orders, null, 2));
 }
 
 // ==================== API ROUTES ====================
