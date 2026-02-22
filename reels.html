@@ -1,618 +1,1435 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOPERA - Reels Shop</title>
-<link rel="stylesheet" href="css/style.css">
-<style>
-/* Reels Container - TikTok/Instagram Style */
-.reels-container {
-    padding: 20px;
-    background: #000;
-    min-height: calc(100vh - 80px);
-}
-
-.reels-wrapper {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 20px;
-}
-
-.reels-wrapper::-webkit-scrollbar {
-    display: none;
-}
-
-.reel-card {
-    min-width: 300px;
-    max-width: 300px;
-    height: 550px;
-    border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-    scroll-snap-align: center;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.reel-card:hover {
-    transform: scale(1.02);
-}
-
-.reel-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Reel Overlay */
-.reel-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.9));
-    padding: 80px 20px 25px;
-}
-
-/* Reel Info */
-.reel-user {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-}
-
-.reel-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.reel-username {
-    color: white;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.reel-title {
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.reel-price {
-    color: #ff3f6c;
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
-.reel-actions {
-    display: flex;
-    gap: 15px;
-}
-
-.reel-action {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-}
-
-.reel-action span:first-child {
-    font-size: 24px;
-}
-
-.reel-action span:last-child {
-    color: white;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-/* Mood Badge */
-.mood-tag {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.mood-tag.party {
-    background: linear-gradient(45deg, #ff6b6b, #ffa500);
-    color: white;
-}
-
-.mood-tag.casual {
-    background: linear-gradient(45deg, #4ecdc4, #44a08d);
-    color: white;
-}
-
-.mood-tag.formal {
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
-}
-
-/* Category Tag */
-.category-tag {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    padding: 6px 14px;
-    border-radius: 15px;
-    background: rgba(255,255,255,0.9);
-    color: #333;
-    font-size: 11px;
-    font-weight: 600;
-}
-
-/* Add to Cart Button */
-.add-cart-btn {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 10px;
-}
-
-.add-cart-btn:hover {
-    transform: scale(1.02);
-    box-shadow: 0 5px 20px rgba(255, 63, 108, 0.4);
-}
-
-/* Mood Filter */
-.reels-header {
-    background: #000;
-    padding: 20px 20px 10px;
-}
-
-.reels-header h2 {
-    color: white;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-}
-
-.mood-filter {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.mood-btn {
-    padding: 10px 22px;
-    border: 2px solid #ff3f6c;
-    background: transparent;
-    color: #ff3f6c;
-    border-radius: 25px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 13px;
-}
-
-.mood-btn.active, .mood-btn:hover {
-    background: #ff3f6c;
-    color: white;
-}
-
-/* Similar Products Fullscreen View */
-.similar-view {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #000;
-    z-index: 10000;
-    overflow-y: auto;
-}
-
-.similar-view.active {
-    display: block;
-}
-
-.similar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background: #1a1a1a;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.similar-header h3 {
-    color: white;
-    font-size: 1.3rem;
-    margin: 0;
-}
-
-.similar-header .subtitle {
-    color: #888;
-    font-size: 0.9rem;
-    font-weight: normal;
-}
-
-.close-similar {
-    background: #ff3f6c;
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-weight: 600;
-}
-
-/* Selected Product */
-.selected-product {
-    display: flex;
-    gap: 15px;
-    padding: 20px;
-    background: #1a1a1a;
-    margin: 20px;
-    border-radius: 15px;
-}
-
-.selected-product img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.selected-info h4 {
-    color: white;
-    font-size: 1.1rem;
-    margin: 0 0 5px 0;
-}
-
-.selected-info .price {
-    color: #ff3f6c;
-    font-size: 1.3rem;
-    font-weight: 700;
-}
-
-.selected-info .add-btn {
-    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
-    border: none;
-    color: white;
-    padding: 10px 25px;
-    border-radius: 25px;
-    margin-top: 10px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-/* Similar Products Grid */
-.similar-section {
-    padding: 0 20px 20px;
-}
-
-.similar-section h4 {
-    color: white;
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-}
-
-.similar-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
-
-.similar-card {
-    background: #1a1a1a;
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.similar-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 5px 20px rgba(255, 63, 108, 0.3);
-}
-
-.similar-card img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-}
-
-.similar-info {
-    padding: 10px;
-}
-
-.similar-info h5 {
-    color: white;
-    font-size: 12px;
-    margin: 0 0 5px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.similar-info .price {
-    color: #ff3f6c;
-    font-size: 14px;
-    font-weight: 700;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .reel-card {
-        min-width: 260px;
-        height: 480px;
-    }
-    
-    .similar-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOPERA - Reels</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            overflow: hidden;
+        }
+        
+        /* Custom Scrollbar Hide */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Snap Scrolling */
+        .reels-container {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+        
+        .reel-item {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            background: #000;
+        }
+        
+        /* Video Styles */
+        .reel-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #000;
+        }
+        
+        /* Video Fallback Background */
+        .reel-video.fallback {
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Progress Bar */
+        .progress-bar-container {
+            position: absolute;
+            bottom: 80px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            gap: 4px;
+            z-index: 20;
+        }
+        
+        .progress-bar-item {
+            flex: 1;
+            height: 3px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: #fff;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        .progress-bar-item.active .progress-bar-fill {
+            background: #ff3f6c;
+        }
+        
+        /* Heart Animation */
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        .heart-animation {
+            animation: heartBeat 0.6s ease-in-out;
+        }
+        
+        @keyframes doubleTapHeart {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(0); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .double-tap-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 25;
+        }
+        
+        .double-tap-heart i {
+            font-size: 8rem;
+            color: white;
+            opacity: 0;
+        }
+        
+        .double-tap-heart.show i {
+            animation: doubleTapHeart 0.8s ease-out forwards;
+        }
+        
+        /* Spin Animation for Music Disc */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .disc-spin {
+            animation: spin 3s linear infinite;
+        }
+        
+        /* Mute Overlay */
+        .tap-to-unmute {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.7);
+            padding: 20px 30px;
+            border-radius: 30px;
+            color: white;
+            z-index: 30;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .tap-to-unmute:hover {
+            background: rgba(0,0,0,0.9);
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+        
+        .tap-to-unmute i {
+            font-size: 1.25rem;
+        }
+        
+        /* Comments Panel */
+        .comments-panel {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.95);
+            max-height: 60vh;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 40;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .comments-panel.active {
+            transform: translateY(0);
+        }
+        
+        .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .comments-header h3 {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .comments-header .close-btn {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 20px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .comments-header .close-btn:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .comments-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 20px;
+        }
+        
+        .comment {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            flex-shrink: 0;
+            font-weight: 600;
+        }
+        
+        .comment-user {
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .comment-text {
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+            margin-top: 2px;
+        }
+        
+        .comment-time {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+        
+        .comment-input {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .comment-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 14px;
+        }
+        
+        .comment-input input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .comment-input button {
+            padding: 12px 20px;
+            background: #ff3f6c;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .comment-input button:hover {
+            background: #ff6b9d;
+        }
+        
+        /* Share Modal */
+        .share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 50;
+            padding-bottom: 20px;
+        }
+        
+        .share-modal.active {
+            display: flex;
+        }
+        
+        .share-content {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        
+        .share-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .share-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .share-close {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .share-options {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+        }
+        
+        .share-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+        
+        .share-option:hover {
+            background: #f5f5f5;
+        }
+        
+        .share-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+        
+        .share-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .share-link-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 10px;
+            background: #f5f5f5;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        /* Follow Button */
+        .follow-btn {
+            background: #ff3f6c;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .follow-btn:hover {
+            background: #ff6b9d;
+        }
+        
+        .follow-btn.following {
+            background: transparent;
+            border: 1px solid white;
+        }
+        
+        /* Loading Spinner */
+        .video-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #ff3f6c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+        }
+        
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 40px;
+            left: 15px;
+            z-index: 25;
+            background: rgba(0,0,0,0.5);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(0,0,0,0.8);
+        }
+        
+        /* Global Mute Button */
+        .mute-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 50;
+            background: rgba(0,0,0,0.5);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .mute-btn:hover {
+            background: rgba(0,0,0,0.8);
+        }
+        
+        /* Nav Buttons */
+        .reels-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* Reel Overlay - Left Side */
+        .reel-info {
+            position: absolute;
+            bottom: 80px;
+            left: 15px;
+            right: 70px;
+            z-index: 20;
+            color: white;
+        }
+        
+        .reel-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .reel-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border: 2px solid white;
+        }
+        
+        .reel-username {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .reel-description {
+            font-size: 14px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .reel-hashtags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .reel-hashtags span {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .shop-now-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .shop-now-btn:hover {
+            background: #f0f0f0;
+            transform: scale(1.02);
+        }
+        
+        .shop-now-btn .price {
+            color: #ff3f6c;
+            font-weight: 700;
+        }
+        
+        /* Reel Actions - Right Side */
+        .reel-actions {
+            position: absolute;
+            bottom: 80px;
+            right: 10px;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover .action-icon {
+            background: rgba(0,0,0,0.5);
+            transform: scale(1.1);
+        }
+        
+        .action-btn.liked .action-icon {
+            color: #ff3f6c;
+        }
+        
+        .action-label {
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .music-disc {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .music-disc-inner {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 480px) {
+            .reel-info {
+                right: 60px;
+            }
+            
+            .reel-actions {
+                right: 5px;
+            }
+            
+            .action-icon {
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+            }
+            
+            .back-btn, .mute-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+            }
+            
+            .mute-btn {
+                top: 15px;
+                right: 15px;
+            }
+            
+            .reels-nav {
+                bottom: 15px;
+                gap: 10px;
+            }
+            
+            .nav-btn {
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<!-- Navbar -->
-<nav class="navbar">
-    <div class="logo">SOPERA</div>
-    <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    <ul class="nav-links" id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="mood.html">Mood</a></li>
-        <li><a href="reels.html">Reels</a></li>
-        <li><a href="spin.html">Spin & Win 🎁</a></li>
-        <li><a href="cart.html">Cart 🛒</a></li>
-        <li><a href="orders.html">Orders 📦</a></li>
-    </ul>
-</nav>
-
-<!-- Reels Header with Filters -->
-<div class="reels-header">
-    <h2>📱 Reels Shopping</h2>
-    <div class="mood-filter">
-        <button class="mood-btn active" data-mood="all">All</button>
-        <button class="mood-btn" data-mood="party">🎉 Party</button>
-        <button class="mood-btn" data-mood="casual">👕 Casual</button>
-        <button class="mood-btn" data-mood="formal">👔 Formal</button>
-    </div>
-</div>
-
-<!-- Reels Container -->
-<div class="reels-container">
-    <div class="reels-wrapper" id="reelFeed">
-        <!-- JS will render reels here -->
-    </div>
-</div>
-
-<!-- Similar Products Fullscreen View -->
-<div class="similar-view" id="similarView">
-    <div class="similar-header">
-        <div>
-            <h3 id="viewTitle">Similar Products</h3>
-            <span class="subtitle" id="viewSubtitle">Tap any product to see more</span>
-        </div>
-        <button class="close-similar" onclick="closeSimilarView()">✕ Close</button>
-    </div>
     
-    <!-- Selected Product -->
-    <div class="selected-product" id="selectedProduct">
-        <!-- Will be populated by JS -->
-    </div>
-    
-    <!-- Similar Products -->
-    <div class="similar-section">
-        <h4>🔥 More Like This</h4>
-        <div class="similar-grid" id="similarGrid">
-            <!-- Similar products will be shown here -->
-        </div>
-    </div>
-</div>
-
-<script src="js/data.js"></script>
-<script>
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-});
-
-const reelFeed = document.getElementById("reelFeed");
-const moodBtns = document.querySelectorAll('.mood-btn');
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-// Render reels with mood filter
-function renderReels(mood = 'all') {
-    reelFeed.innerHTML = "";
-    
-    let filtered = (mood === 'all') ? products : products.filter(p => p.mood === mood);
-    
-    filtered.forEach(p => {
-        const div = document.createElement("div");
-        div.classList.add("reel-card");
-        div.onclick = () => openSimilarView(p);
-        
-        let moodClass = p.mood;
-        let category = p.category === 'men' ? "Men" : p.category === 'women' ? "Women" : "Kids";
-        let initial = p.name.charAt(0);
-        
-        div.innerHTML = `
-            <img src="${p.image}" alt="${p.name}">
-            <span class="mood-tag ${moodClass}">${p.mood}</span>
-            <span class="category-tag">${category}</span>
-            <div class="reel-overlay">
-                <div class="reel-user">
-                    <div class="reel-avatar">${initial}</div>
-                    <span class="reel-username">@sopera_fashion</span>
-                </div>
-                <h3 class="reel-title">${p.name}</h3>
-                <p class="reel-price">₹${p.price.toLocaleString()}</p>
-                <div class="reel-actions">
-                    <div class="reel-action" onclick="event.stopPropagation(); addToCart(${p.id})">
-                        <span>🛒</span>
-                        <span>Add to Cart</span>
-                    </div>
-                    <div class="reel-action">
-                        <span>❤️</span>
-                        <span>Like</span>
-                    </div>
-                    <div class="reel-action">
-                        <span>📤</span>
-                        <span>Share</span>
-                    </div>
-                </div>
-                <button class="add-cart-btn" onclick="event.stopPropagation(); addToCart(${p.id})">Add to Cart - ₹${p.price.toLocaleString()}</button>
+    <!-- Tap to Start Overlay -->
+    <div class="tap-to-start" id="tapToStart" onclick="startReels()">
+        <div class="tap-to-start-content">
+            <div class="tap-icon">
+                <i class="fas fa-play"></i>
             </div>
-        `;
-        reelFeed.appendChild(div);
-    });
-}
-
-// Open similar products view
-function openSimilarView(product) {
-    const view = document.getElementById('similarView');
-    const selectedDiv = document.getElementById('selectedProduct');
-    const grid = document.getElementById('similarGrid');
-    const title = document.getElementById('viewTitle');
-    const subtitle = document.getElementById('viewSubtitle');
-    
-    // Get similar products (same category and mood, excluding current)
-    let similar = products.filter(p => 
-        p.id !== product.id && 
-        p.category === product.category && 
-        p.mood === product.mood
-    );
-    
-    // If not enough, add more from same category
-    if (similar.length < 4) {
-        let more = products.filter(p => 
-            p.id !== product.id && 
-            p.category === product.category
-        );
-        similar = [...similar, ...more].slice(0, 6);
-    }
-    
-    // Set title
-    title.textContent = `${product.mood.charAt(0).toUpperCase() + product.mood.slice(1)} ${product.category.charAt(0).toUpperCase() + product.category.slice(1)} Collection`;
-    subtitle.textContent = `${similar.length + 1} products found`;
-    
-    // Show selected product
-    selectedDiv.innerHTML = `
-        <img src="${product.image}" alt="${product.name}">
-        <div class="selected-info">
-            <h4>${product.name}</h4>
-            <p class="price">₹${product.price.toLocaleString()}</p>
-            <span class="mood-tag ${product.mood}" style="position:static;display:inline-block;margin-bottom:10px;">${product.mood}</span>
-            <br>
-            <button class="add-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+            <p>Tap to Start</p>
         </div>
-    `;
+    </div>
     
-    // Show similar products grid
-    grid.innerHTML = "";
-    similar.forEach(p => {
-        const card = document.createElement("div");
-        card.classList.add("similar-card");
-        card.onclick = () => openSimilarView(p);
-        
-        card.innerHTML = `
-            <img src="${p.image}" alt="${p.name}">
-            <div class="similar-info">
-                <h5>${p.name}</h5>
-                <p class="price">₹${p.price.toLocaleString()}</p>
+    <!-- Reels Container -->
+    <div class="reels-container no-scrollbar" id="reelsContainer" style="display:none;">
+        <!-- Reels will be dynamically generated -->
+    </div>
+    
+    <!-- Back Button -->
+    <button class="back-btn" onclick="goBack()" style="display:none;" id="backBtn">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    
+    <!-- Global Mute Button -->
+    <button class="mute-btn" id="muteBtn" onclick="toggleGlobalMute()" style="display:none;">
+        <i class="fas fa-volume-up" id="muteIcon"></i>
+    </button>
+
+    <!-- Share Modal -->
+    <div class="share-modal" id="shareModal" onclick="closeShareModal(event)">
+        <div class="share-content" onclick="event.stopPropagation()">
+            <div class="share-header">
+                <h3>Share</h3>
+                <button class="share-close" onclick="closeShareModal()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-        `;
-        grid.appendChild(card);
-    });
+            <div class="share-options">
+                <button class="share-option" onclick="shareToWhatsApp()">
+                    <div class="share-icon" style="background: #25D366;">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <span class="share-label">WhatsApp</span>
+                </button>
+                <button class="share-option" onclick="shareToFacebook()">
+                    <div class="share-icon" style="background: #1877F2;">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <span class="share-label">Facebook</span>
+                </button>
+                <button class="share-option" onclick="shareToTwitter()">
+                    <div class="share-icon" style="background: #000;">
+                        <i class="fab fa-x-twitter"></i>
+                    </div>
+                    <span class="share-label">Twitter</span>
+                </button>
+                <button class="share-option" onclick="copyLink()">
+                    <div class="share-icon" style="background: #666;">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <span class="share-label">Copy</span>
+                </button>
+            </div>
+            <input type="text" class="share-link-input" id="shareLink" readonly>
+        </div>
+    </div>
     
-    view.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
+    <!-- Navigation -->
+    <div class="reels-nav">
+        <a href="index.html" class="nav-btn">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a href="mood.html" class="nav-btn">
+            <i class="fas fa-theater-masks"></i> Mood
+        </a>
+        <a href="cart.html" class="nav-btn">
+            <i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)
+        </a>
+    </div>
 
-// Close similar view
-function closeSimilarView() {
-    const view = document.getElementById('similarView');
-    view.classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
-
-// Mood button click handlers
-moodBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        moodBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderReels(btn.dataset.mood);
-    });
-});
-
-// Initial render
-renderReels();
-
-// Add to Cart function
-function addToCart(id) {
-    const product = products.find(p => p.id === id);
-    cart.push(product);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    showToast(`${product.name} added to cart!`);
-}
-
-function showToast(message) {
-    const toast = document.createElement("div");
-    toast.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
-        color: white;
-        padding: 15px 30px;
-        border-radius: 30px;
-        font-weight: 600;
-        z-index: 9999;
-        animation: slideUp 0.3s ease;
-        box-shadow: 0 10px 30px rgba(255, 63, 108, 0.4);
-    `;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.animation = "slideDown 0.3s ease";
-        setTimeout(() => toast.remove(), 300);
-    }, 2000);
-}
-</script>
+    <script src="js/data.js"></script>
+    <script>
+        // ==================== FALLBACK IMAGES ====================
+        const fallbackImages = [
+            "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
+            "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800",
+            "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800",
+            "https://images.unsplash.com/photo-1445205170230-053b83016050?w=800",
+            "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800"
+        ];
+        
+        // ==================== REELS DATA - Add your videos here ====================
+        // Note: Using reliable video sources. Replace with your own video URLs.
+        const reelsData = [
+            {
+                id: 1,
+                video: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
+                brand: "SOPERA",
+                username: "@sopera_fashion",
+                description: "New collection is here! ✨ Shop the latest trends",
+                hashtags: ["SOPERA", "Fashion", "NewArrival", "Style"],
+                productLink: "product.html?id=1",
+                price: "₹1,299",
+                likes: 12400,
+                comments: 234,
+                shares: 56
+            },
+            {
+                id: 2,
+                video: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+                image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800",
+                brand: "SOPERA",
+                username: "@sopera_style",
+                description: "Elegant vibes 💜 Perfect for parties!",
+                hashtags: ["SOPERA", "PartyWear", "PurpleDress", "Elegant"],
+                productLink: "product.html?id=2",
+                price: "₹2,499",
+                likes: 8900,
+                comments: 156,
+                shares: 34
+            },
+            {
+                id: 3,
+                video: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+                image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800",
+                brand: "SOPERA",
+                username: "@sopera_trends",
+                description: "Weekend shopping vibes 🛍️ Grab your favorites!",
+                hashtags: ["SOPERA", "WeekendVibes", "Shopping"],
+                productLink: "product.html?id=3",
+                price: "₹899",
+                likes: 15600,
+                comments: 312,
+                shares: 89
+            },
+            {
+                id: 4,
+                video: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+                image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=800",
+                brand: "SOPERA",
+                username: "@sopera_casual",
+                description: "Casual chic for everyday 👖 Comfort meets style!",
+                hashtags: ["SOPERA", "CasualWear", "StreetStyle"],
+                productLink: "product.html?id=4",
+                price: "₹1,599",
+                likes: 22300,
+                comments: 445,
+                shares: 120
+            },
+            {
+                id: 5,
+                video: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+                image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800",
+                brand: "SOPERA",
+                username: "@sopera_elegant",
+                description: "Red carpet ready 💃 Statement pieces!",
+                hashtags: ["SOPERA", "Elegant", "Designer", "Luxury"],
+                productLink: "product.html?id=5",
+                price: "₹4,999",
+                likes: 31200,
+                comments: 678,
+                shares: 234
+            }
+        ];
+        
+        // ==================== STATE ====================
+        let currentReelIndex = 0;
+        let isMuted = true; // Start muted for autoplay
+        let likedPosts = JSON.parse(localStorage.getItem('likedPosts')) || [];
+        let followedUsers = JSON.parse(localStorage.getItem('followedUsers')) || [];
+        let comments = JSON.parse(localStorage.getItem('reelComments')) || {};
+        let currentShareProduct = null;
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let isTransitioning = false;
+        
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            renderReels();
+            setupScrollDetection();
+            setupKeyboardNavigation();
+            setupDoubleTap();
+            updateCartCount();
+            updateMuteIcon();
+            
+            // Hide loading spinners after a timeout
+            setTimeout(() => {
+                document.querySelectorAll('.video-loading').forEach(el => el.style.display = 'none');
+            }, 3000);
+        });
+        
+        // ==================== RENDER FUNCTIONS ====================
+        function renderReels() {
+            const container = document.getElementById('reelsContainer');
+            container.innerHTML = reelsData.map((reel, index) => createReelHTML(reel, index)).join('');
+            
+            // Initialize first video after a short delay
+            setTimeout(() => {
+                const firstVideo = document.querySelector('.reel-video');
+                if (firstVideo) {
+                    // Hide loading spinner
+                    const loading = firstVideo.parentElement.querySelector('.video-loading');
+                    if (loading) loading.style.display = 'none';
+                    
+                    playVideo(firstVideo);
+                }
+            }, 800);
+        }
+        
+        function createReelHTML(reel, index) {
+            const isLiked = likedPosts.includes(reel.id);
+            const isFollowing = followedUsers.includes(reel.username.replace('@', ''));
+            const reelComments = comments[reel.id] || [];
+            
+            return `
+                <div class="reel-item" data-index="${index}" data-id="${reel.id}">
+                    <!-- Video Loading -->
+                    <div class="video-loading"></div>
+                    
+                    <!-- Video -->
+                    <video 
+                        class="reel-video" 
+                        id="video-${reel.id}"
+                        src="${reel.video}"
+                        poster="${reel.image}"
+                        loop
+                        playsinline
+                        preload="none"
+                        muted="${isMuted}"
+                        data-index="${index}"
+                    ></video>
+                    
+                    <!-- Double Tap Heart -->
+                    <div class="double-tap-heart" id="doubleTapHeart-${reel.id}">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    
+                    <!-- Mute Overlay (shown when muted) -->
+                    ${isMuted ? `
+                        <div class="tap-to-unmute" onclick="unmuteVideo(${reel.id})">
+                            <i class="fas fa-volume-mute"></i>
+                            <span>Tap to unmute</span>
+                        </div>
+                    ` : ''}
+                    
+                    <!-- Progress Bars -->
+                    <div class="progress-bar-container">
+                        ${reelsData.map((_, i) => `
+                            <div class="progress-bar-item ${i === index ? 'active' : ''}">
+                                <div class="progress-bar-fill" id="progress-${reel.id}-${i}"></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <!-- Left Side - Product Info -->
+                    <div class="reel-info">
+                        <div class="reel-user">
+                            <div class="reel-avatar">${reel.username.charAt(1).toUpperCase()}</div>
+                            <span class="reel-username">${reel.username}</span>
+                            <button class="follow-btn ${isFollowing ? 'following' : ''}" onclick="toggleFollow('${reel.username.replace('@', '')}', this)">
+                                ${isFollowing ? 'Following' : 'Follow'}
+                            </button>
+                        </div>
+                        
+                        <p class="reel-description">${reel.description}</p>
+                        
+                        <div class="reel-hashtags">
+                            ${reel.hashtags.map(tag => `<span>#${tag}</span>`).join('')}
+                        </div>
+                        
+                        <a href="${reel.productLink}" class="shop-now-btn">
+                            <span>Shop Now</span>
+                            <span class="price">${reel.price}</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- Right Side - Actions -->
+                    <div class="reel-actions">
+                        <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike(${reel.id}, this)">
+                            <div class="action-icon">
+                                <i class="${isLiked ? 'fas' : 'far'} fa-heart"></i>
+                            </div>
+                            <span class="action-label">${formatNumber(reel.likes + (isLiked ? 1 : 0))}</span>
+                        </button>
+                        
+                        <button class="action-btn" onclick="showComments(${reel.id})">
+                            <div class="action-icon">
+                                <i class="far fa-comment"></i>
+                            </div>
+                            <span class="action-label">${formatNumber(reel.comments + reelComments.length)}</span>
+                        </button>
+                        
+                        <button class="action-btn" onclick="openShareModal(${reel.id}, '${reel.brand}', '${reel.price}')">
+                            <div class="action-icon">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                            <span class="action-label">${formatNumber(reel.shares)}</span>
+                        </button>
+                        
+                        <div class="music-disc">
+                            <div class="music-disc-inner disc-spin">
+                                <i class="fas fa-music"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Comments Panel -->
+                    <div class="comments-panel" id="comments-${reel.id}">
+                        <div class="comments-header">
+                            <h3>Comments <span style="color:#999;font-size:14px;">${reelComments.length}</span></h3>
+                            <button class="close-btn" onclick="hideComments(${reel.id})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="comments-list" id="commentsList-${reel.id}">
+                            ${reelComments.length > 0 ? reelComments.map(c => `
+                                <div class="comment">
+                                    <div class="comment-avatar">${c.user.charAt(0).toUpperCase()}</div>
+                                    <div>
+                                        <span class="comment-user">@${c.user}</span>
+                                        <p class="comment-text">${c.text}</p>
+                                        <span class="comment-time">${c.time}</span>
+                                    </div>
+                                </div>
+                            `).join('') : '<p style="text-align:center;color:#666;font-size:14px;padding:20px;">No comments yet</p>'}
+                        </div>
+                        <div class="comment-input">
+                            <input type="text" placeholder="Add a comment..." id="commentInput-${reel.id}" onkeypress="handleCommentKeyPress(event, ${reel.id})">
+                            <button onclick="postComment(${reel.id})">Post</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // ==================== VIDEO CONTROLS ====================
+        function playVideo(video) {
+            if (video) {
+                const playPromise = video.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // Play started successfully
+                    }).catch(error => {
+                        // Handle play errors silently - show fallback image
+                        console.log('Video autoplay prevented or failed');
+                        showFallbackImage(video);
+                    });
+                }
+                video.muted = isMuted;
+            }
+        }
+        
+        function pauseVideo(video) {
+            if (video) {
+                video.pause();
+            }
+        }
+        
+        function showFallbackImage(video) {
+            const slide = video.closest('.reel-item');
+            if (slide) {
+                const index = parseInt(slide.dataset.index);
+                const fallbackImg = fallbackImages[index % fallbackImages.length];
+                video.classList.add('fallback');
+                video.style.backgroundImage = `url(${fallbackImg})`;
+                
+                // Hide loading spinner
+                const loading = slide.querySelector('.video-loading');
+                if (loading) loading.style.display = 'none';
+            }
+        }
+        
+        function unmuteVideo(reelId) {
+            const video = document.getElementById(`video-${reelId}`);
+            if (video) {
+                isMuted = false;
+                video.muted = false;
+                updateMuteIcon();
+                
+                // Remove overlay
+                const overlay = document.querySelector(`[data-id="${reelId}"] .tap-to-unmute`);
+                if (overlay) overlay.remove();
+                
+                // Try to play
+                playVideo(video);
+            }
+        }
+        
+        function toggleGlobalMute() {
+            isMuted = !isMuted;
+            updateMuteIcon();
+            
+            // Update all videos
+            document.querySelectorAll('.reel-video').forEach(video => {
+                video.muted = isMuted;
+            });
+            
+            // Show/hide tap-to-unmute overlays
+            document.querySelectorAll('.reel-item').forEach((item, index) => {
+                const reelId = reelsData[index].id;
+                const existingOverlay = item.querySelector('.tap-to-unmute');
+                
+                if (isMuted && !existingOverlay) {
+                    const overlay = document.createElement('div');
+                    overlay.className = 'tap-to-unmute';
+                    overlay.onclick = () => unmuteVideo(reelId);
+                    overlay.innerHTML = '<i class="fas fa-volume-mute"></i><span>Tap to unmute</span>';
+                    item.appendChild(overlay);
+                } else if (!isMuted && existingOverlay) {
+                    existingOverlay.remove();
+                }
+            });
+        }
+        
+        function updateMuteIcon() {
+            const icon = document.getElementById('muteIcon');
+            icon.className = isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+        }
+        
+        // ==================== SCROLL DETECTION ====================
+        function setupScrollDetection() {
+            const container = document.getElementById('reelsContainer');
+            let scrollTimeout = null;
+            
+            container.addEventListener('scroll', () => {
+                if (isTransitioning) return;
+                if (scrollTimeout) return;
+                
+                scrollTimeout = setTimeout(() => {
+                    scrollTimeout = null;
+                    handleScroll();
+                }, 150);
+            }, { passive: true });
+            
+            // Initial check
+            setTimeout(handleScroll, 500);
+        }
+        
+        function handleScroll() {
+            const container = document.getElementById('reelsContainer');
+            const scrollTop = container.scrollTop;
+            const windowHeight = window.innerHeight;
+            
+            // Find which reel is visible
+            const newIndex = Math.round(scrollTop / windowHeight);
+            
+            if (newIndex !== currentReelIndex && newIndex >= 0 && newIndex < reelsData.length) {
+                isTransitioning = true;
+                
+                // Pause previous video
+                const prevVideo = document.querySelector(`#video-${reelsData[currentReelIndex].id}`);
+                if (prevVideo) pauseVideo(prevVideo);
+                
+                currentReelIndex = newIndex;
+                
+                // Play new video
+                setTimeout(() => {
+                    const newVideo = document.querySelector(`#video-${reelsData[currentReelIndex].id}`);
+                    if (newVideo) {
+                        playVideo(newVideo);
+                    }
+                    isTransitioning = false;
+                }, 100);
+                
+                // Update progress bars
+                updateProgressBars();
+            }
+        }
+        
+        function updateProgressBars() {
+            document.querySelectorAll('.progress-bar-item').forEach((item, i) => {
+                item.classList.toggle('active', i === currentReelIndex);
+            });
+        }
+        
+        // ==================== KEYBOARD NAVIGATION ====================
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                    e.preventDefault();
+                    if (currentReelIndex < reelsData.length - 1) {
+                        currentReelIndex++;
+                        scrollToReel(currentReelIndex);
+                    }
+                } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                    e.preventDefault();
+                    if (currentReelIndex > 0) {
+                        currentReelIndex--;
+                        scrollToReel(currentReelIndex);
+                    }
+                } else if (e.key === 'm' || e.key === 'M') {
+                    toggleGlobalMute();
+                }
+            });
+        }
+        
+        function scrollToReel(index) {
+            isTransitioning = true;
+            const container = document.getElementById('reelsContainer');
+            container.scrollTo({
+                top: index * window.innerHeight,
+                behavior: 'smooth'
+            });
+            
+            // Play the video
+            setTimeout(() => {
+                const video = document.querySelector(`#video-${reelsData[index].id}`);
+                if (video) playVideo(video);
+                isTransitioning = false;
+            }, 100);
+            
+            updateProgressBars();
+        }
+        
+        // ==================== DOUBLE TAP TO LIKE ====================
+        let lastTapTime = 0;
+        
+        function setupDoubleTap() {
+            document.getElementById('reelsContainer').addEventListener('click', function(e) {
+                // Ignore if clicking on buttons or links
+                if (e.target.closest('button') || e.target.closest('a') || e.target.closest('input')) return;
+                
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTapTime;
+                
+                if (tapLength < 300 && tapLength > 0) {
+                    // Double tap detected
+                    const video = e.target.closest('.reel-item')?.querySelector('.reel-video');
+                    if (video) {
+                        const reelId = parseInt(video.id.replace('video-', ''));
+                        
+                        if (!likedPosts.includes(reelId)) {
+                            // Show double tap heart
+                            const heartEl = document.getElementById(`doubleTapHeart-${reelId}`);
+                            if (heartEl) {
+                                heartEl.classList.add('show');
+                                setTimeout(() => heartEl.classList.remove('show'), 800);
+                            }
+                            
+                            // Toggle like
+                            const button = document.querySelector(`[data-id="${reelId}"] .action-btn`);
+                            if (button) toggleLike(reelId, button);
+                        }
+                    }
+                    e.preventDefault();
+                }
+                
+                lastTapTime = currentTime;
+            });
+        }
+        
+        // ==================== SOCIAL ACTIONS ====================
+        function toggleLike(reelId, button) {
+            const index = likedPosts.indexOf(reelId);
+            const icon = button.querySelector('i');
+            const countSpan = button.querySelector('.action-label');
+            const reel = reelsData.find(r => r.id === reelId);
+            
+            if (index > -1) {
+                likedPosts.splice(index, 1);
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                button.classList.remove('liked');
+                countSpan.textContent = formatNumber(reel.likes);
+            } else {
+                likedPosts.push(reelId);
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                button.classList.add('liked');
+                
+                // Heart animation
+                icon.classList.add('heart-animation');
+                setTimeout(() => icon.classList.remove('heart-animation'), 600);
+                
+                countSpan.textContent = formatNumber(reel.likes + 1);
+            }
+            
+            localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
+        }
+        
+        function toggleFollow(username, button) {
+            const index = followedUsers.indexOf(username);
+            
+            if (index > -1) {
+                followedUsers.splice(index, 1);
+                button.textContent = 'Follow';
+                button.classList.remove('following');
+            } else {
+                followedUsers.push(username);
+                button.textContent = 'Following';
+                button.classList.add('following');
+            }
+            
+            localStorage.setItem('followedUsers', JSON.stringify(followedUsers));
+        }
+        
+        // ==================== COMMENTS ====================
+        function showComments(reelId) {
+            const panel = document.getElementById(`comments-${reelId}`);
+            if (panel) panel.classList.add('active');
+        }
+        
+        function hideComments(reelId) {
+            const panel = document.getElementById(`comments-${reelId}`);
+            if (panel) panel.classList.remove('active');
+        }
+        
+        function handleCommentKeyPress(e, reelId) {
+            if (e.key === 'Enter') postComment(reelId);
+        }
+        
+        function postComment(reelId) {
+            const input = document.getElementById(`commentInput-${reelId}`);
+            const text = input.value.trim();
+            
+            if (text) {
+                if (!comments[reelId]) comments[reelId] = [];
+                
+                const newComment = {
+                    user: 'you',
+                    text: text,
+                    time: 'Just now'
+                };
+                
+                comments[reelId].unshift(newComment);
+                localStorage.setItem('reelComments', JSON.stringify(comments));
+                
+                // Add to UI
+                const list = document.getElementById(`commentsList-${reelId}`);
+                const html = `
+                    <div class="comment">
+                        <div class="comment-avatar">Y</div>
+                        <div>
+                            <span class="comment-user">@you</span>
+                            <p class="comment-text">${text}</p>
+                            <span class="comment-time">Just now</span>
+                        </div>
+                    </div>
+                `;
+                list.insertAdjacentHTML('afterbegin', html);
+                
+                input.value = '';
+            }
+        }
+        
+        // ==================== SHARE ====================
+        function openShareModal(reelId, brand, price) {
+            currentShareProduct = { id: reelId, brand, price };
+            document.getElementById('shareLink').value = window.location.href;
+            document.getElementById('shareModal').classList.add('active');
+        }
+        
+        function closeShareModal(e) {
+            if (!e || e.target === document.getElementById('shareModal')) {
+                document.getElementById('shareModal').classList.remove('active');
+                currentShareProduct = null;
+            }
+        }
+        
+        function shareToWhatsApp() {
+            if (currentShareProduct) {
+                const text = `Check out this ${currentShareProduct.brand} product for ${currentShareProduct.price} at SOPERA!`;
+                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+            }
+            closeShareModal();
+        }
+        
+        function shareToFacebook() {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank');
+            closeShareModal();
+        }
+        
+        function shareToTwitter() {
+            if (currentShareProduct) {
+                const text = `Check out this ${currentShareProduct.brand} product for ${currentShareProduct.price} at SOPERA!`;
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+            }
+            closeShareModal();
+        }
+        
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href);
+            alert('Link copied to clipboard!');
+            closeShareModal();
+        }
+        
+        // ==================== CART ====================
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+        
+        // ==================== UTILITIES ====================
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+        
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+        
+        function startReels() {
+            document.getElementById('tapToStart').style.display = 'none';
+            document.getElementById('reelsContainer').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'flex';
+            document.getElementById('muteBtn').style.display = 'flex';
+            setTimeout(() => {
+                const firstVideo = document.querySelector('.reel-video');
+                if (firstVideo) playVideo(firstVideo);
+            }, 100);
+        }
+        
+        // Video progress tracking
+        document.addEventListener('DOMContentLoaded', () => {
+            setInterval(() => {
+                const video = document.querySelector(`#video-${reelsData[currentReelIndex]?.id}`);
+                if (video && video.duration) {
+                    const progress = (video.currentTime / video.duration) * 100;
+                    const progressFill = document.getElementById(`progress-${reelsData[currentReelIndex]?.id}-${currentReelIndex}`);
+                    if (progressFill) {
+                        progressFill.style.width = progress + '%';
+                    }
+                }
+            }, 200);
+        });
+    </script>
 </body>
 </html>
