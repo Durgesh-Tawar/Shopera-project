@@ -1,4 +1,4 @@
-// =========================================
+ // =========================================
 // SOPERA - Cart JavaScript (API Connected)
 // =========================================
 
@@ -71,56 +71,23 @@ function addToCartAgain(id) {
     }
 }
 
-// Place order - Using API
+// Place order - Redirect to Payment Page with order items
 if (placeOrderBtn) {
-    placeOrderBtn.addEventListener("click", async () => {
-        try {
-            const response = await fetch(`${API_URL}/orders`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    items: cart,
-                    total: total,
-                    loyalty: loyalty
-                })
-            });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                // Save to localStorage for backup
-                let orders = JSON.parse(localStorage.getItem("orders")) || [];
-                orders.push({
-                    ...result.order,
-                    localOnly: true
-                });
-                localStorage.setItem("orders", JSON.stringify(orders));
-                
-                // Clear cart and discount
-                localStorage.setItem("cart", JSON.stringify([]));
-                localStorage.setItem("discount", "0");
-                
-                alert(`Order placed successfully! Order ID: ${result.order.trackingNumber}\nLoyalty Points Earned: ${loyalty}`);
-                window.location.href = "orders.html";
-            }
-        } catch (error) {
-            console.error('Error placing order:', error);
-            // Fallback to local storage
-            let orders = JSON.parse(localStorage.getItem("orders")) || [];
-            orders.push({
-                items: cart,
-                total: total,
-                loyalty: loyalty,
-                date: new Date().toLocaleString(),
-                localOnly: true
-            });
-            localStorage.setItem("orders", JSON.stringify(orders));
-            localStorage.setItem("cart", JSON.stringify([]));
-            localStorage.setItem("discount", "0");
-            alert("Order placed successfully!");
-            window.location.href = "orders.html";
-        }
+    placeOrderBtn.addEventListener("click", () => {
+        // Store cart data for payment processing - include all items for database
+        const orderData = {
+            items: cart,
+            total: total,
+            loyalty: loyalty,
+            subtotal: subtotal,
+            discount: discount,
+            date: new Date().toISOString()
+        };
+        
+        // Save to sessionStorage for payment page to access
+        sessionStorage.setItem('pendingOrder', JSON.stringify(orderData));
+        
+        // Redirect to payment page with total amount
+        window.location.href = `payment.html?amount=${total}`;
     });
 }

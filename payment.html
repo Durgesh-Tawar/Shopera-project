@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - SOPERA</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .payment-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .amount-display {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .amount-label {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .amount {
+            color: #333;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        
+        .amount span {
+            font-size: 18px;
+            color: #666;
+        }
+        
+.payment-methods {
+            margin-bottom: 20px;
+            text-align: left;
+            display: block !important;
+        }
+        
+        .payment-methods h3 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: block !important;
+        }
+        
+        .method-options {
+            display: flex !important;
+            flex-wrap: wrap;
+            gap: 10px;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        .method-option {
+            flex: 1 1 45%;
+            padding: 15px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            background: white;
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            min-height: 70px;
+        }
+        
+        .method-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .method-option.selected {
+            border-color: #667eea;
+            background: #e8eeff;
+        }
+        
+        .method-option input {
+            display: inline-block !important;
+            margin-right: 5px;
+            width: auto !important;
+        }
+        
+        .method-option .icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .method-option .label {
+            font-size: 13px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        #pay-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        #pay-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        #pay-button:active {
+            transform: translateY(0);
+        }
+        
+        #pay-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        
+        .loading {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .demo-badge {
+            background: #ffc107;
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .amount-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .amount-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h1>🛍️ SOPERA</h1>
+        <p class="subtitle">Secure Payment Gateway</p>
+        
+        <div class="demo-badge">🔒 Demo Mode Available</div>
+        
+        <div class="amount-display">
+            <div class="amount-label">Total Amount to Pay</div>
+            <div class="amount">₹<span id="amount">0</span></div>
+        </div>
+        
+        <div class="payment-methods">
+            <h3>Select Payment Method</h3>
+            <div class="method-options">
+                <label class="method-option selected" onclick="selectMethod(this, 'upi')">
+                    <input type="radio" name="method" value="upi" checked>
+                    <span class="icon">📱</span>
+                    <span class="label">UPI</span>
+                </label>
+                <label class="method-option" onclick="selectMethod(this, 'card')">
+                    <input type="radio" name="method" value="card">
+                    <span class="icon">💳</span>
+                    <span class="label">Card</span>
+                </label>
+                <label class="method-option" onclick="selectMethod(this, 'netbanking')">
+                    <input type="radio" name="method" value="netbanking">
+                    <span class="icon">🏦</span>
+                    <span class="label">Net Banking</span>
+                </label>
+                <label class="method-option" onclick="selectMethod(this, 'wallet')">
+                    <input type="radio" name="method" value="wallet">
+                    <span class="icon">👛</span>
+                    <span class="label">Wallet</span>
+                </label>
+                <label class="method-option" onclick="selectMethod(this, 'qr')">
+                    <input type="radio" name="method" value="qr">
+                    <span class="icon">⬛</span>
+                    <span class="label">QR Code</span>
+                </label>
+                <label class="method-option" onclick="selectMethod(this, 'emi')">
+                    <input type="radio" name="method" value="emi">
+                    <span class="icon">📊</span>
+                    <span class="label">EMI</span>
+                </label>
+                <label class="method-option" onclick="selectMethod(this, 'cod')">
+                    <input type="radio" name="method" value="cod">
+                    <span class="icon">💵</span>
+                    <span class="label">Cash on Delivery</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- UPI ID Input Field -->
+        <div class="upi-input-section" id="upiInputSection" style="display: block; margin-bottom: 20px; text-align: left;">
+            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 500;">Enter UPI ID</label>
+            <input type="text" id="upiId" placeholder="example@upi" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px;">
+            <small style="color: #666; font-size: 12px;">Example: 9876543210@upi or name@upi</small>
+        </div>
+        
+        <!-- COD Instructions -->
+        <div class="cod-section" id="codSection" style="display: none; margin-bottom: 20px; text-align: left; background: #f8f9fa; padding: 15px; border-radius: 10px;">
+            <h4 style="color: #333; margin-bottom: 10px;">💵 Cash on Delivery</h4>
+            <ul style="color: #666; font-size: 14px; padding-left: 20px; line-height: 1.8;">
+                <li>Pay when you receive your order</li>
+                <li>No online payment required</li>
+                <li>Available for orders up to ₹50,000</li>
+                <li>Extra ₹50 COD fee applicable</li>
+            </ul>
+        </div>
+        
+        <button id="pay-button">Pay Now</button>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+        
+        <div class="status" id="status"></div>
+    </div>
+
+    <script>
+        // Get amount from URL or sessionStorage (cart data)
+        const urlParams = new URLSearchParams(window.location.search);
+        let amount = parseFloat(urlParams.get('amount')) || 0;
+        
+        // If no amount in URL, get from sessionStorage (cart total)
+        if (amount === 0) {
+            const pendingOrder = sessionStorage.getItem('pendingOrder');
+            if (pendingOrder) {
+                const orderData = JSON.parse(pendingOrder);
+                amount = orderData.total || 0;
+            }
+        }
+        
+        // Fallback to localStorage cart if sessionStorage is empty
+        if (amount === 0) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const discount = parseInt(localStorage.getItem('discount')) || 0;
+            const subtotal = cart.reduce((sum, p) => sum + p.price, 0);
+            amount = subtotal - (subtotal * discount / 100);
+        }
+        
+        // Use default if still 0
+        if (amount === 0) amount = 500;
+        
+        const amountDisplay = document.getElementById('amount');
+        amountDisplay.textContent = amount.toLocaleString();
+
+        // Payment method selection
+        function selectMethod(element, method) {
+            document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+            
+            // Show/hide UPI input field and COD section
+            const upiInputSection = document.getElementById('upiInputSection');
+            const codSection = document.getElementById('codSection');
+            
+            if (method === 'upi') {
+                upiInputSection.style.display = 'block';
+                codSection.style.display = 'none';
+            } else if (method === 'cod') {
+                upiInputSection.style.display = 'none';
+                codSection.style.display = 'block';
+            } else {
+                upiInputSection.style.display = 'none';
+                codSection.style.display = 'none';
+            }
+        }
+        
+        // Validate UPI ID
+        function validateUPI() {
+            const upiId = document.getElementById('upiId').value.trim();
+            const upiRegex = /^[\w.-]+@[\w.-]+$/;
+            
+            if (!upiId) {
+                showStatus('Please enter your UPI ID', 'error');
+                return false;
+            }
+            
+            if (!upiRegex.test(upiId)) {
+                showStatus('Please enter a valid UPI ID (e.g., name@upi)', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Process COD (Cash on Delivery) payment
+        async function processCODPayment() {
+            const payButton = document.getElementById('pay-button');
+            const loading = document.getElementById('loading');
+            const status = document.getElementById('status');
+            
+            payButton.disabled = true;
+            loading.classList.add('active');
+            status.className = 'status';
+            
+            // Add COD fee
+            const codFee = 50;
+            const totalWithCodFee = amount + codFee;
+            
+            try {
+                const mockPaymentId = 'cod_' + Date.now();
+                
+                // Create order with COD payment status
+                const order = await createOrderAfterPayment(mockPaymentId);
+                
+                showStatus(`✅ Order Placed with Cash on Delivery! Total: ₹${totalWithCodFee} (Includes ₹${codFee} COD fee)`, 'success');
+                
+                setTimeout(() => {
+                    const pendingData = sessionStorage.getItem('pendingOrder');
+                    const itemCount = pendingData ? JSON.parse(pendingData).items?.length || 1 : 1;
+                    const loyalty = Math.floor(amount / 100);
+                    
+                    window.location.href = `success.html?orderId=${order?.trackingNumber || 'SOP' + Date.now()}&paymentId=${mockPaymentId}&amount=${totalWithCodFee}&items=${itemCount}&loyalty=${loyalty}&paymentMethod=COD`;
+                }, 2000);
+                
+            } catch (error) {
+                console.error('COD Error:', error);
+                showStatus('❌ Error processing COD order: ' + error.message, 'error');
+                payButton.disabled = false;
+                loading.classList.remove('active');
+            }
+        }
+
+        let razorpayKey = '';
+
+        // Fetch Razorpay Key from server
+        async function fetchRazorpayKey() {
+            try {
+                const response = await fetch('/api/razorpay-key');
+                const data = await response.json();
+                razorpayKey = data.key;
+            } catch (error) {
+                console.error('Error fetching Razorpay key:', error);
+                showStatus('Error loading payment configuration', 'error');
+            }
+        }
+
+        // Create order on server
+        async function createOrder() {
+            try {
+                const response = await fetch('/api/create-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        amount: amount * 100, // Convert to paise
+                        currency: 'INR',
+                        receipt: 'order_' + Date.now()
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    return data;
+                } else {
+                    throw new Error(data.error || 'Failed to create order');
+                }
+            } catch (error) {
+                console.error('Error creating order:', error);
+                throw error;
+            }
+        }
+
+        // Verify payment on server
+        async function verifyPayment(razorpay_order_id, razorpay_payment_id, razorpay_signature) {
+            try {
+                const response = await fetch('/api/verify-payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        razorpay_order_id,
+                        razorpay_payment_id,
+                        razorpay_signature
+                    })
+                });
+                
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error verifying payment:', error);
+                throw error;
+            }
+        }
+
+        // Show status message
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+        }
+
+        // Create order in database after successful payment
+        async function createOrderAfterPayment(paymentId) {
+            const pendingOrderData = sessionStorage.getItem('pendingOrder');
+            
+            if (pendingOrderData) {
+                const orderData = JSON.parse(pendingOrderData);
+                
+                try {
+                    const response = await fetch('/api/orders', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            items: orderData.items,
+                            total: orderData.total,
+                            loyalty: orderData.loyalty,
+                            paymentId: paymentId,
+                            paymentStatus: 'completed'
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        let orders = JSON.parse(localStorage.getItem("orders")) || [];
+                        orders.push({
+                            ...result.order,
+                            localOnly: true,
+                            paymentId: paymentId,
+                            paymentStatus: 'completed'
+                        });
+                        localStorage.setItem("orders", JSON.stringify(orders));
+                        localStorage.setItem("cart", JSON.stringify([]));
+                        localStorage.setItem("discount", "0");
+                        sessionStorage.setItem('lastOrder', JSON.stringify(result.order));
+                        return result.order;
+                    }
+                } catch (error) {
+                    console.error('Error creating order:', error);
+                }
+            }
+            return null;
+        }
+
+        // Demo payment (simulates success without real payment)
+        function simulateDemoPayment() {
+            const payButton = document.getElementById('pay-button');
+            const loading = document.getElementById('loading');
+            const status = document.getElementById('status');
+            
+            payButton.disabled = true;
+            loading.classList.add('active');
+            status.className = 'status';
+            
+            // Simulate processing delay
+            setTimeout(async () => {
+                const mockPaymentId = 'pay_demo_' + Date.now();
+                
+                // Create order after payment
+                const order = await createOrderAfterPayment(mockPaymentId);
+                
+                // Show success message
+                showStatus('✅ Demo Payment Successful! ₹' + amount + ' (Simulated)', 'success');
+                
+                // Redirect to success page after brief delay
+                setTimeout(() => {
+                    const pendingData = sessionStorage.getItem('pendingOrder');
+                    const itemCount = pendingData ? JSON.parse(pendingData).items?.length || 1 : 1;
+                    const loyalty = Math.floor(amount / 100);
+                    
+                    window.location.href = `success.html?orderId=${order?.trackingNumber || 'SOP' + Date.now()}&paymentId=${mockPaymentId}&amount=${amount}&items=${itemCount}&loyalty=${loyalty}`;
+                }, 1500);
+                
+                payButton.disabled = false;
+                loading.classList.remove('active');
+            }, 2000);
+        }
+
+        // Pay Now button click handler - Updated with COD and UPI support
+        document.getElementById('pay-button').addEventListener('click', async function() {
+            const payButton = this;
+            const loading = document.getElementById('loading');
+            const status = document.getElementById('status');
+            
+// Get selected payment method first before any processing
+            
+const selectedMethodEl = document.querySelector ('input[name="method"]:checked'); 
+if (!selectedMethodEl) { 
+showStatus ('Please select a payment method','error'); 
+return; 
+
+} 
+
+const selectedMethod=selectedMethodEl.value;
+
+// Handle Cash on Delivery separately
+
+if(selectedMethod==='cod'){ processCODPayment(); return; }
+
+// For UPI, validate UPI ID before proceeding
+
+if(selectedMethod==='upi'&&!validateUPI()){ payButton.disabled=false; loading.classList.remove ('active'); return;}
+            
+            // Check if using demo mode (no real key configured)
+            if (!razorpayKey || razorpayKey === 'your_key_id_here' || razorpayKey === '') {
+                // Demo mode - simulate payment
+                simulateDemoPayment();
+                return;
+            }
+            
+            try {
+                // Create order
+                const orderData = await createOrder();
+                
+                // Get selected payment method
+                const selectedMethod = document.querySelector('input[name="method"]:checked').value;
+                
+                // Build method config based on selection
+                const methodConfig = {
+                    upi: { upi: true },
+                    card: { card: true },
+                    netbanking: { netbanking: true },
+                    wallet: { wallet: true },
+                    qr: { qr: true },
+                    emi: { emi: true }
+                };
+                
+                // Open Razorpay Checkout
+                const options = {
+                    key: razorpayKey,
+                    amount: orderData.amount,
+                    currency: orderData.currency,
+                    name: 'SOPERA',
+                    description: 'Payment for Order - ₹' + (amount),
+                    order_id: orderData.orderId,
+                    method: selectedMethod,
+                    handler: async function(response) {
+                        try {
+                            const verifyResult = await verifyPayment(
+                                response.razorpay_order_id,
+                                response.razorpay_payment_id,
+                                response.razorpay_signature
+                            );
+                            
+                            if (verifyResult.success) {
+                                // Create order after successful payment
+                                const order = await createOrderAfterPayment(response.razorpay_payment_id);
+                                
+                                // Show success message
+                                showStatus('✅ Payment Successful! Order verified.', 'success');
+                                
+                                // Redirect to success page after brief delay
+                                setTimeout(() => {
+                                    const pendingData = sessionStorage.getItem('pendingOrder');
+                                    const itemCount = pendingData ? JSON.parse(pendingData).items?.length || 1 : 1;
+                                    const loyalty = Math.floor(amount / 100);
+                                    
+                                    window.location.href = `success.html?orderId=${order?.trackingNumber || response.razorpay_order_id}&paymentId=${response.razorpay_payment_id}&amount=${amount}&items=${itemCount}&loyalty=${loyalty}`;
+                                }, 1500);
+                            } else {
+                                showStatus('⚠️ Payment verification failed', 'error');
+                            }
+                        } catch (error) {
+                            showStatus('⚠️ Payment verification failed: ' + error.message, 'error');
+                        }
+                        
+                        payButton.disabled = false;
+                        loading.classList.remove('active');
+                    },
+                    prefill: {
+                        name: '',
+                        email: '',
+                        contact: ''
+                    },
+                    theme: {
+                        color: '#667eea'
+                    }
+                };
+                
+                const rzp = new Razorpay(options);
+                rzp.open();
+                
+            } catch (error) {
+                console.error('Payment error:', error);
+                // If real payment fails, offer demo option
+                showStatus('❌ Error: ' + error.message + ' (Use Demo Mode)', 'error');
+            } finally {
+                payButton.disabled = false;
+                loading.classList.remove('active');
+            }
+        });
+
+        // Initialize on page load
+        fetchRazorpayKey();
+    </script>
+</body>
+</html>

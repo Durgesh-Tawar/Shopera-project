@@ -7,9 +7,20 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
+
+// Razorpay imports
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Initialize Razorpay instance
+const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+});
 
 // Middleware
 app.use(cors());
@@ -306,6 +317,87 @@ app.post('/api/spin', (req, res) => {
     
     const result = prizes[Math.floor(Math.random() * prizes.length)];
     res.json(result);
+});
+
+// =========================================
+// RAZORPAY PAYMENT ROUTES
+// =========================================
+
+// Get Razorpay Key ID for frontend
+app.get('/api/razorpay-key', (req, res) => {
+    res.json({ key: process.env.RAZORPAY_KEY_ID });
+});
+
+// Create Razorpay Order
+app.post('/api/create-order', async (req, res) => {
+    const { amount, currency = 'INR', receipt } = req.body;
+    
+    if (!amount || amount <= 0) {
+        return res.status(400).json({ error: 'Invalid amount' });
+    }
+    
+    try {
+        const options = {
+            amount: Math.round(amount * 100), // Convert to paise (Razorpay expects amount in paise)
+            currency: currency,
+            receipt: receipt || 'order_' + Date.now(),
+            payment_capture: 1 // Auto-capture payment
+        };
+        
+        const order = await razorpay.orders.create(options);
+        
+        res.json({
+            success: true,
+            orderId: order.id,
+            amount: order.amount,
+            currency: order.currency
+        });
+    } catch (error) {
+        console.error('Razorpay order creation error:', error);
+        res.status(500).json({ 
+            error: 'Failed to create order',
+            details: error.message 
+        });
+    }
+});
+
+// Verify Payment Signature
+app.post('/api/verify-payment', (req, res) => {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+    
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+        return res.status(400).json({ error: 'Missing payment verification details' });
+    }
+    
+    try {
+        // Create signature verification string
+        const signatureData = razorpay_order_id + '|' + razorpay_payment_id;
+        
+        // Generate expected signature using HMAC-SHA256
+        const expectedSignature = crypto
+            .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+            .update(signatureData)
+            .digest('hex');
+        
+        // Compare signatures
+        if (expectedSignature === razorpay_signature) {
+            res.json({
+                success: true,
+                message: 'Payment verified successfully'
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+                error: 'Invalid signature'
+            });
+        }
+    } catch (error) {
+        console.error('Payment verification error:', error);
+        res.status(500).json({
+            error: 'Payment verification failed',
+            details: error.message
+        });
+    }
 });
 
 // Serve static files

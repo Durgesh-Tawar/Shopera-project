@@ -1,21 +1,50 @@
-# Shopera Responsive Enhancement Plan
+# Razorpay Integration Plan
 
-## Task List:
-- [x] 1. Analyze existing code structure
-- [x] 2. Enhance css/style.css with improved responsive styles
-- [x] 3. Fix navbar hamburger menu overlay and animations
-- [x] 4. Improve product card stacking on mobile
-- [x] 5. Fix category banners grid responsiveness
-- [x] 6. Improve footer responsiveness in index.html
-- [x] 7. Add responsive styles for product.html (already had some)
-- [x] 8. Add responsive styles for profile.html (css/profile.css already had)
-- [x] 9. Ensure no horizontal scrolling on mobile
-- [x] 10. Update all HTML pages with overlay
+## Information Gathered:
+- **Project**: Shopera - E-commerce web application
+- **Backend**: Express.js (server.js already exists)
+- **Frontend**: HTML/CSS/JS files exist (index.html, cart.html, etc.)
+- **Current Dependencies**: body-parser, cors, express
+- **Missing Dependencies**: razorpay, dotenv
 
-## Files Updated:
-1. css/style.css - Main responsive enhancements with new media queries
-2. index.html - Added nav overlay + hamburger menu fix
-3. cart.html - Added nav overlay + hamburger menu fix
-4. orders.html - Added nav overlay + hamburger menu fix
-5. mood.html - Added nav overlay + hamburger menu fix
-6. profile.html - Added nav overlay + hamburger menu fix
+## Plan:
+
+### Step 1: Install NPM Packages
+Install required packages:
+```bash
+npm install razorpay dotenv crypto
+```
+
+### Step 2: Create .env File (c:/Users/Lenovo/Desktop/shopera-project/.env)
+Create environment variables file:
+```
+RAZORPAY_KEY_ID=your_key_id_here
+RAZORPAY_KEY_SECRET=your_key_secret_here
+PORT=3000
+```
+
+### Step 3: Update server.js (Backend)
+Add Razorpay integration routes:
+- POST /api/create-order - Creates Razorpay order using razorpay.orders.create()
+- POST /api/verify-payment - Verifies payment signature using Node.js crypto module
+
+### Step 4: Create Frontend Payment Page (payment.html + js/payment.js)
+Create simple HTML page with 'Pay Now' button that opens Razorpay Checkout modal using RAZORPAY_KEY_ID from frontend config.
+
+---
+
+## Key Requirements Met:
+✅ razrppy.orders.create() in backend (Node.js)  
+✅ crypto module for signature verification  
+✅ data-key = RAZORPAY_KEY_ID on frontend  
+✅ Secret key kept on server-side only  
+
+---
+
+## Status Checklist:
+[x] Install npm packages  
+[x] Create .env file  
+[x] Update server.js with payment routes  
+[x] Create payment.html frontend page  
+[x] Add payment method selection UI  
+[x] Add demo mode for testing

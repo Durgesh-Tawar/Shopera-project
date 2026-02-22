@@ -107,10 +107,11 @@
     ],
     "total": 1804.05,
     "loyalty": 18,
-    "status": "placed",
+    "status": "cancelled",
     "date": "2026-02-20T19:43:10.203Z",
     "customerInfo": {},
-    "trackingNumber": "SOP0VO7B0GP9"
+    "trackingNumber": "SOP0VO7B0GP9",
+    "cancelled": true
   },
   {
     "id": 1771650098855,
@@ -337,5 +338,318 @@
     "date": "2026-02-22T10:41:30.257Z",
     "customerInfo": {},
     "trackingNumber": "SOPQYY2TIFKK"
+  },
+  {
+    "id": 1771772279771,
+    "items": [
+      {
+        "id": 2,
+        "name": "Slim Fit Jeans",
+        "price": 1899,
+        "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
+        "category": "men",
+        "mood": "casual",
+        "description": "Modern slim fit jeans with comfortable stretch.",
+        "stock": 20,
+        "sizes": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36"
+        ]
+      }
+    ],
+    "total": 1899,
+    "loyalty": 18,
+    "status": "placed",
+    "date": "2026-02-22T14:57:59.771Z",
+    "customerInfo": {},
+    "trackingNumber": "SOP4EVOD3EWP"
+  },
+  {
+    "id": 1771772495504,
+    "items": [
+      {
+        "id": 4,
+        "name": "Casual T-Shirt",
+        "price": 599,
+        "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500",
+        "category": "men",
+        "mood": "casual",
+        "description": "Soft cotton t-shirt for everyday comfort.",
+        "stock": 50,
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      }
+    ],
+    "total": 599,
+    "loyalty": 5,
+    "status": "placed",
+    "date": "2026-02-22T15:01:35.504Z",
+    "customerInfo": {},
+    "trackingNumber": "SOPLQK9PRPCZ"
+  },
+  {
+    "id": 1771772840012,
+    "items": [
+      {
+        "id": 1,
+        "name": "Classic White Shirt",
+        "price": 1299,
+        "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500",
+        "category": "men",
+        "mood": "formal",
+        "description": "Premium quality cotton white shirt, perfect for formal occasions.",
+        "stock": 15,
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      }
+    ],
+    "total": 1299,
+    "loyalty": 12,
+    "status": "placed",
+    "date": "2026-02-22T15:07:20.012Z",
+    "customerInfo": {},
+    "trackingNumber": "SOPDT6R3AKUV"
+  },
+  {
+    "id": 1771773530865,
+    "items": [
+      {
+        "id": 1,
+        "name": "Classic White Shirt",
+        "price": 1299,
+        "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500",
+        "category": "men",
+        "mood": "formal",
+        "description": "Premium quality cotton white shirt, perfect for formal occasions.",
+        "stock": 15,
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      }
+    ],
+    "total": 1299,
+    "loyalty": 12,
+    "status": "placed",
+    "date": "2026-02-22T15:18:50.865Z",
+    "customerInfo": {},
+    "trackingNumber": "SOPVGDVQC9ZF"
+  },
+  {
+    "id": 1771773905720,
+    "items": [
+      {
+        "id": 2,
+        "name": "Slim Fit Jeans",
+        "price": 1899,
+        "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
+        "category": "men",
+        "mood": "casual",
+        "description": "Modern slim fit jeans with comfortable stretch.",
+        "stock": 20,
+        "sizes": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36"
+        ]
+      }
+    ],
+    "total": 1899,
+    "loyalty": 18,
+    "status": "placed",
+    "date": "2026-02-22T15:25:05.720Z",
+    "customerInfo": {},
+    "trackingNumber": "SOP7MOGQSERW"
+  },
+  {
+    "id": 1771775071640,
+    "items": [
+      {
+        "id": 2,
+        "name": "Slim Fit Jeans",
+        "price": 1899,
+        "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
+        "category": "men",
+        "mood": "casual",
+        "description": "Modern slim fit jeans with comfortable stretch.",
+        "stock": 20,
+        "sizes": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36"
+        ]
+      }
+    ],
+    "total": 1899,
+    "loyalty": 18,
+    "status": "placed",
+    "date": "2026-02-22T15:44:31.640Z",
+    "customerInfo": {},
+    "trackingNumber": "SOPP7BDOFH21"
+  },
+  {
+    "id": 1771775117050,
+    "items": [
+      {
+        "id": 3,
+        "name": "Navy Blazer",
+        "price": 3499,
+        "image": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500",
+        "category": "men",
+        "mood": "formal",
+        "description": "Elegant navy blazer for professional look.",
+        "stock": 8,
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ]
+      }
+    ],
+    "total": 3499,
+    "loyalty": 34,
+    "status": "placed",
+    "date": "2026-02-22T15:45:17.050Z",
+    "customerInfo": {},
+    "trackingNumber": "SOPEXVRY3MH4"
+  },
+  {
+    "id": 1771775580499,
+    "items": [
+      {
+        "id": 2,
+        "name": "Slim Fit Jeans",
+        "price": 1899,
+        "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
+        "category": "men",
+        "mood": "casual",
+        "description": "Modern slim fit jeans with comfortable stretch.",
+        "stock": 20,
+        "sizes": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Slim Fit Jeans",
+        "price": 1899,
+        "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
+        "category": "men",
+        "mood": "casual",
+        "description": "Modern slim fit jeans with comfortable stretch.",
+        "stock": 20,
+        "sizes": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36"
+        ]
+      }
+    ],
+    "total": 3798,
+    "loyalty": 37,
+    "status": "placed",
+    "date": "2026-02-22T15:53:00.499Z",
+    "customerInfo": {},
+    "trackingNumber": "SOP3VFK5WL4U"
+  },
+  {
+    "id": 1771777960255,
+    "items": [
+      {
+        "id": 2,
+        "name": "Slim Fit Jeans",
+        "price": 1899,
+        "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
+        "category": "men",
+        "mood": "casual",
+        "description": "Modern slim fit jeans with comfortable stretch.",
+        "stock": 20,
+        "sizes": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36"
+        ]
+      }
+    ],
+    "total": 1899,
+    "loyalty": 18,
+    "status": "placed",
+    "date": "2026-02-22T16:32:40.255Z",
+    "customerInfo": {},
+    "trackingNumber": "SOP5XHRJH76T"
+  },
+  {
+    "id": 1771778043797,
+    "items": [
+      {
+        "id": 1,
+        "name": "Classic White Shirt",
+        "price": 1299,
+        "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500",
+        "category": "men",
+        "mood": "formal",
+        "description": "Premium quality cotton white shirt, perfect for formal occasions.",
+        "stock": 15,
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      },
+      {
+        "id": 7,
+        "name": "High-Waist Jeans",
+        "price": 1799,
+        "image": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500",
+        "category": "women",
+        "mood": "casual",
+        "description": "Trendy high-waist jeans for women.",
+        "stock": 18,
+        "sizes": [
+          "26",
+          "28",
+          "30",
+          "32",
+          "34"
+        ]
+      }
+    ],
+    "total": 3098,
+    "loyalty": 30,
+    "status": "placed",
+    "date": "2026-02-22T16:34:03.797Z",
+    "customerInfo": {},
+    "trackingNumber": "SOP7GPCZ5OJ7"
   }
 ]

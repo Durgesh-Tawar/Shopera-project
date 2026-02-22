@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed - SOPERA</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .success-container {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 0.6s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        h1 {
+            color: #28a745;
+            margin-bottom: 15px;
+            font-size: 32px;
+        }
+        
+        .order-message {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .order-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .order-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .order-detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .order-detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .order-detail-value {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .amount-paid {
+            color: #28a745 !important;
+            font-size: 24px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #e9ecef;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            animation: confetti-fall 3s ease-in-out infinite;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">🎉</div>
+        <h1>Order Confirmed!</h1>
+        <p class="order-message">
+            Thank you for your purchase! Your order has been successfully placed and is being processed.
+        </p>
+        
+        <div class="order-details">
+            <div class="order-detail-row">
+                <span class="order-detail-label">Order ID:</span>
+                <span class="order-detail-value" id="orderId">-</span>
+            </div>
+            <div class="order-detail-row">
+                <span class="order-detail-label">Payment ID:</span>
+                <span class="order-detail-value" id="paymentId">-</span>
+            </div>
+            <div class="order-detail-row">
+                <span class="order-detail-label">Date:</span>
+                <span class="order-detail-value" id="orderDate">-</span>
+            </div>
+            <div class="order-detail-row">
+                <span class="order-detail-label">Items:</span>
+                <span class="order-detail-value" id="itemCount">0</span>
+            </div>
+            <div class="order-detail-row">
+                <span class="order-detail-label">Amount Paid:</span>
+                <span class="order-detail-value amount-paid" id="amountPaid">₹0</span>
+            </div>
+            <div class="order-detail-row">
+                <span class="order-detail-label">Loyalty Points Earned:</span>
+                <span class="order-detail-value" id="loyaltyPoints">+0</span>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="orders.html" class="btn btn-primary">View My Orders 📦</a>
+            <a href="index.html" class="btn btn-secondary">Continue Shopping 🛍️</a>
+        </div>
+    </div>
+
+    <script>
+        // Get order details from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Get data from URL params
+        const orderId = urlParams.get('orderId') || urlParams.get('order_id') || 'SOP' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        const paymentId = urlParams.get('paymentId') || urlParams.get('payment_id') || 'N/A';
+        const amount = parseFloat(urlParams.get('amount')) || 0;
+        const items = urlParams.get('items') || 0;
+        const loyalty = urlParams.get('loyalty') || Math.floor(amount / 100);
+        
+        // Display order details
+        document.getElementById('orderId').textContent = orderId;
+        document.getElementById('paymentId').textContent = paymentId;
+        document.getElementById('orderDate').textContent = new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        document.getElementById('itemCount').textContent = items;
+        document.getElementById('amountPaid').textContent = '₹' + amount.toLocaleString();
+        document.getElementById('loyaltyPoints').textContent = '+' + loyalty;
+        
+        // Try to get order from sessionStorage (set during payment)
+        const storedOrder = sessionStorage.getItem('lastOrder');
+        if (storedOrder) {
+            try {
+                const order = JSON.parse(storedOrder);
+                document.getElementById('orderId').textContent = order.trackingNumber || orderId;
+                document.getElementById('itemCount').textContent = order.items ? order.items.length : items;
+                document.getElementById('loyaltyPoints').textContent = '+' + (order.loyalty || loyalty);
+            } catch (e) {
+                console.log('Could not parse stored order');
+            }
+        }
+        
+        // Clear session storage after displaying
+        sessionStorage.removeItem('lastOrder');
+        
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#667eea', '#f39c12'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                document.body.appendChild(confetti);
+            }
+        }
+        
+        createConfetti();
+    </script>
+</body>
+</html>
