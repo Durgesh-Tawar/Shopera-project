@@ -178,45 +178,66 @@
     text-align: center;
 }
 
+/* Action Buttons Container */
 .action-buttons {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     flex-wrap: wrap;
+    margin-top: 20px;
 }
 
+/* Add to Cart Button */
 .add-to-cart-btn {
     flex: 1;
-    min-width: 200px;
-    padding: 15px 30px;
-    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    min-width: 140px;
+    padding: 12px 24px;
+    background: linear-gradient(45deg, #1a1a2e, #2d3436);
     border: none;
-    border-radius: 30px;
+    border-radius: 10px;
     color: white;
-    font-size: 1rem;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .add-to-cart-btn:hover {
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(255, 63, 108, 0.4);
+    box-shadow: 0 6px 20px rgba(255, 63, 108, 0.4);
 }
 
+.add-to-cart-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(255, 63, 108, 0.3);
+}
+
+/* Buy Now Button */
 .buy-now-btn {
-    padding: 15px 30px;
-    background: #1a1a2e;
+    flex: 1;
+    min-width: 140px;
+    padding: 12px 24px;
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
     border: none;
-    border-radius: 30px;
+    border-radius: 10px;
     color: white;
-    font-size: 1rem;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 63, 108, 0.3);
 }
 
 .buy-now-btn:hover {
-    background: #333;
+    background: linear-gradient(45deg, #e6365a, #ff3f6c);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 63, 108, 0.5);
+}
+
+.buy-now-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(255, 63, 108, 0.4);
 }
 
 /* Fit Guide Section */
