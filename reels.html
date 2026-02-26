@@ -36,6 +36,12 @@
             height: 100vh;
             width: 100%;
             background: #000;
+            z-index: 1;
+        }
+        
+        /* Active reel gets higher z-index to show above others */
+        .reel-item.active {
+            z-index: 10;
         }
         
         /* Video Styles */
@@ -226,6 +232,7 @@
             display: flex;
             gap: 10px;
             margin-bottom: 15px;
+            position: relative;
         }
         
         .comment-avatar {
@@ -240,6 +247,10 @@
             font-size: 12px;
             flex-shrink: 0;
             font-weight: 600;
+        }
+        
+        .comment-content {
+            flex: 1;
         }
         
         .comment-user {
@@ -258,6 +269,29 @@
             color: rgba(255,255,255,0.5);
             font-size: 11px;
             margin-top: 4px;
+        }
+        
+        /* Delete Button for Comments */
+        .comment-delete-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            padding: 5px;
+            font-size: 12px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        .comment:hover .comment-delete-btn {
+            opacity: 1;
+        }
+        
+        .comment-delete-btn:hover {
+            color: #ff3f6c;
         }
         
         .comment-input {
@@ -706,28 +740,18 @@
 </head>
 <body>
     
-    <!-- Tap to Start Overlay -->
-    <div class="tap-to-start" id="tapToStart" onclick="startReels()">
-        <div class="tap-to-start-content">
-            <div class="tap-icon">
-                <i class="fas fa-play"></i>
-            </div>
-            <p>Tap to Start</p>
-        </div>
-    </div>
-    
-    <!-- Reels Container -->
-    <div class="reels-container no-scrollbar" id="reelsContainer" style="display:none;">
+    <!-- Reels Container - No tap to start overlay -->
+    <div class="reels-container no-scrollbar" id="reelsContainer">
         <!-- Reels will be dynamically generated -->
     </div>
     
     <!-- Back Button -->
-    <button class="back-btn" onclick="goBack()" style="display:none;" id="backBtn">
+    <button class="back-btn" onclick="goBack()">
         <i class="fas fa-arrow-left"></i>
     </button>
     
     <!-- Global Mute Button -->
-    <button class="mute-btn" id="muteBtn" onclick="toggleGlobalMute()" style="display:none;">
+    <button class="mute-btn" id="muteBtn" onclick="toggleGlobalMute()">
         <i class="fas fa-volume-up" id="muteIcon"></i>
     </button>
 
@@ -785,6 +809,9 @@
 
     <script src="js/data.js"></script>
     <script>
+        // ==================== CONSTANTS ====================
+        const CURRENT_USER = 'you'; // Current user identifier for ownership
+        
         // ==================== FALLBACK IMAGES ====================
         const fallbackImages = [
             "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
@@ -794,8 +821,7 @@
             "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800"
         ];
         
-        // ==================== REELS DATA - Add your videos here ====================
-        // Note: Using reliable video sources. Replace with your own video URLs.
+        // ==================== REELS DATA ====================
         const reelsData = [
             {
                 id: 1,
@@ -874,7 +900,36 @@
         let isMuted = true; // Start muted for autoplay
         let likedPosts = JSON.parse(localStorage.getItem('likedPosts')) || [];
         let followedUsers = JSON.parse(localStorage.getItem('followedUsers')) || [];
-        let comments = JSON.parse(localStorage.getItem('reelComments')) || {};
+        let comments = JSON.parse(localStorage.getItem('reelComments')) || {}; // { reelId: [comments]}
+        
+        // Track which reel's comments are currently open - FIX FOR COMMENT OVERLAP
+        let openCommentsReelId = null;
+        
+        // Ensure comments object has valid structure and filter out any invalid entries
+        // This prevents comments from appearing on wrong reels
+        if (typeof comments !== 'object' || comments === null) {
+            comments = {};
+        }
+        
+        // Filter comments for each reel - only keep comments that belong to that specific reel
+        Object.keys(comments).forEach(reelId => {
+            if (!Array.isArray(comments[reelId])) {
+                comments[reelId] = [];
+            } else {
+                // Keep only comments that belong to this reel
+                const targetReelId = parseInt(reelId);
+                comments[reelId] = comments[reelId].filter(c => {
+                    // If comment doesn't have reelId, assume it belongs to this reel (legacy support)
+                    if (!c.reelId) return true;
+                    const commentReelId = parseInt(c.reelId);
+                    return commentReelId === targetReelId;
+                });
+            }
+        });
+        
+        // Save the filtered comments back to localStorage to clean up any corrupted data
+        localStorage.setItem('reelComments', JSON.stringify(comments));
+        
         let currentShareProduct = null;
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
         let isTransitioning = false;
@@ -885,6 +940,7 @@
             setupScrollDetection();
             setupKeyboardNavigation();
             setupDoubleTap();
+            setupIntersectionObserver(); // Add intersection observer for autoplay
             updateCartCount();
             updateMuteIcon();
             
@@ -892,29 +948,44 @@
             setTimeout(() => {
                 document.querySelectorAll('.video-loading').forEach(el => el.style.display = 'none');
             }, 3000);
+            
+            // Attempt autoplay on load
+            setTimeout(() => {
+                playVisibleVideo();
+                updateActiveReel(0);
+            }, 500);
         });
+        
+        // ==================== ACTIVE REEL TRACKING ====================
+        function updateActiveReel(index) {
+            // Update currentReelIndex
+            currentReelIndex = index;
+            
+            // Update z-index for all reels - active reel gets higher z-index
+            document.querySelectorAll('.reel-item').forEach((reel, i) => {
+                if (i === index) {
+                    reel.classList.add('active');
+                } else {
+                    reel.classList.remove('active');
+                }
+            });
+            
+            // Close comments when switching to a different reel
+            if (openCommentsReelId !== null && openCommentsReelId !== reelsData[index]?.id) {
+                closeAllComments();
+            }
+        }
         
         // ==================== RENDER FUNCTIONS ====================
         function renderReels() {
             const container = document.getElementById('reelsContainer');
             container.innerHTML = reelsData.map((reel, index) => createReelHTML(reel, index)).join('');
-            
-            // Initialize first video after a short delay
-            setTimeout(() => {
-                const firstVideo = document.querySelector('.reel-video');
-                if (firstVideo) {
-                    // Hide loading spinner
-                    const loading = firstVideo.parentElement.querySelector('.video-loading');
-                    if (loading) loading.style.display = 'none';
-                    
-                    playVideo(firstVideo);
-                }
-            }, 800);
         }
         
         function createReelHTML(reel, index) {
             const isLiked = likedPosts.includes(reel.id);
             const isFollowing = followedUsers.includes(reel.username.replace('@', ''));
+            // Get comments specifically for this reel
             const reelComments = comments[reel.id] || [];
             
             return `
@@ -930,9 +1001,9 @@
                         poster="${reel.image}"
                         loop
                         playsinline
-                        preload="none"
                         muted="${isMuted}"
                         data-index="${index}"
+                        preload="metadata"
                     ></video>
                     
                     <!-- Double Tap Heart -->
@@ -1010,7 +1081,7 @@
                         </div>
                     </div>
                     
-                    <!-- Comments Panel -->
+                    <!-- Comments Panel - Each reel has its own panel positioned absolutely within the reel -->
                     <div class="comments-panel" id="comments-${reel.id}">
                         <div class="comments-header">
                             <h3>Comments <span style="color:#999;font-size:14px;">${reelComments.length}</span></h3>
@@ -1019,16 +1090,7 @@
                             </button>
                         </div>
                         <div class="comments-list" id="commentsList-${reel.id}">
-                            ${reelComments.length > 0 ? reelComments.map(c => `
-                                <div class="comment">
-                                    <div class="comment-avatar">${c.user.charAt(0).toUpperCase()}</div>
-                                    <div>
-                                        <span class="comment-user">@${c.user}</span>
-                                        <p class="comment-text">${c.text}</p>
-                                        <span class="comment-time">${c.time}</span>
-                                    </div>
-                                </div>
-                            `).join('') : '<p style="text-align:center;color:#666;font-size:14px;padding:20px;">No comments yet</p>'}
+${reelComments.length > 0 ? reelComments.map(c => createCommentHTML(c, reel.id)).join('') : '<p style="text-align:center;color:#666;font-size:14px;padding:20px;">No comments yet</p>'}
                         </div>
                         <div class="comment-input">
                             <input type="text" placeholder="Add a comment..." id="commentInput-${reel.id}" onkeypress="handleCommentKeyPress(event, ${reel.id})">
@@ -1039,6 +1101,80 @@
             `;
         }
         
+        // Create comment HTML with delete button for owner's comments
+        function createCommentHTML(comment, reelId) {
+            const isOwner = comment.user === CURRENT_USER;
+            // Use provided reelId or fall back to comment.reelId
+            const actualReelId = reelId || comment.reelId;
+            return `
+                <div class="comment" data-comment-id="${comment.id}">
+                    <div class="comment-avatar">${comment.user.charAt(0).toUpperCase()}</div>
+                    <div class="comment-content">
+                        <span class="comment-user">@${comment.user}</span>
+                        <p class="comment-text">${escapeHtml(comment.text)}</p>
+                        <span class="comment-time">${comment.time}</span>
+                    </div>
+                    ${isOwner ? `<button class="comment-delete-btn" onclick="deleteComment(${actualReelId}, '${comment.id}')" title="Delete comment"><i class="fas fa-trash"></i></button>` : ''}
+                </div>
+            `;
+        }
+        
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // ==================== INTERSECTION OBSERVER FOR AUTOPLAY ====================
+        function setupIntersectionObserver() {
+            const options = {
+                root: document.getElementById('reelsContainer'),
+                threshold: 0.6 // Video is considered "visible" when 60% is in view
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Video is visible - play it
+                        const video = entry.target;
+                        const reelId = parseInt(video.id.replace('video-', ''));
+                        const newIndex = parseInt(video.dataset.index);
+                        
+                        // Only update if the index changed - FIX for comment overlap
+                        if (currentReelIndex !== newIndex) {
+                            // Close comments when switching to a different reel
+                            closeAllComments();
+                            currentReelIndex = newIndex;
+                            
+                            // Update active reel z-index for proper stacking
+                            updateActiveReel(newIndex);
+                        }
+                        
+                        playVideo(video);
+                        
+                        // Update progress bars
+                        updateProgressBars();
+                    } else {
+                        // Video is not visible - pause it
+                        pauseVideo(entry.target);
+                        // FIX: Close comments when reel goes out of view
+                        const videoReelId = parseInt(entry.target.id.replace('video-', ''));
+                        if (openCommentsReelId === videoReelId) {
+                            closeAllComments();
+                        }
+                    }
+                });
+            }, options);
+            
+            // Observe all videos
+            setTimeout(() => {
+                document.querySelectorAll('.reel-video').forEach(video => {
+                    observer.observe(video);
+                });
+            }, 100);
+        }
+        
         // ==================== VIDEO CONTROLS ====================
         function playVideo(video) {
             if (video) {
@@ -1047,13 +1183,22 @@
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
                         // Play started successfully
+                        console.log('Video playing:', video.id);
                     }).catch(error => {
-                        // Handle play errors silently - show fallback image
-                        console.log('Video autoplay prevented or failed');
+                        // Handle play errors - show fallback image
+                        console.log('Video autoplay prevented or failed:', error.message);
                         showFallbackImage(video);
                     });
                 }
                 video.muted = isMuted;
+            }
+        }
+        
+        function playVisibleVideo() {
+            // Try to play the first video
+            const firstVideo = document.querySelector('.reel-video');
+            if (firstVideo) {
+                playVideo(firstVideo);
             }
         }
         
@@ -1130,13 +1275,12 @@
             let scrollTimeout = null;
             
             container.addEventListener('scroll', () => {
-                if (isTransitioning) return;
                 if (scrollTimeout) return;
                 
                 scrollTimeout = setTimeout(() => {
                     scrollTimeout = null;
                     handleScroll();
-                }, 150);
+                }, 100);
             }, { passive: true });
             
             // Initial check
@@ -1146,31 +1290,35 @@
         function handleScroll() {
             const container = document.getElementById('reelsContainer');
             const scrollTop = container.scrollTop;
-            const windowHeight = window.innerHeight;
+            const windowHeight = container.clientHeight;
             
-            // Find which reel is visible
+            // Find which reel is visible - use scroll position to determine
             const newIndex = Math.round(scrollTop / windowHeight);
             
             if (newIndex !== currentReelIndex && newIndex >= 0 && newIndex < reelsData.length) {
-                isTransitioning = true;
-                
-                // Pause previous video
-                const prevVideo = document.querySelector(`#video-${reelsData[currentReelIndex].id}`);
-                if (prevVideo) pauseVideo(prevVideo);
-                
+                const previousReelIndex = currentReelIndex;
                 currentReelIndex = newIndex;
                 
-                // Play new video
+                // FIX: Close comments when scrolling to a different reel
+                closeAllComments();
+                
+                // Pause previous video
+                const prevVideo = document.querySelector(`#video-${reelsData[previousReelIndex].id}`);
+                if (prevVideo) pauseVideo(prevVideo);
+                
+                // Play new video after a short delay
                 setTimeout(() => {
                     const newVideo = document.querySelector(`#video-${reelsData[currentReelIndex].id}`);
                     if (newVideo) {
                         playVideo(newVideo);
                     }
-                    isTransitioning = false;
                 }, 100);
                 
                 // Update progress bars
                 updateProgressBars();
+            } else if (newIndex === currentReelIndex) {
+                // Even if index didn't change, ensure comments are closed
+                closeAllComments();
             }
         }
         
@@ -1203,6 +1351,10 @@
         
         function scrollToReel(index) {
             isTransitioning = true;
+            
+            // FIX: Close comments when navigating to a different reel via keyboard
+            closeAllComments();
+            
             const container = document.getElementById('reelsContainer');
             container.scrollTo({
                 top: index * window.innerHeight,
@@ -1301,15 +1453,34 @@
             localStorage.setItem('followedUsers', JSON.stringify(followedUsers));
         }
         
-        // ==================== COMMENTS ====================
+        // ==================== COMMENTS SYSTEM ====================
+        // FIX: Close all open comment panels across all reels
+        function closeAllComments() {
+            if (openCommentsReelId !== null) {
+                const panel = document.getElementById(`comments-${openCommentsReelId}`);
+                if (panel) panel.classList.remove('active');
+                openCommentsReelId = null;
+            }
+        }
+        
         function showComments(reelId) {
+            // First close any open comments on other reels
+            closeAllComments();
+            
+            // Open comments for this reel
             const panel = document.getElementById(`comments-${reelId}`);
-            if (panel) panel.classList.add('active');
+            if (panel) {
+                panel.classList.add('active');
+                openCommentsReelId = reelId;
+            }
         }
         
         function hideComments(reelId) {
             const panel = document.getElementById(`comments-${reelId}`);
             if (panel) panel.classList.remove('active');
+            if (openCommentsReelId === reelId) {
+                openCommentsReelId = null;
+            }
         }
         
         function handleCommentKeyPress(e, reelId) {
@@ -1321,32 +1492,97 @@
             const text = input.value.trim();
             
             if (text) {
-                if (!comments[reelId]) comments[reelId] = [];
+                // Ensure comments object has this reel's comments array
+                if (!comments[reelId]) {
+                    comments[reelId] = [];
+                }
                 
+                // Create comment with unique ID
                 const newComment = {
-                    user: 'you',
+                    id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+                    reelId: reelId,
+                    user: CURRENT_USER,
                     text: text,
-                    time: 'Just now'
+                    time: 'Just now',
+                    createdAt: new Date().toISOString()
                 };
                 
+                // Add to local state
                 comments[reelId].unshift(newComment);
                 localStorage.setItem('reelComments', JSON.stringify(comments));
                 
                 // Add to UI
                 const list = document.getElementById(`commentsList-${reelId}`);
-                const html = `
-                    <div class="comment">
-                        <div class="comment-avatar">Y</div>
-                        <div>
-                            <span class="comment-user">@you</span>
-                            <p class="comment-text">${text}</p>
-                            <span class="comment-time">Just now</span>
-                        </div>
-                    </div>
-                `;
-                list.insertAdjacentHTML('afterbegin', html);
+                // Remove "No comments yet" if present
+                const noComments = list.querySelector('p');
+                if (noComments) noComments.remove();
+                
+                list.insertAdjacentHTML('afterbegin', createCommentHTML(newComment));
+                
+                // Update comment count in header
+                const header = document.querySelector(`#comments-${reelId} .comments-header h3`);
+                if (header) {
+                    header.innerHTML = `Comments <span style="color:#999;font-size:14px;">${comments[reelId].length}</span>`;
+                }
+                
+                // Update comment count in action button
+                updateCommentCount(reelId);
                 
                 input.value = '';
+            }
+        }
+        
+        function deleteComment(reelId, commentId) {
+            // Verify ownership before deletion
+            if (!comments[reelId]) {
+                console.error('Reel not found');
+                return;
+            }
+            
+            const comment = comments[reelId].find(c => c.id === commentId);
+            if (!comment) {
+                console.error('Comment not found');
+                return;
+            }
+            
+            // Check ownership
+            if (comment.user !== CURRENT_USER) {
+                alert('You can only delete your own comments');
+                return;
+            }
+            
+            // Delete from local state
+            comments[reelId] = comments[reelId].filter(c => c.id !== commentId);
+            localStorage.setItem('reelComments', JSON.stringify(comments));
+            
+            // Remove from UI
+            const commentEl = document.querySelector(`[data-comment-id="${commentId}"]`);
+            if (commentEl) {
+                commentEl.remove();
+            }
+            
+            // Update comment count in header
+            const header = document.querySelector(`#comments-${reelId} .comments-header h3`);
+            if (header) {
+                header.innerHTML = `Comments <span style="color:#999;font-size:14px;">${comments[reelId].length}</span>`;
+            }
+            
+            // Update comment count in action button
+            updateCommentCount(reelId);
+            
+            // Show "No comments yet" if empty
+            const list = document.getElementById(`commentsList-${reelId}`);
+            if (comments[reelId].length === 0) {
+                list.innerHTML = '<p style="text-align:center;color:#666;font-size:14px;padding:20px;">No comments yet</p>';
+            }
+        }
+        
+        function updateCommentCount(reelId) {
+            const reel = reelsData.find(r => r.id === reelId);
+            const reelComments = comments[reelId] || [];
+            const actionButton = document.querySelector(`[data-id="${reelId}"] .action-btn:nth-child(2) .action-label`);
+            if (actionButton && reel) {
+                actionButton.textContent = formatNumber(reel.comments + reelComments.length);
             }
         }
         
@@ -1405,17 +1641,6 @@
         
         function goBack() {
             window.location.href = 'index.html';
-        }
-        
-        function startReels() {
-            document.getElementById('tapToStart').style.display = 'none';
-            document.getElementById('reelsContainer').style.display = 'block';
-            document.getElementById('backBtn').style.display = 'flex';
-            document.getElementById('muteBtn').style.display = 'flex';
-            setTimeout(() => {
-                const firstVideo = document.querySelector('.reel-video');
-                if (firstVideo) playVideo(firstVideo);
-            }, 100);
         }
         
         // Video progress tracking

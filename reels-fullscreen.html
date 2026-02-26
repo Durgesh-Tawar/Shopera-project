@@ -221,6 +221,27 @@
             justify-content: center;
             font-size: 18px;
         }
+        
+        /* Delete Button for Comments */
+        .comment-delete-btn {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            padding: 5px;
+            font-size: 12px;
+            opacity: 0;
+            transition: all 0.3s;
+            margin-left: auto;
+        }
+        
+        .comment:hover .comment-delete-btn {
+            opacity: 1;
+        }
+        
+        .comment-delete-btn:hover {
+            color: #ff3f6c;
+        }
     </style>
 </head>
 <body class="bg-black">
@@ -362,7 +383,33 @@
         let isMuted = false;
         let likedPosts = JSON.parse(localStorage.getItem('likedPosts')) || [];
         let followedUsers = JSON.parse(localStorage.getItem('followedUsers')) || [];
-        let comments = JSON.parse(localStorage.getItem('reelComments')) || {};
+let comments = JSON.parse(localStorage.getItem('reelComments')) || {};
+        
+        // Ensure comments object has valid structure and filter out any invalid entries
+        // This prevents comments from appearing on wrong reels
+        if (typeof comments !== 'object' || comments === null) {
+            comments = {};
+        }
+        
+        // Filter comments for each reel - only keep comments that belong to that specific reel
+        Object.keys(comments).forEach(reelId => {
+            if (!Array.isArray(comments[reelId])) {
+                comments[reelId] = [];
+            } else {
+                // Keep only comments that belong to this reel
+                const targetReelId = parseInt(reelId);
+                comments[reelId] = comments[reelId].filter(c => {
+                    // If comment doesn't have reelId, assume it belongs to this reel (legacy support)
+                    if (!c.reelId) return true;
+                    const commentReelId = parseInt(c.reelId);
+                    return commentReelId === targetReelId;
+                });
+            }
+        });
+        
+        // Save the filtered comments back to localStorage to clean up any corrupted data
+        localStorage.setItem('reelComments', JSON.stringify(comments));
+        
         let currentShareProduct = null;
         
         // ==================== INITIALIZATION ====================
@@ -759,7 +806,7 @@
             if (e.key === 'Enter') postComment(reelId);
         }
         
-        function postComment(reelId) {
+function postComment(reelId) {
             const input = document.getElementById(`commentInput-${reelId}`);
             const text = input.value.trim();
             
@@ -767,6 +814,8 @@
                 if (!comments[reelId]) comments[reelId] = [];
                 
                 const newComment = {
+                    id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+                    reelId: reelId,
                     user: 'you',
                     text: text,
                     time: 'Just now'

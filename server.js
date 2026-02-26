@@ -320,6 +320,105 @@ app.post('/api/spin', (req, res) => {
 });
 
 // =========================================
+// REELS COMMENTS API (File-based storage)
+// =========================================
+
+// Comments file path
+const commentsFile = path.join(__dirname, 'reels-comments.json');
+
+// Load comments from file
+function loadComments() {
+    try {
+        if (fs.existsSync(commentsFile)) {
+            return JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
+        }
+    } catch (e) {
+        console.error('Error loading comments:', e);
+    }
+    return {};
+}
+
+// Save comments to file
+function saveComments(comments) {
+    try {
+        fs.writeFileSync(commentsFile, JSON.stringify(comments, null, 2));
+    } catch (e) {
+        console.error('Error saving comments:', e);
+    }
+}
+
+// Get comments for a specific reel
+app.get('/api/reels/:reelId/comments', (req, res) => {
+    const { reelId } = req.params;
+    const allComments = loadComments();
+    const reelComments = allComments[reelId] || [];
+    res.json({ success: true, comments: reelComments });
+});
+
+// Add comment to a reel
+app.post('/api/reels/:reelId/comments', (req, res) => {
+    const { reelId } = req.params;
+    const { user, text } = req.body;
+    
+    if (!user || !text) {
+        return res.status(400).json({ success: false, error: 'User and text are required' });
+    }
+    
+    const allComments = loadComments();
+    
+    if (!allComments[reelId]) {
+        allComments[reelId] = [];
+    }
+    
+    const newComment = {
+        id: Date.now().toString(),
+        reelId: parseInt(reelId),
+        user: user,
+        text: text,
+        time: 'Just now',
+        createdAt: new Date().toISOString()
+    };
+    
+    allComments[reelId].unshift(newComment);
+    saveComments(allComments);
+    
+    res.json({ success: true, comment: newComment });
+});
+
+// Delete comment from a reel (secured by comment ID and user ownership)
+app.delete('/api/reels/:reelId/comments/:commentId', (req, res) => {
+    const { reelId, commentId } = req.params;
+    const { user } = req.body;
+    
+    if (!user) {
+        return res.status(400).json({ success: false, error: 'User identification required' });
+    }
+    
+    const allComments = loadComments();
+    
+    if (!allComments[reelId]) {
+        return res.status(404).json({ success: false, error: 'Reel not found' });
+    }
+    
+    const commentIndex = allComments[reelId].findIndex(c => c.id === commentId);
+    
+    if (commentIndex === -1) {
+        return res.status(404).json({ success: false, error: 'Comment not found' });
+    }
+    
+    // Verify ownership - only the comment owner can delete
+    if (allComments[reelId][commentIndex].user !== user) {
+        return res.status(403).json({ success: false, error: 'Unauthorized: You can only delete your own comments' });
+    }
+    
+    // Remove comment
+    allComments[reelId].splice(commentIndex, 1);
+    saveComments(allComments);
+    
+    res.json({ success: true, message: 'Comment deleted successfully' });
+});
+
+// =========================================
 // RAZORPAY PAYMENT ROUTES
 // =========================================
 
