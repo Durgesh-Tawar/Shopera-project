@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOPERA - 24x7 Customer Care Support</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .support-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .support-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .support-header {
+            text-align: center;
+            margin-bottom: 30px;
+            grid-column: 1 / -1;
+        }
+        
+        .support-header h1 {
+            color: #1a1a2e;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .support-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .support-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        
+        .support-card h2 {
+            font-size: 1.3rem;
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .contact-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .contact-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        
+        .contact-option:hover {
+            border-color: #ff3f6c;
+            background: #fff;
+            transform: translateX(5px);
+            box-shadow: 0 4px 10px rgba(255, 63, 108, 0.1);
+        }
+        
+        .contact-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ff3f6c, #ff6b9d);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+        
+        .contact-info h3 {
+            font-size: 1rem;
+            margin-bottom: 3px;
+            color: #1a1a2e;
+        }
+        
+        .contact-info p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0;
+        }
+        
+        /* Order selection */
+        .order-select-area {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        
+        .order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .order-support-item {
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .order-support-item:hover, .order-support-item.selected {
+            border-color: #ff3f6c;
+            background: rgba(255, 63, 108, 0.05);
+        }
+        
+        .order-support-info p {
+            margin: 2px 0;
+            font-size: 0.9rem;
+        }
+        
+        .support-form {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 0.4s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .support-form textarea, .support-form input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        
+        .support-form button {
+            background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .support-form button:hover {
+            box-shadow: 0 5px 15px rgba(255, 63, 108, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .success-msg {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">SOPERA</div>
+    <div class="nav-search">
+        <input type="text" placeholder="Search products...">
+    </div>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="nav-overlay" id="navOverlay"></div>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mood.html">Mood</a></li>
+        <li><a href="cart.html">Cart 🛒</a></li>
+        <li><a href="orders.html">Orders 📦</a></li>
+        <li><a href="support.html" style="color: #ff3f6c; font-weight: bold;">24x7 Support 🎧</a></li>
+        <li><a href="profile.html">Profile 👤</a></li>
+    </ul>
+</nav>
+
+<div class="support-container">
+    <div class="support-header">
+        <h1>24x7 Customer Care Support</h1>
+        <p>We are here to help you with anything you need. Fast, reliable support.</p>
+    </div>
+    
+    <!-- Left Column: Contact Methods -->
+    <div class="support-card">
+        <h2>🎧 Get in Touch</h2>
+        <div class="contact-options">
+            <a href="tel:+919876543210" class="contact-option">
+                <div class="contact-icon">📞</div>
+                <div class="contact-info">
+                    <h3>Call Us Directly</h3>
+                    <p>+91 98765 43210 (Available 24x7)</p>
+                </div>
+            </a>
+            
+            <a href="mailto:support@sopera.com" class="contact-option">
+                <div class="contact-icon">✉️</div>
+                <div class="contact-info">
+                    <h3>Email Support</h3>
+                    <p>support@sopera.com (Reply in 2 hours)</p>
+                </div>
+            </a>
+            
+            <div class="contact-option" onclick="document.getElementById('callbackForm').style.display='block';">
+                <div class="contact-icon">📲</div>
+                <div class="contact-info">
+                    <h3>Request a Callback</h3>
+                    <p>We'll call you back within 15 minutes</p>
+                </div>
+            </div>
+            
+            <!-- Callback Form -->
+            <div id="callbackForm" class="support-form">
+                <input type="number" id="cbPhone" placeholder="Enter your 10-digit mobile number" required>
+                <button onclick="submitCallback()">Submit Request</button>
+                <div id="cbSuccess" class="success-msg">Callback requested! We'll call you shortly.</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right Column: Order Selection Form -->
+    <div class="order-select-area">
+        <h2>📦 Need help with an Order?</h2>
+        <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Select an order below to raise a ticket or message support regarding it.</p>
+        
+        <div class="order-list" id="supportOrderList">
+            <!-- Orders injected by JS -->
+        </div>
+        
+        <div id="orderSupportForm" class="support-form">
+            <h3 style="font-size: 1rem; margin-bottom: 15px;" id="selectedOrderLabel">Message regarding order:</h3>
+            <select id="supportIssue" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 15px; font-family: inherit;">
+                <option value="tracking">Where is my order?</option>
+                <option value="return">I want to Return/Replace an item</option>
+                <option value="cancel">I want to cancel my order</option>
+                <option value="other">Other Issue</option>
+            </select>
+            <textarea id="supportMessage" rows="4" placeholder="Describe your issue in detail..." required></textarea>
+            <button onclick="submitSupportTicket()">Send Message</button>
+            <div id="ticketSuccess" class="success-msg">Ticket raised successfully! Our team will review this order and reply within 2 hours.</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Navigation toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    const navOverlay = document.getElementById('navOverlay');
+    
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        navOverlay.classList.toggle('active');
+    });
+
+    if (navOverlay) {
+        navOverlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            navOverlay.classList.remove('active');
+        });
+    }
+
+    // Load Orders for Support
+    function loadSupportOrders() {
+        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+        const orderListEl = document.getElementById('supportOrderList');
+        
+        if (orders.length === 0) {
+            orderListEl.innerHTML = '<p style="text-align:center; padding: 20px; color:#888;">No recent orders found.</p>';
+            return;
+        }
+        
+        let html = '';
+        orders.slice(0, 10).forEach((o, index) => { // Get up to 10 latest orders
+            const tracking = o.trackingNumber || 'SOP' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            html += `
+                <div class="order-support-item" onclick="selectOrderForSupport(this, '${tracking}')">
+                    <div class="order-support-info">
+                        <p><strong>Order ID:</strong> ${tracking}</p>
+                        <p style="color:#666;">Date: ${o.date || 'Recent'}</p>
+                        <p style="color:#666;">Total: ₹${(o.total || 0).toLocaleString()}</p>
+                    </div>
+                    <div style="font-size: 1.5rem; color: #ff3f6c;">›</div>
+                </div>
+            `;
+        });
+        orderListEl.innerHTML = html;
+    }
+    
+    let currentSelectedOrder = null;
+    
+    function selectOrderForSupport(element, trackingId) {
+        // Deselect others
+        document.querySelectorAll('.order-support-item').forEach(el => el.classList.remove('selected'));
+        // Select clicked
+        element.classList.add('selected');
+        currentSelectedOrder = trackingId;
+        
+        // Show form
+        const formObj = document.getElementById('orderSupportForm');
+        formObj.style.display = 'block';
+        document.getElementById('selectedOrderLabel').innerText = 'Message regarding Order: ' + trackingId;
+        
+        // Hide success message if showing
+        document.getElementById('ticketSuccess').style.display = 'none';
+        
+        // Scroll to form smoothly
+        formObj.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+    
+    function submitCallback() {
+        const phone = document.getElementById('cbPhone').value;
+        if (phone && phone.length >= 10) {
+            document.getElementById('cbPhone').value = '';
+            document.getElementById('cbSuccess').style.display = 'block';
+            setTimeout(() => { document.getElementById('cbSuccess').style.display = 'none'; document.getElementById('callbackForm').style.display = 'none'; }, 4000);
+        } else {
+            alert('Please enter a valid 10-digit mobile number.');
+        }
+    }
+    
+    function submitSupportTicket() {
+        const msg = document.getElementById('supportMessage').value;
+        if (msg.trim() !== '') {
+            document.getElementById('supportMessage').value = '';
+            document.getElementById('ticketSuccess').style.display = 'block';
+            setTimeout(() => { 
+                document.getElementById('ticketSuccess').style.display = 'none'; 
+                document.getElementById('orderSupportForm').style.display = 'none';
+                document.querySelectorAll('.order-support-item').forEach(el => el.classList.remove('selected'));
+            }, 5000);
+        } else {
+            alert('Please describe your issue.');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadSupportOrders);
+</script>
+</body>
+</html>

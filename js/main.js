@@ -474,7 +474,7 @@ function showSearchResults(results, searchTerm, isLive) {
         
         html += `
             <div class="search-result-item" onclick="viewProduct(${product.id})">
-                <img src="${product.image}" alt="${product.name}" class="search-result-image" onerror="this.src='https://via.placeholder.com/60'">
+                <img src="${product.image}" alt="${product.name}" class="search-result-image" onerror="this.src='images/men/t-shirt/t-shirt1.jpg'">
                 <div class="search-result-info">
                     <div class="search-result-name">${highlightMatch(product.name, searchTerm)}</div>
                     <div class="search-result-category">

@@ -51,28 +51,28 @@ async function loadProductsForChat() {
 function getDefaultProducts() {
     return [
         // Men - Formal
-        {id:1, name:"Classic White Shirt", price:1299, image:"https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500", category:"men", mood:"formal"},
-        {id:2, name:"Navy Blazer", price:3499, image:"https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500", category:"men", mood:"formal"},
-        {id:3, name:"Formal Trousers", price:1899, image:"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500", category:"men", mood:"formal"},
+        {id:1, name:"Classic White Shirt", price:1299, image:"/images/kids/baby/baby6.jpg", category:"men", mood:"formal"},
+        {id:2, name:"Navy Blazer", price:3499, image:"/images/kids/baby/baby7.jpg", category:"men", mood:"formal"},
+        {id:3, name:"Formal Trousers", price:1899, image:"/images/kids/baby/baby8.jpg", category:"men", mood:"formal"},
         // Men - Casual
-        {id:7, name:"Slim Fit Jeans", price:1899, image:"https://images.unsplash.com/photo-1542272604-787c3835535d?w=500", category:"men", mood:"casual"},
-        {id:8, name:"Casual T-Shirt", price:599, image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500", category:"men", mood:"casual"},
+        {id:7, name:"Slim Fit Jeans", price:1899, image:"/images/kids/baby/baby9.jpg", category:"men", mood:"casual"},
+        {id:8, name:"Casual T-Shirt", price:599, image:"/images/kids/baby/pexels-ashford-marx-1565533-33140787.jpg", category:"men", mood:"casual"},
         // Men - Party
-        {id:13, name:"Party Blazer", price:3999, image:"https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500", category:"men", mood:"party"},
+        {id:13, name:"Party Blazer", price:3999, image:"/images/kids/boy/boy1.jpg", category:"men", mood:"party"},
         // Women - Party
-        {id:16, name:"Floral Summer Dress", price:1599, image:"https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=500", category:"women", mood:"party"},
-        {id:18, name:"Sequin Party Dress", price:2999, image:"https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=500", category:"women", mood:"party"},
+        {id:16, name:"Floral Summer Dress", price:1599, image:"/images/kids/boy/boy10.jpg", category:"women", mood:"party"},
+        {id:18, name:"Sequin Party Dress", price:2999, image:"/images/kids/boy/boy11.jpg", category:"women", mood:"party"},
         // Women - Casual
-        {id:22, name:"High-Waist Jeans", price:1799, image:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500", category:"women", mood:"casual"},
+        {id:22, name:"High-Waist Jeans", price:1799, image:"/images/kids/boy/boy2.jpg", category:"women", mood:"casual"},
         // Women - Formal
-        {id:28, name:"Elegant Silk Saree", price:3999, image:"https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500", category:"women", mood:"formal"},
+        {id:28, name:"Elegant Silk Saree", price:3999, image:"/images/kids/boy/boy3.jpg", category:"women", mood:"formal"},
         // Kids - Party
-        {id:34, name:"Kids Party Frock", price:1199, image:"https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=500", category:"kids", mood:"party"},
+        {id:34, name:"Kids Party Frock", price:1199, image:"/images/kids/boy/boy4.jpg", category:"kids", mood:"party"},
         // Kids - Casual
-        {id:38, name:"Kids Denim Set", price:999, image:"https://images.unsplash.com/photo-1519235106638-35e35556b40d?w=500", category:"kids", mood:"casual"},
-        {id:39, name:"Cartoon T-Shirt", price:499, image:"https://images.unsplash.com/photo-1519457431-44ccd64a579b?w=500", category:"kids", mood:"casual"},
+        {id:38, name:"Kids Denim Set", price:999, image:"/images/kids/boy/boy5.jpg", category:"kids", mood:"casual"},
+        {id:39, name:"Cartoon T-Shirt", price:499, image:"/images/kids/boy/boy6.jpg", category:"kids", mood:"casual"},
         // Kids - Formal
-        {id:44, name:"Kids Formal Suit", price:1999, image:"https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500", category:"kids", mood:"formal"},
+        {id:44, name:"Kids Formal Suit", price:1999, image:"/images/kids/boy/boy7.jpg", category:"kids", mood:"formal"},
     ];
 }
 
