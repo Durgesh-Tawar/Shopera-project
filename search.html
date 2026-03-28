@@ -328,21 +328,108 @@
 
 <!-- Navbar -->
 <nav class="navbar">
-    <div class="logo">SOPERA</div>
+    <div class="nav-left">
+        <a href="index.html" class="logo">SOPERA</a>
+
+        <ul class="nav-links" id="navLinks">
+            <li class="has-mega-menu">
+                <a href="index.html?category=men">MEN</a>
+                <div class="mega-menu">
+                    <div class="mega-column">
+                        <h4>Topwear</h4>
+                        <ul>
+                            <li><a href="index.html?category=men&subcategory=t-shirts">T-Shirts</a></li>
+                            <li><a href="index.html?category=men&subcategory=casual-shirts">Casual Shirts</a></li>
+                            <li><a href="index.html?category=men&subcategory=formal-shirts">Formal Shirts</a></li>
+                            <li><a href="index.html?category=men&subcategory=sweaters">Sweaters</a></li>
+                            <li><a href="index.html?category=men&subcategory=jackets">Jackets</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-column">
+                        <h4>Indian & Festive Wear</h4>
+                        <ul>
+                            <li><a href="index.html?category=men&subcategory=kurtas">Kurtas & Kurta Sets</a></li>
+                            <li><a href="index.html?category=men&subcategory=sherwanis">Sherwanis</a></li>
+                            <li><a href="index.html?category=men&subcategory=nehru-jackets">Nehru Jackets</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-column">
+                        <h4>Bottomwear</h4>
+                        <ul>
+                            <li><a href="index.html?category=men&subcategory=jeans">Jeans</a></li>
+                            <li><a href="index.html?category=men&subcategory=casual-trousers">Casual Trousers</a></li>
+                            <li><a href="index.html?category=men&subcategory=formal-trousers">Formal Trousers</a></li>
+                            <li><a href="index.html?category=men&subcategory=shorts">Shorts</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-column">
+                        <h4>Innerwear & Sleepwear</h4>
+                        <ul>
+                            <li><a href="index.html?category=men&subcategory=briefs">Briefs & Trunks</a></li>
+                            <li><a href="index.html?category=men&subcategory=boxers">Boxers</a></li>
+                            <li><a href="index.html?category=men&subcategory=sleepwear">Sleepwear & Loungewear</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li><a href="index.html?category=women">WOMEN</a></li>
+            <li><a href="index.html?category=kids">KIDS</a></li>
+            <li><a href="index.html?category=home">HOME</a></li>
+            <li><a href="mood.html">MOOD</a></li>
+            <li><a href="reels.html">REELS</a></li>
+            <li><a href="spin.html">SPIN</a></li>
+        </ul>
+    </div>
+
+    <div class="nav-search">
+        <span class="search-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#696e79" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </span>
+        <input type="text" id="searchBar" placeholder="Search for products, brands and more">
+    </div>
+
+    <div class="nav-actions">
+        <a href="profile.html" class="action-btn">
+            <span class="action-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </span>
+            <span class="action-text">Profile</span>
+        </a>
+        <a href="wishlist.html" class="action-btn">
+            <span class="action-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+            </span>
+            <span class="action-text">Wishlist</span>
+        </a>
+        <a href="cart.html" class="action-btn bag-btn">
+            <span class="action-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+            </span>
+            <span class="action-text">Bag</span>
+            <span class="cart-badge" id="cartBadge">1</span>
+        </a>
+    </div>
+
     <div class="hamburger" id="hamburger">
         <span></span>
         <span></span>
         <span></span>
     </div>
-    <ul class="nav-links" id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="mood.html">Mood</a></li>
-        <li><a href="reels.html">Reels</a></li>
-        <li><a href="spin.html">Spin & Win 🎁</a></li>
-        <li><a href="cart.html">Cart 🛒</a></li>
-        <li><a href="wishlist.html">Wishlist ❤️</a></li>
-        <li><a href="orders.html">Orders 📦</a></li>
-    </ul>
+
+    <!-- Mobile Overlay -->
+    <div class="nav-overlay" id="navOverlay"></div>
 </nav>
 
 <!-- Search Page Content -->

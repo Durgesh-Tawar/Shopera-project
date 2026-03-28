@@ -681,5 +681,88 @@
     "date": "2026-03-27T12:35:24.120Z",
     "customerInfo": {},
     "trackingNumber": "SOPDKT3AT5YW"
+  },
+  {
+    "id": 1774636428834,
+    "items": [
+      {
+        "id": 1,
+        "name": "Classic White Shirt",
+        "price": 1299,
+        "image": "images/men/shirt/shirt1.jpg",
+        "category": "men",
+        "mood": "formal",
+        "description": "Premium quality cotton white shirt, perfect for formal occasions.",
+        "stock": 15,
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ],
+        "selectedSize": "S",
+        "quantity": 1
+      },
+      {
+        "id": 2,
+        "name": "Slim Fit Jeans",
+        "price": 1899,
+        "image": "images/men/jeans/jeans1.jpg",
+        "category": "men",
+        "mood": "casual",
+        "description": "Modern slim fit jeans with comfortable stretch.",
+        "stock": 20,
+        "sizes": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Slim Fit Jeans",
+        "price": 1899,
+        "image": "images/men/jeans/jeans1.jpg",
+        "category": "men",
+        "mood": "casual",
+        "description": "Modern slim fit jeans with comfortable stretch.",
+        "stock": 20,
+        "sizes": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Slim Fit Jeans",
+        "price": 1899,
+        "image": "images/men/jeans/jeans1.jpg",
+        "category": "men",
+        "mood": "casual",
+        "description": "Modern slim fit jeans with comfortable stretch.",
+        "stock": 20,
+        "sizes": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36"
+        ],
+        "selectedSize": "28",
+        "quantity": 1
+      }
+    ],
+    "total": 6646.2,
+    "loyalty": 66,
+    "status": "placed",
+    "date": "2026-03-27T18:33:48.834Z",
+    "customerInfo": {},
+    "trackingNumber": "SOPJTXL38UWF"
   }
 ]

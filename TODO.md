@@ -1,16 +1,37 @@
-# Fix Reels Comment Panel Overlap Issue
+# Navbar Myntra-Style Update - IMPLEMENTATION TRACKER
 
-## Issue Summary
-When opening the comment section on the first reel and scrolling to the next reel, the comment panel of the first reel remains visible and overlaps the second reel.
+## Status: [IN PROGRESS] (Approved by user)
 
-## Root Cause
-1. Missing scroll-based comment closing logic in `handleScroll()` function
-2. No IntersectionObserver callback to close comments when reel goes out of view
-3. Each reel's comment panel isn't automatically closed when scrolling to a different reel
+## Steps (5/5 Complete)
 
-## Plan
-- [ ] 1. Add `closeAllComments()` function to close all open comment panels
-- [ ] 2. Update `handleScroll()` to close comments when scrolling to a different reel
-- [ ] 3. Update IntersectionObserver to close comments when reel becomes invisible
-- [ ] 4. Update keyboard navigation (`scrollToReel`) to close comments
-- [ ] 5. Ensure comment panel is properly positioned within each reel
+
+### 1. [x] Update css/style.css
+
+- nav-links li a padding: 0 20px
+- Confirm .search-icon svg stroke-width: 1 (thin)
+- Ensure desktop nav-actions icons-only gap:16px
+
+### 2. [x] Update index.html
+
+- Replace search-icon SVG: stroke='#282c3f' stroke-width='1'
+
+### 3. [x] Update js/main.js
+
+- searchBtn.innerHTML: thin black loupe SVG (no emoji)
+
+### 4. [x] Test navbar
+
+- Open index.html, verify responsive navbar, search icons (desktop/mobile), spacing
+
+### 5. [x] Mark complete & cleanup
+
+- Update this TODO.md all [x]
+- Verify across pages if needed
+
+## Files to Edit
+- css/style.css
+- index.html  
+- js/main.js
+- TODO.md (self)
+
+**Next:** Execute step-by-step, update checklist after each.

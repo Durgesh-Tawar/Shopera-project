@@ -79,22 +79,9 @@ checkWishlistReminder();
 function initializeSearch() {
     if (!searchBar) return;
     
-    // Create search container wrapper
+    // Use the existing parent container
     const navSearch = searchBar.parentElement;
     navSearch.classList.add('search-container');
-    
-    // Create search wrapper
-    const searchWrapper = document.createElement('div');
-    searchWrapper.className = 'search-wrapper';
-    searchBar.parentNode.insertBefore(searchWrapper, searchBar);
-    searchWrapper.appendChild(searchBar);
-    
-    // Create search icon button
-    const searchBtn = document.createElement('button');
-    searchBtn.className = 'search-icon-btn';
-    searchBtn.innerHTML = '🔍';
-    searchBtn.title = 'Search';
-    searchWrapper.appendChild(searchBtn);
     
     // Create dropdown container
     const dropdown = document.createElement('div');
@@ -118,14 +105,19 @@ function initializeSearch() {
         }
     });
     
-    // Search on icon click - Smart Navigation
-    searchBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const query = searchBar.value.trim();
-        if (query) {
-            handleSmartSearch(query);
-        }
-    });
+    // Allow the left search icon to also trigger search
+    const leftSearchIcon = navSearch.querySelector('.search-icon');
+    if (leftSearchIcon) {
+        leftSearchIcon.style.cursor = 'pointer';
+        leftSearchIcon.style.pointerEvents = 'auto'; // allow click
+        leftSearchIcon.addEventListener('click', (e) => {
+            e.preventDefault();
+            const query = searchBar.value.trim();
+            if (query) {
+                handleSmartSearch(query);
+            }
+        });
+    }
     
     // Live search with debounce
     searchBar.addEventListener('input', (e) => {
