@@ -152,53 +152,103 @@ function initializeSearch() {
 // =========================================
 
 // Handle smart search - determines where to redirect
+// Subcategory keywords mapping for smart search
+const subcategoryKeywords = {
+    't-shirts': ['tshirt', 't-shirt', 't shirt', 'tee', 'tees'],
+    'casual-shirts': ['casual shirt'],
+    'formal-shirts': ['formal shirt'],
+    'sweaters': ['sweater', 'pullover', 'winter wear'],
+    'jackets': ['jacket', 'coat', 'blazer', 'hoodie'],
+    'kurtas': ['kurta', 'kurta set'],
+    'sherwanis': ['sherwani'],
+    'nehru-jackets': ['nehru jacket'],
+    'jeans': ['jeans', 'jean', 'denim'],
+    'casual-trousers': ['casual trouser', 'chinos', 'jogger'],
+    'formal-trousers': ['formal trouser', 'pant', 'trousers'],
+    'shorts': ['short', 'shorts'],
+    'briefs': ['brief', 'trunk', 'underwear'],
+    'boxers': ['boxer'],
+    'sleepwear': ['sleepwear', 'loungewear', 'pajama'],
+    'dresses': ['dress', 'frock', 'maxi'],
+    'tops': ['top', 'blouse', 'crop top', 'tunic'],
+    'skirts': ['skirt'],
+    'sarees': ['saree', 'sari', 'lehenga'],
+    'suits': ['suit', 'salwar'],
+    'gowns': ['gown'],
+    'ethnic': ['ethnic', 'traditional', 'festive'],
+    'sets': ['set', 'outfit', 'clothing set']
+};
+
 function handleSmartSearch(query) {
     const searchTerm = query.toLowerCase().trim();
     
-    // Step 1: Check for exact category matches
-    const categoryMatch = findCategoryMatch(searchTerm);
-    if (categoryMatch) {
-        redirectToCategory(categoryMatch);
-        return;
-    }
-    
-    // Step 2: Check for section matches
-    const sectionMatch = findSectionMatch(searchTerm);
-    if (sectionMatch) {
-        redirectToSection(sectionMatch);
-        return;
-    }
-    
-    // Step 3: Check for specific product
-    const productMatch = findProductMatch(searchTerm);
+    // Step 1: Check for exact product match
+    const productMatch = products.find(p => p.name.toLowerCase() === searchTerm);
     if (productMatch) {
         redirectToProduct(productMatch);
         return;
     }
     
-    // Step 4: Redirect to search page with filters
-    redirectToSearchPage(searchTerm);
-}
-
-// Find category match (men/women/kids)
-function findCategoryMatch(searchTerm) {
+    // Step 2: Try to extract category AND subcategory from query
+    let foundCategory = null;
+    let foundSubcategory = null;
+    
     const categories = ['men', 'women', 'kids'];
     for (const cat of categories) {
         const aliases = sectionKeywords[cat] || [];
-        if (aliases.some(alias => searchTerm === alias || searchTerm.includes(alias))) {
-            return cat;
+        // Use regex word boundary
+        if (aliases.some(alias => new RegExp(`\\b${alias}\\b`).test(searchTerm))) {
+            foundCategory = cat;
+            break;
         }
     }
-    return null;
+    
+    for (const [subcat, aliases] of Object.entries(subcategoryKeywords)) {
+        if (aliases.some(alias => searchTerm.includes(alias))) {
+            foundSubcategory = subcat;
+            break;
+        }
+    }
+    
+    if (!foundSubcategory) {
+        const fallbackSection = findSectionMatch(searchTerm);
+        if (fallbackSection) foundSubcategory = fallbackSection;
+    }
+
+    // Redirect logic
+    if (foundCategory && foundSubcategory) {
+        window.location.href = `index.html?category=${foundCategory}&subcategory=${foundSubcategory}`;
+        return;
+    } else if (foundCategory && !foundSubcategory) {
+        window.location.href = `index.html?category=${foundCategory}`;
+        return;
+    } else if (!foundCategory && foundSubcategory) {
+        // Find implicit category from product data
+        const sampleProduct = products.find(p => p.subcategory === foundSubcategory);
+        if (sampleProduct) {
+            window.location.href = `index.html?category=${sampleProduct.category}&subcategory=${foundSubcategory}`;
+        } else {
+            window.location.href = `index.html?subcategory=${foundSubcategory}`;
+        }
+        return;
+    }
+    
+    // Step 3: Partial product match
+    const partialProductMatch = findProductMatch(searchTerm);
+    if (partialProductMatch) {
+        redirectToProduct(partialProductMatch);
+        return;
+    }
+    
+    // Step 4: No matches found
+    // Instead of redirecting to a blank search page, we show the "Product not found" dropdown directly
+    performSearch(searchTerm, false);
 }
 
-// Find section match (shirts, dresses, etc.)
+// Find section match (fallback)
 function findSectionMatch(searchTerm) {
     for (const [section, aliases] of Object.entries(sectionKeywords)) {
-        // Skip category keywords
         if (['men', 'women', 'kids'].includes(section)) continue;
-        
-        // Check if search term matches any alias
         for (const alias of aliases) {
             if (searchTerm === alias || searchTerm.includes(alias)) {
                 return section;
@@ -251,7 +301,8 @@ function handleURLParams() {
     // Handle category parameter
     if (params.has('category')) {
         const category = params.get('category');
-        filterByCategoryFromURL(category);
+        const subcategory = params.get('subcategory') || "";
+        filterByCategoryFromURL(category, subcategory);
     }
     
     // Handle section parameter
@@ -268,7 +319,7 @@ function handleURLParams() {
 }
 
 // Filter by category from URL
-function filterByCategoryFromURL(category) {
+function filterByCategoryFromURL(category, subcategory = "") {
     // Update tab buttons
     tabBtns.forEach(btn => {
         btn.classList.remove('active');
@@ -276,6 +327,15 @@ function filterByCategoryFromURL(category) {
             btn.classList.add('active');
         }
     });
+
+    // Update the title if subcategory exists
+    const productsTitle = document.querySelector('.products h2');
+    if (productsTitle && subcategory) {
+        const formattedSub = subcategory.replace(/-/g, ' ').toUpperCase();
+        productsTitle.textContent = `${formattedSub} FOR ${category.toUpperCase()}`;
+    } else if (productsTitle) {
+        productsTitle.textContent = "Trending Products";
+    }
     
     // Scroll to products section
     const productsSection = document.getElementById('products');
@@ -284,7 +344,7 @@ function filterByCategoryFromURL(category) {
     }
     
     // Render filtered products
-    renderProducts(category, "");
+    renderProducts(category, "", subcategory);
 }
 
 // Filter by section from URL (filters by mood)
@@ -428,20 +488,25 @@ function performSearch(query, isLive = false) {
         return;
     }
     
-    // Enhanced search - matches name, category, and mood (tags)
+    // Enhanced search - matches name, category, subcategory, and mood (tags)
     const filtered = products.filter(product => {
         const nameMatch = product.name.toLowerCase().includes(searchTerm);
         const categoryMatch = product.category.toLowerCase().includes(searchTerm);
+        const subcatMatch = product.subcategory && product.subcategory.toLowerCase().includes(searchTerm);
         const moodMatch = product.mood && product.mood.toLowerCase().includes(searchTerm);
         
-        return nameMatch || categoryMatch || moodMatch;
+        return nameMatch || categoryMatch || subcatMatch || moodMatch;
     });
     
     // Show results
     if (filtered.length > 0) {
         showSearchResults(filtered, searchTerm, isLive);
     } else {
-        showNoResults(searchTerm);
+        if (isLive) {
+            hideSearchDropdown();
+        } else {
+            showNoResults(searchTerm);
+        }
     }
 }
 
@@ -686,7 +751,7 @@ if (window.location.pathname.includes('wishlist.html')) {
 // PRODUCT RENDERING
 // =========================================
 
-function renderProducts(filter = "all", search = "") {
+function renderProducts(filter = "all", search = "", subcategory = "") {
     if (!productGrid) return;
     
     productGrid.innerHTML = "";
@@ -694,7 +759,11 @@ function renderProducts(filter = "all", search = "") {
     let filtered = products.filter(p => {
         let catMatch = (filter === "all") ? true : p.category === filter;
         let searchMatch = p.name.toLowerCase().includes(search.toLowerCase());
-        return catMatch && searchMatch;
+        let subcatMatch = true;
+        if (subcategory) {
+            subcatMatch = p.subcategory === subcategory;
+        }
+        return catMatch && searchMatch && subcatMatch;
     });
 
     if (filtered.length === 0) {
@@ -720,28 +789,13 @@ function renderProducts(filter = "all", search = "") {
         }
         
         // Generate badges
-        let badgesHTML = '';
-        if (p.category === "men") badgesHTML += `<span class="product-badge">Men's</span>`;
-        else if (p.category === "women") badgesHTML += `<span class="product-badge">Women's</span>`;
-        else if (p.category === "kids") badgesHTML += `<span class="product-badge">Kids</span>`;
-        
-        if (p.discount && p.discount > 0) {
-            badgesHTML += `<span class="discount-badge">-${p.discount}%</span>`;
-        }
+        let badgesInner = '';
         
         if (p.isNew) {
-            badgesHTML = `<span class="new-badge">New</span>` + badgesHTML;
+            badgesInner = `<span class="new-badge">New</span>` + badgesInner;
         }
         
-        // Color swatches
-        let colorSwatchesHTML = '';
-        if (p.colors && p.colors.length > 0) {
-            colorSwatchesHTML = `<div class="color-swatches">`;
-            p.colors.forEach((color, i) => {
-                colorSwatchesHTML += `<div class="color-swatch ${i === 0 ? 'active' : ''}" style="background-color: ${color}" title="${color}"></div>`;
-            });
-            colorSwatchesHTML += `</div>`;
-        }
+        let badgesHTML = badgesInner ? `<div class="badges-container">${badgesInner}</div>` : '';
         
         // Price
         let priceHTML = `<span class="price">₹${p.price.toLocaleString()}</span>`;
@@ -759,7 +813,6 @@ function renderProducts(filter = "all", search = "") {
             <div class="product-info">
                 <h3 onclick="viewProduct(${p.id})" style="cursor:pointer">${p.name}</h3>
                 <div class="product-rating">${starsHTML}<span class="rating-count">(${ratingCount})</span></div>
-                ${colorSwatchesHTML}
                 ${priceHTML}
                 <div class="product-actions">
                     <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
@@ -935,6 +988,15 @@ tabBtns.forEach(btn => {
     btn.addEventListener("click", () => {
         tabBtns.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
+        
+        let subcategory = "";
+        
+        // Reset title
+        const productsTitle = document.querySelector('.products h2');
+        if (productsTitle) {
+            productsTitle.textContent = "Trending Products";
+        }
+        
         renderProducts(btn.dataset.category, searchBar ? searchBar.value : "");
     });
 });
@@ -956,6 +1018,12 @@ function filterCategory(category) {
     // Scroll to products section
     document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
     
+    // Reset title
+    const productsTitle = document.querySelector('.products h2');
+    if (productsTitle) {
+        productsTitle.textContent = "Trending Products";
+    }
+
     // Render filtered products
     renderProducts(category, searchBar ? searchBar.value : "");
 }
@@ -1064,4 +1132,64 @@ if (typeof products !== 'undefined' && products.length > 0) {
 // Initialize enhanced search after products are loaded
 setTimeout(() => {
     initializeSearch();
+    initializeVoiceSearch();
 }, 100);
+
+// =========================================
+// VOICE SEARCH INITIALIZATION
+// =========================================
+
+function initializeVoiceSearch() {
+    const micIcon = document.getElementById('micIcon');
+    const searchBarElement = document.getElementById('searchBar');
+    
+    if (!micIcon || !searchBarElement) return;
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        micIcon.style.display = 'none';
+        console.warn('Speech Recognition not supported in this browser.');
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-IN'; // Better for Indian context
+
+    micIcon.addEventListener('click', (e) => {
+        e.preventDefault();
+        try {
+            recognition.start();
+            micIcon.classList.add('listening');
+            searchBarElement.placeholder = "Listening...";
+        } catch (error) {
+            console.error('Speech recognition error', error);
+        }
+    });
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.trim().replace(/\.$/, ''); // Remove trailing dot if added
+        searchBarElement.value = transcript;
+        micIcon.classList.remove('listening');
+        searchBarElement.placeholder = "Search for products, brands and more";
+        
+        // Trigger search logic
+        if (typeof handleSmartSearch === 'function') {
+            handleSmartSearch(transcript);
+        } else if (typeof performSearch === 'function') {
+            performSearch(transcript, true);
+        }
+    };
+
+    recognition.onerror = (event) => {
+        console.error('Speech recognition error', event.error);
+        micIcon.classList.remove('listening');
+        searchBarElement.placeholder = "Search for products, brands and more";
+    };
+
+    recognition.onend = () => {
+        micIcon.classList.remove('listening');
+        searchBarElement.placeholder = "Search for products, brands and more";
+    };
+}

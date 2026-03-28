@@ -28,28 +28,15 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
 // In-memory data store (would be database in production)
-let products = [
-    // Men Category
-    {id:1, name:"Classic White Shirt", price:1299, image:"images/men/shirt/shirt1.jpg", category:"men", mood:"formal", description:"Premium quality cotton white shirt, perfect for formal occasions.", stock:15, sizes:["S","M","L","XL","XXL"]},
-    {id:2, name:"Slim Fit Jeans", price:1899, image:"images/men/jeans/jeans1.jpg", category:"men", mood:"casual", description:"Modern slim fit jeans with comfortable stretch.", stock:20, sizes:["28","30","32","34","36"]},
-    {id:3, name:"Navy Blazer", price:3499, image:"images/men/jacket/jacket1.jpg", category:"men", mood:"formal", description:"Elegant navy blazer for professional look.", stock:8, sizes:["S","M","L","XL"]},
-    {id:4, name:"Casual T-Shirt", price:599, image:"images/men/t-shirt/t-shirt1.jpg", category:"men", mood:"casual", description:"Soft cotton t-shirt for everyday comfort.", stock:50, sizes:["S","M","L","XL","XXL"]},
-    {id:5, name:"Leather Belt", price:499, image:"images/men/accessories/1.jpg", category:"men", mood:"formal", description:"Genuine leather belt with silver buckle.", stock:25, sizes:["S","M","L"]},
-    
-    // Women Category
-    {id:6, name:"Floral Summer Dress", price:1599, image:"images/women/kurti/kurti1.jpg", category:"women", mood:"party", description:"Beautiful floral print summer dress.", stock:12, sizes:["XS","S","M","L","XL"]},
-    {id:7, name:"High-Waist Jeans", price:1799, image:"images/women/jeans/jeans1.jpg", category:"women", mood:"casual", description:"Trendy high-waist jeans for women.", stock:18, sizes:["26","28","30","32","34"]},
-    {id:8, name:"Elegant Silk Saree", price:3999, image:"images/women/saree/saree1.jpg", category:"women", mood:"formal", description:"Luxurious silk saree with elegant design.", stock:5, sizes:["Free Size"]},
-    {id:9, name:"Crop Top", price:699, image:"images/women/tops/top1.jpg", category:"women", mood:"party", description:"Stylish crop top for party wear.", stock:30, sizes:["XS","S","M","L"]},
-    {id:10, name:"Leather Handbag", price:2499, image:"images/women/tops/top3.jpg", category:"women", mood:"formal", description:"Premium leather handbag with multiple compartments.", stock:10, sizes:["One Size"]},
-    
-    // Kids Category
-    {id:11, name:"Kids Denim Set", price:999, image:"images/kids/boy/boy1.jpg", category:"kids", mood:"casual", description:"Cute denim set for kids.", stock:15, sizes:["2-3Y","4-5Y","6-7Y","8-9Y"]},
-    {id:12, name:"Cartoon T-Shirt", price:499, image:"images/kids/boy/boy2.jpg", category:"kids", mood:"casual", description:"Fun cartoon print t-shirt for kids.", stock:40, sizes:["2-3Y","4-5Y","6-7Y","8-9Y","10-11Y"]},
-    {id:13, name:"Kids Frock", price:1199, image:"images/kids/girl/girl1.jpg", category:"kids", mood:"party", description:"Beautiful party frock for kids.", stock:12, sizes:["2-3Y","4-5Y","6-7Y","8-9Y"]},
-    {id:14, name:"Kids Sport Shoes", price:899, image:"images/kids/boy/boy3.jpg", category:"kids", mood:"casual", description:"Comfortable sport shoes for active kids.", stock:20, sizes:["26","28","30","32","34"]},
-    {id:15, name:"Kids Winter Jacket", price:1499, image:"images/kids/boy/boy4.jpg", category:"kids", mood:"casual", description:"Warm winter jacket for kids.", stock:10, sizes:["2-3Y","4-5Y","6-7Y","8-9Y","10-11Y"]},
-];
+// Load products dynamically from data.js so both frontend & backend are synced
+let products = [];
+try {
+    const dataJsContent = fs.readFileSync(path.join(__dirname, 'js', 'data.js'), 'utf8');
+    const jsonStr = dataJsContent.replace('window.products = ', '').replace(/;\s*$/, '');
+    products = JSON.parse(jsonStr);
+} catch (e) {
+    console.error('Could not load products from data.js:', e);
+}
 
 // Initialize orders from localStorage file or empty array
 let orders = [];
