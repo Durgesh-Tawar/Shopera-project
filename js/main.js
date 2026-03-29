@@ -311,10 +311,14 @@ function handleURLParams() {
     const productsSection = document.getElementById('products');
 
     // Default: Show home content if no params except maybe 'welcome'
-    let isHome = !params.has('category') && !params.has('section') && !params.has('search') && !params.has('q');
+    let isHome = !params.has('category') && !params.has('subcategory') && !params.has('section') && !params.has('search') && !params.has('q');
     
     if (homeContent) {
         homeContent.style.display = isHome ? 'block' : 'none';
+    }
+    
+    if (heroSlider) {
+        heroSlider.style.display = isHome ? 'block' : 'none';
     }
     
     if (productsSection) {
