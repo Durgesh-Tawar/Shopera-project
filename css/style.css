@@ -2436,3 +2436,188 @@ body {
         display: none;
     }
 }
+
+/* Myntra-style Homepage Sections */
+#homeContent {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 5%;
+}
+
+.home-section {
+    margin-bottom: 50px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #282c3f;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Deals Grid */
+.deals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.deal-card {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    display: block;
+}
+
+.deal-card:hover {
+    transform: translateY(-5px);
+}
+
+.deal-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.deal-info {
+    padding: 10px;
+    text-align: center;
+    background: #fff;
+}
+
+.brand-logo {
+    height: 25px;
+    margin-bottom: 5px;
+    object-fit: contain;
+}
+
+.deal-info h3 {
+    font-size: 1rem;
+    color: #282c3f;
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Category Circles */
+.category-circles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.cat-circle {
+    text-align: center;
+    text-decoration: none;
+    width: 160px;
+}
+
+.circle-img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 8px;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.cat-circle:hover .circle-img {
+    border-color: #ff3f6c;
+    transform: scale(1.05);
+}
+
+.circle-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cat-circle span {
+    font-weight: 600;
+    color: #282c3f;
+    font-size: 0.8rem;
+}
+
+/* Brands Grid */
+.brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.brand-card {
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 220px;
+    text-decoration: none;
+}
+
+.brand-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.brand-card:hover img {
+    transform: scale(1.1);
+}
+
+.brand-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 12px;
+    color: white;
+}
+
+.brand-logo-small {
+    height: 15px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 4px;
+    filter: brightness(0) invert(1);
+}
+
+.brand-name {
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.brand-overlay p {
+    margin: 0;
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .deals-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .brands-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .category-circles {
+        gap: 20px;
+    }
+    .cat-circle {
+        width: 120px;
+    }
+    .circle-img {
+        width: 120px;
+        height: 120px;
+    }
+}

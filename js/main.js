@@ -71,6 +71,15 @@ updateWishlistBadge();
 // Check wishlist reminder (7 days)
 checkWishlistReminder();
 
+// Initialize products and search
+fetchProducts();
+initializeSearch();
+
+// Initialize voice search if supported
+if (typeof initializeVoiceSearch === 'function') {
+    initializeVoiceSearch();
+}
+
 // =========================================
 // ENHANCED SEARCH FUNCTIONALITY
 // =========================================
@@ -297,7 +306,21 @@ function redirectToSearchPage(searchTerm) {
 // Handle URL parameters on page load
 function handleURLParams() {
     const params = new URLSearchParams(window.location.search);
+    const homeContent = document.getElementById('homeContent');
+    const heroSlider = document.getElementById('heroSlider');
+    const productsSection = document.getElementById('products');
+
+    // Default: Show home content if no params except maybe 'welcome'
+    let isHome = !params.has('category') && !params.has('section') && !params.has('search') && !params.has('q');
     
+    if (homeContent) {
+        homeContent.style.display = isHome ? 'block' : 'none';
+    }
+    
+    if (productsSection) {
+        productsSection.style.display = isHome ? 'none' : 'block';
+    }
+
     // Handle category parameter
     if (params.has('category')) {
         const category = params.get('category');
@@ -644,15 +667,15 @@ async function fetchProducts() {
         const response = await fetch(`${API_URL}/products`);
         if (!response.ok) throw new Error('API not available');
         products = await response.json();
-        renderProducts();
+        handleURLParams(); // Use URL params for initial render
     } catch (error) {
         console.log('Using local data (API not available)');
         // Use local products from data.js
         if (typeof window.products !== 'undefined' && window.products.length > 0) {
             products = window.products;
-            renderProducts();
+            handleURLParams(); // Use URL params for initial render
         } else if (typeof products !== 'undefined' && products.length > 0) {
-            renderProducts();
+            handleURLParams(); // Use URL params for initial render
         } else {
             productGrid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: #888;">No products available</p>';
         }
