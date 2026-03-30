@@ -7,17 +7,16 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
 <link rel="stylesheet" href="css/style.css">
 <style>
-/* Mood Filter Styles */
-.mood-filter {
+.mood-filter, .category-filter {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
 }
 
-.mood-btn {
-    padding: 12px 25px;
+.mood-btn, .cat-btn {
+    padding: 10px 20px;
     border: 2px solid #ff3f6c;
     background: transparent;
     color: #ff3f6c;
@@ -25,10 +24,11 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 14px;
+    font-size: 13px;
 }
 
-.mood-btn.active, .mood-btn:hover {
+.mood-btn.active, .mood-btn:hover,
+.cat-btn.active, .cat-btn:hover {
     background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
     color: white;
     border-color: transparent;
@@ -59,6 +59,46 @@
     text-align: center;
     font-size: 2rem;
     margin-bottom: 10px;
+}
+
+/* Standard Product Action Styles */
+.product-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.add-btn, .buy-now-btn {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.add-btn {
+    background: #2d3436;
+    color: white;
+}
+
+.add-btn:hover {
+    background: #ff3f6c;
+}
+
+.buy-now-btn {
+    background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
+    color: white;
+    box-shadow: 0 5px 15px rgba(255, 63, 108, 0.4);
+}
+
+.buy-now-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 63, 108, 0.5);
 }
 </style>
 </head>
@@ -224,12 +264,21 @@
         <p>Find the perfect outfit for any occasion</p>
     </div>
 
+    <!-- Category Selection -->
+    <div class="category-filter">
+        <button class="cat-btn active" data-category="all">All</button>
+        <button class="cat-btn" data-category="men">Men</button>
+        <button class="cat-btn" data-category="women">Women</button>
+        <button class="cat-btn" data-category="kids">Kids</button>
+    </div>
+
     <!-- Mood Filter Buttons -->
     <div class="mood-filter">
-        <button class="mood-btn active" data-mood="all">All</button>
+        <button class="mood-btn active" data-mood="all">All Moods</button>
         <button class="mood-btn" data-mood="party">🎉 Party Wear</button>
         <button class="mood-btn" data-mood="casual">👕 Casual Wear</button>
         <button class="mood-btn" data-mood="formal">👔 Formal Wear</button>
+        <button class="mood-btn" data-mood="combo">🎁 Combo Offers</button>
     </div>
 
     <div class="product-grid" id="moodGrid"></div>
@@ -267,17 +316,23 @@ navLinks.querySelectorAll('a').forEach(link => {
 
 const moodGrid = document.getElementById("moodGrid");
 const moodBtns = document.querySelectorAll('.mood-btn');
+const catBtns = document.querySelectorAll('.cat-btn');
 const searchBar = document.getElementById("searchBar");
+let currentMood = 'all';
+let currentCategory = 'all';
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
-// Render products with mood filter
-function renderMoodProducts(mood = 'all', search = '') {
+// Render products with mood and category filter
+function renderMoodProducts() {
     moodGrid.innerHTML = "";
+    const search = searchBar.value.toLowerCase();
     
     let filtered = products.filter(p => {
-        let moodMatch = (mood === 'all') ? true : p.mood === mood;
-        let searchMatch = p.name.toLowerCase().includes(search.toLowerCase());
-        return moodMatch && searchMatch;
+        let moodMatch = (currentMood === 'all') ? true : p.mood === currentMood;
+        let catMatch = (currentCategory === 'all') ? true : p.category === currentCategory;
+        let searchMatch = p.name.toLowerCase().includes(search);
+        return moodMatch && catMatch && searchMatch;
     });
 
     if (filtered.length === 0) {
@@ -285,36 +340,105 @@ function renderMoodProducts(mood = 'all', search = '') {
         return;
     }
 
-    filtered.forEach(p => {
+    filtered.forEach((p, index) => {
         const div = document.createElement("div");
         div.classList.add("product-card");
+        div.style.animationDelay = `${index * 0.05}s`;
         
-        // Get category badge
-        let catBadge = "";
-        if (p.category === 'men') catBadge = "Men's";
-        else if (p.category === 'women') catBadge = "Women's";
-        else if (p.category === 'kids') catBadge = "Kids";
+        const inWishlist = wishlist.some(w => w.id === p.id);
+        const wishlistBtn = inWishlist ? '❤️' : '🤍';
+        const wishlistClass = inWishlist ? 'active' : '';
         
+        // Generate rating stars
+        const rating = p.rating || 4;
+        const ratingCount = p.ratingCount || Math.floor(Math.random() * 100) + 10;
+        let starsHTML = '';
+        for (let i = 1; i <= 5; i++) {
+            starsHTML += i <= rating ? '<span class="star">★</span>' : '<span class="star empty">★</span>';
+        }
+
         // Get mood badge
         let moodBadge = "";
         if (p.mood === 'party') moodBadge = "🎉 Party";
         else if (p.mood === 'casual') moodBadge = "👕 Casual";
         else if (p.mood === 'formal') moodBadge = "👔 Formal";
+        else if (p.mood === 'combo') moodBadge = "🎁 Combo";
         
         div.innerHTML = `
             <div class="product-image">
-                <span class="product-badge">${catBadge}</span>
+                <button class="wishlist-btn ${wishlistClass}" onclick="toggleWishlist(event, ${p.id})" title="Add to Wishlist">${wishlistBtn}</button>
+                <button class="quick-view-btn" onclick="viewProduct(${p.id})">Quick View 👁</button>
+                <img src="${p.image}" alt="${p.name}" onclick="viewProduct(${p.id})" style="cursor:pointer">
                 <span class="mood-badge" style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:white;padding:3px 8px;border-radius:10px;font-size:10px;">${moodBadge}</span>
-                <img src="${p.image}" alt="${p.name}">
             </div>
             <div class="product-info">
-                <h3>${p.name}</h3>
-                <span class="price">₹${p.price.toLocaleString()}</span>
-                <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+                <h3 onclick="viewProduct(${p.id})" style="cursor:pointer">${p.name}</h3>
+                <div class="product-rating">${starsHTML}<span class="rating-count">(${ratingCount})</span></div>
+                <div class="price-section"><span class="price">₹${p.price.toLocaleString()}</span></div>
+                <div class="product-actions">
+                    <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+                    <button class="buy-now-btn" onclick="buyNow(${p.id})">Buy Now ⚡</button>
+                </div>
             </div>
         `;
         moodGrid.appendChild(div);
     });
+}
+
+function viewProduct(id) {
+    window.location.href = `product.html?id=${id}`;
+}
+
+function buyNow(id) {
+    const product = products.find(p => p.id === id);
+    if (product) {
+        cart.push(product);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartBadge();
+        showToast(`Redirecting to checkout...`);
+        setTimeout(() => {
+            window.location.href = 'cart.html';
+        }, 500);
+    }
+}
+
+function toggleWishlist(event, id) {
+    event.stopPropagation();
+    const product = products.find(p => p.id === id);
+    if (!product) return;
+    const index = wishlist.findIndex(w => w.id === id);
+    if (index > -1) {
+        wishlist.splice(index, 1);
+        showToast(`${product.name} removed from wishlist`);
+    } else {
+        wishlist.push(product);
+        showToast(`${product.name} added to wishlist ❤️`);
+    }
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    updateWishlistBadge();
+    renderMoodProducts();
+}
+
+function updateCartBadge() {
+    const badge = document.getElementById('cartBadge');
+    if (badge) badge.textContent = cart.length;
+}
+
+function updateWishlistBadge() {
+    // Check if there's a wishlist badge to update
+    const wishlistLink = document.querySelector('a[href="wishlist.html"] .action-icon');
+    if (wishlistLink) {
+        let badge = document.querySelector('.wishlist-badge');
+        if (!badge && wishlist.length > 0) {
+            badge = document.createElement("span");
+            badge.className = "cart-badge wishlist-badge";
+            wishlistLink.parentElement.appendChild(badge);
+        }
+        if (badge) {
+            badge.textContent = wishlist.length;
+            if (wishlist.length === 0) badge.remove();
+        }
+    }
 }
 
 // Mood button click handlers
@@ -322,26 +446,39 @@ moodBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         moodBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        renderMoodProducts(btn.dataset.mood, searchBar.value);
+        currentMood = btn.dataset.mood;
+        renderMoodProducts();
+    });
+});
+
+// Category button click handlers
+catBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        catBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.dataset.category;
+        renderMoodProducts();
     });
 });
 
 // Search functionality
 if (searchBar) {
     searchBar.addEventListener('input', () => {
-        let activeMood = document.querySelector(".mood-btn.active").dataset.mood;
-        renderMoodProducts(activeMood, searchBar.value);
+        renderMoodProducts();
     });
 }
 
 // Initial render
 renderMoodProducts();
+updateCartBadge();
+updateWishlistBadge();
 
 // Add to Cart function
 function addToCart(id) {
     const product = products.find(p => p.id === id);
     cart.push(product);
     localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartBadge();
     showToast(`${product.name} added to cart!`);
 }
 
