@@ -2455,7 +2455,7 @@ window.products = [
         "price": 3273,
         "originalPrice": 4254,
         "discount": 32,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/dresses/women_dress_1_1774862896208.png",
         "category": "women",
         "mood": "party",
         "subcategory": "dresses",
@@ -2470,8 +2470,12 @@ window.products = [
         "ratingCount": 312,
         "isNew": false,
         "colors": [
-            "#2ecc71",
-            "#3498db"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2480,7 +2484,7 @@ window.products = [
         "price": 3854,
         "originalPrice": 5010,
         "discount": 10,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/dresses/women_dress_2_1774862930732.png",
         "category": "women",
         "mood": "party",
         "subcategory": "dresses",
@@ -2495,8 +2499,12 @@ window.products = [
         "ratingCount": 392,
         "isNew": true,
         "colors": [
-            "#282c3f",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2505,7 +2513,7 @@ window.products = [
         "price": 2207,
         "originalPrice": 2869,
         "discount": 30,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/dresses/women_dress_1_1774862896208.png",
         "category": "women",
         "mood": "party",
         "subcategory": "dresses",
@@ -2521,7 +2529,11 @@ window.products = [
         "isNew": false,
         "colors": [
             "#000000",
-            "#000000"
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2530,7 +2542,7 @@ window.products = [
         "price": 2613,
         "originalPrice": 3396,
         "discount": 36,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/dresses/women_dress_2_1774862930732.png",
         "category": "women",
         "mood": "party",
         "subcategory": "dresses",
@@ -2545,8 +2557,12 @@ window.products = [
         "ratingCount": 480,
         "isNew": true,
         "colors": [
+            "#000000",
             "#ffffff",
-            "#3498db"
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2555,7 +2571,7 @@ window.products = [
         "price": 3161,
         "originalPrice": 4109,
         "discount": 27,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/dresses/women_dress_1_1774862896208.png",
         "category": "women",
         "mood": "party",
         "subcategory": "dresses",
@@ -2570,8 +2586,12 @@ window.products = [
         "ratingCount": 166,
         "isNew": false,
         "colors": [
-            "#282c3f",
-            "#282c3f"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2580,7 +2600,7 @@ window.products = [
         "price": 2140,
         "originalPrice": 2782,
         "discount": 31,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/dresses/women_dress_2_1774862930732.png",
         "category": "women",
         "mood": "combo",
         "subcategory": "dresses",
@@ -2595,8 +2615,12 @@ window.products = [
         "ratingCount": 318,
         "isNew": true,
         "colors": [
-            "#282c3f",
-            "#3498db"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2605,7 +2629,7 @@ window.products = [
         "price": 2052,
         "originalPrice": 2667,
         "discount": 23,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/dresses/women_dress_1_1774862896208.png",
         "category": "women",
         "mood": "party",
         "subcategory": "dresses",
@@ -2620,8 +2644,12 @@ window.products = [
         "ratingCount": 500,
         "isNew": false,
         "colors": [
-            "#3498db",
-            "#ff3f6c"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2630,7 +2658,7 @@ window.products = [
         "price": 2389,
         "originalPrice": 3105,
         "discount": 12,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/dresses/women_dress_2_1774862930732.png",
         "category": "women",
         "mood": "party",
         "subcategory": "dresses",
@@ -2645,8 +2673,12 @@ window.products = [
         "ratingCount": 130,
         "isNew": false,
         "colors": [
-            "#ff3f6c",
-            "#000000"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2655,7 +2687,7 @@ window.products = [
         "price": 798,
         "originalPrice": 1037,
         "discount": 38,
-        "image": "images/women/tops/top1.jpg",
+        "image": "images/women/tops/women_top_1_1774862955784.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "tops",
@@ -2670,8 +2702,12 @@ window.products = [
         "ratingCount": 166,
         "isNew": false,
         "colors": [
-            "#ff3f6c",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2680,7 +2716,7 @@ window.products = [
         "price": 892,
         "originalPrice": 1159,
         "discount": 18,
-        "image": "images/women/tops/top1.jpg",
+        "image": "images/women/tops/women_top_2_1774862982437.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "tops",
@@ -2695,8 +2731,12 @@ window.products = [
         "ratingCount": 292,
         "isNew": false,
         "colors": [
-            "#2ecc71",
-            "#ff3f6c"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2705,7 +2745,7 @@ window.products = [
         "price": 1369,
         "originalPrice": 1779,
         "discount": 15,
-        "image": "images/women/tops/top1.jpg",
+        "image": "images/women/tops/women_top_1_1774862955784.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "tops",
@@ -2720,8 +2760,12 @@ window.products = [
         "ratingCount": 227,
         "isNew": true,
         "colors": [
-            "#ff3f6c",
-            "#000000"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2730,7 +2774,7 @@ window.products = [
         "price": 1189,
         "originalPrice": 1545,
         "discount": 27,
-        "image": "images/women/tops/top1.jpg",
+        "image": "images/women/tops/women_top_2_1774862982437.png",
         "category": "women",
         "mood": "combo",
         "subcategory": "tops",
@@ -2745,8 +2789,12 @@ window.products = [
         "ratingCount": 445,
         "isNew": false,
         "colors": [
-            "#282c3f",
-            "#ff3f6c"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2755,7 +2803,7 @@ window.products = [
         "price": 695,
         "originalPrice": 903,
         "discount": 14,
-        "image": "images/women/tops/top1.jpg",
+        "image": "images/women/tops/women_top_1_1774862955784.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "tops",
@@ -2771,7 +2819,11 @@ window.products = [
         "isNew": true,
         "colors": [
             "#000000",
-            "#2ecc71"
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2780,7 +2832,7 @@ window.products = [
         "price": 654,
         "originalPrice": 850,
         "discount": 13,
-        "image": "images/women/tops/top1.jpg",
+        "image": "images/women/tops/women_top_2_1774862982437.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "tops",
@@ -2795,8 +2847,12 @@ window.products = [
         "ratingCount": 307,
         "isNew": true,
         "colors": [
-            "#ff3f6c",
-            "#3498db"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2805,7 +2861,7 @@ window.products = [
         "price": 1044,
         "originalPrice": 1357,
         "discount": 18,
-        "image": "images/women/tops/top1.jpg",
+        "image": "images/women/tops/women_top_1_1774862955784.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "tops",
@@ -2820,8 +2876,12 @@ window.products = [
         "ratingCount": 436,
         "isNew": false,
         "colors": [
-            "#ff3f6c",
-            "#000000"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2830,7 +2890,7 @@ window.products = [
         "price": 1318,
         "originalPrice": 1713,
         "discount": 14,
-        "image": "images/women/tops/top1.jpg",
+        "image": "images/women/tops/women_top_2_1774862982437.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "tops",
@@ -2845,8 +2905,12 @@ window.products = [
         "ratingCount": 247,
         "isNew": false,
         "colors": [
-            "#3498db",
-            "#2ecc71"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2855,7 +2919,7 @@ window.products = [
         "price": 1810,
         "originalPrice": 2353,
         "discount": 17,
-        "image": "images/women/jeans/jeans1.jpg",
+        "image": "images/women/jeans/women_jeans_1_1774863773731.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "jeans",
@@ -2870,8 +2934,12 @@ window.products = [
         "ratingCount": 378,
         "isNew": false,
         "colors": [
+            "#000000",
             "#ffffff",
-            "#ffffff"
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2880,7 +2948,7 @@ window.products = [
         "price": 2275,
         "originalPrice": 2957,
         "discount": 23,
-        "image": "images/women/jeans/jeans1.jpg",
+        "image": "images/women/jeans/women_jeans_1_1774863773731.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "jeans",
@@ -2895,8 +2963,12 @@ window.products = [
         "ratingCount": 436,
         "isNew": true,
         "colors": [
-            "#ff3f6c",
-            "#2ecc71"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2905,7 +2977,7 @@ window.products = [
         "price": 1560,
         "originalPrice": 2028,
         "discount": 27,
-        "image": "images/women/jeans/jeans1.jpg",
+        "image": "images/women/jeans/women_jeans_1_1774863773731.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "jeans",
@@ -2920,8 +2992,12 @@ window.products = [
         "ratingCount": 261,
         "isNew": true,
         "colors": [
+            "#000000",
             "#ffffff",
-            "#ffffff"
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2930,7 +3006,7 @@ window.products = [
         "price": 1770,
         "originalPrice": 2301,
         "discount": 34,
-        "image": "images/women/jeans/jeans1.jpg",
+        "image": "images/women/jeans/women_jeans_1_1774863773731.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "jeans",
@@ -2945,8 +3021,12 @@ window.products = [
         "ratingCount": 410,
         "isNew": false,
         "colors": [
+            "#000000",
             "#ffffff",
-            "#3498db"
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2955,7 +3035,7 @@ window.products = [
         "price": 2151,
         "originalPrice": 2796,
         "discount": 12,
-        "image": "images/women/jeans/jeans1.jpg",
+        "image": "images/women/jeans/women_jeans_1_1774863773731.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "jeans",
@@ -2970,8 +3050,12 @@ window.products = [
         "ratingCount": 366,
         "isNew": true,
         "colors": [
-            "#2ecc71",
-            "#2ecc71"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -2980,7 +3064,7 @@ window.products = [
         "price": 1377,
         "originalPrice": 1790,
         "discount": 13,
-        "image": "images/women/jeans/jeans1.jpg",
+        "image": "images/women/jeans/women_jeans_1_1774863773731.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "jeans",
@@ -2995,8 +3079,12 @@ window.products = [
         "ratingCount": 122,
         "isNew": true,
         "colors": [
-            "#2ecc71",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3005,7 +3093,7 @@ window.products = [
         "price": 8901,
         "originalPrice": 11571,
         "discount": 29,
-        "image": "images/women/saree/saree1.jpg",
+        "image": "images/women/sarees/women_saree_1_1774863807182.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "sarees",
@@ -3016,8 +3104,12 @@ window.products = [
         "ratingCount": 250,
         "isNew": false,
         "colors": [
-            "#282c3f",
-            "#282c3f"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3026,7 +3118,7 @@ window.products = [
         "price": 3001,
         "originalPrice": 3901,
         "discount": 19,
-        "image": "images/women/saree/saree1.jpg",
+        "image": "images/women/sarees/women_saree_1_1774863807182.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "sarees",
@@ -3037,8 +3129,12 @@ window.products = [
         "ratingCount": 329,
         "isNew": false,
         "colors": [
-            "#2ecc71",
-            "#000000"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3047,7 +3143,7 @@ window.products = [
         "price": 7386,
         "originalPrice": 9601,
         "discount": 28,
-        "image": "images/women/saree/saree1.jpg",
+        "image": "images/women/sarees/women_saree_1_1774863807182.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "sarees",
@@ -3058,8 +3154,12 @@ window.products = [
         "ratingCount": 232,
         "isNew": true,
         "colors": [
+            "#000000",
             "#ffffff",
-            "#282c3f"
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3068,7 +3168,7 @@ window.products = [
         "price": 8982,
         "originalPrice": 11676,
         "discount": 17,
-        "image": "images/women/saree/saree1.jpg",
+        "image": "images/women/sarees/women_saree_1_1774863807182.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "sarees",
@@ -3079,8 +3179,12 @@ window.products = [
         "ratingCount": 170,
         "isNew": false,
         "colors": [
-            "#3498db",
-            "#ff3f6c"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3089,7 +3193,7 @@ window.products = [
         "price": 3116,
         "originalPrice": 4050,
         "discount": 27,
-        "image": "images/women/saree/saree1.jpg",
+        "image": "images/women/sarees/women_saree_1_1774863807182.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "sarees",
@@ -3100,8 +3204,12 @@ window.products = [
         "ratingCount": 89,
         "isNew": true,
         "colors": [
-            "#3498db",
-            "#2ecc71"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3110,7 +3218,7 @@ window.products = [
         "price": 3088,
         "originalPrice": 4014,
         "discount": 18,
-        "image": "images/women/saree/saree1.jpg",
+        "image": "images/women/sarees/women_saree_1_1774863807182.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "sarees",
@@ -3121,8 +3229,12 @@ window.products = [
         "ratingCount": 470,
         "isNew": false,
         "colors": [
-            "#2ecc71",
-            "#000000"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3131,7 +3243,7 @@ window.products = [
         "price": 3445,
         "originalPrice": 4478,
         "discount": 36,
-        "image": "images/women/kurti/kurti2.jpg",
+        "image": "images/women/suits/women_suit_1_1774864671615.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "suits",
@@ -3146,8 +3258,12 @@ window.products = [
         "ratingCount": 396,
         "isNew": false,
         "colors": [
-            "#3498db",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3156,7 +3272,7 @@ window.products = [
         "price": 4111,
         "originalPrice": 5344,
         "discount": 31,
-        "image": "images/women/kurti/kurti2.jpg",
+        "image": "images/women/suits/women_suit_1_1774864671615.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "suits",
@@ -3171,8 +3287,12 @@ window.products = [
         "ratingCount": 245,
         "isNew": false,
         "colors": [
-            "#ff3f6c",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3181,7 +3301,7 @@ window.products = [
         "price": 2828,
         "originalPrice": 3676,
         "discount": 26,
-        "image": "images/women/kurti/kurti2.jpg",
+        "image": "images/women/suits/women_suit_1_1774864671615.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "suits",
@@ -3196,8 +3316,12 @@ window.products = [
         "ratingCount": 148,
         "isNew": false,
         "colors": [
-            "#282c3f",
-            "#3498db"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3206,7 +3330,7 @@ window.products = [
         "price": 3953,
         "originalPrice": 5138,
         "discount": 11,
-        "image": "images/women/kurti/kurti2.jpg",
+        "image": "images/women/suits/women_suit_1_1774864671615.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "suits",
@@ -3221,8 +3345,12 @@ window.products = [
         "ratingCount": 226,
         "isNew": true,
         "colors": [
-            "#3498db",
-            "#282c3f"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3231,7 +3359,7 @@ window.products = [
         "price": 3765,
         "originalPrice": 4894,
         "discount": 12,
-        "image": "images/women/kurti/kurti2.jpg",
+        "image": "images/women/suits/women_suit_1_1774864671615.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "suits",
@@ -3247,7 +3375,11 @@ window.products = [
         "isNew": false,
         "colors": [
             "#000000",
-            "#282c3f"
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3256,7 +3388,7 @@ window.products = [
         "price": 2564,
         "originalPrice": 3333,
         "discount": 26,
-        "image": "images/women/kurti/kurti2.jpg",
+        "image": "images/women/suits/women_suit_1_1774864671615.png",
         "category": "women",
         "mood": "formal",
         "subcategory": "suits",
@@ -3271,8 +3403,12 @@ window.products = [
         "ratingCount": 338,
         "isNew": false,
         "colors": [
-            "#3498db",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3281,7 +3417,7 @@ window.products = [
         "price": 884,
         "originalPrice": 1149,
         "discount": 30,
-        "image": "images/women/jeans/jeans2.jpg",
+        "image": "images/women/skirts/women_skirt_1_1774864652177.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "skirts",
@@ -3296,8 +3432,12 @@ window.products = [
         "ratingCount": 442,
         "isNew": true,
         "colors": [
+            "#000000",
             "#ffffff",
-            "#ff3f6c"
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3306,7 +3446,7 @@ window.products = [
         "price": 1429,
         "originalPrice": 1857,
         "discount": 10,
-        "image": "images/women/jeans/jeans2.jpg",
+        "image": "images/women/skirts/women_skirt_1_1774864652177.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "skirts",
@@ -3321,8 +3461,12 @@ window.products = [
         "ratingCount": 346,
         "isNew": false,
         "colors": [
+            "#000000",
             "#ffffff",
-            "#ff3f6c"
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3331,7 +3475,7 @@ window.products = [
         "price": 870,
         "originalPrice": 1131,
         "discount": 29,
-        "image": "images/women/jeans/jeans2.jpg",
+        "image": "images/women/skirts/women_skirt_1_1774864652177.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "skirts",
@@ -3346,8 +3490,12 @@ window.products = [
         "ratingCount": 273,
         "isNew": false,
         "colors": [
-            "#2ecc71",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3356,7 +3504,7 @@ window.products = [
         "price": 951,
         "originalPrice": 1236,
         "discount": 21,
-        "image": "images/women/jeans/jeans2.jpg",
+        "image": "images/women/skirts/women_skirt_1_1774864652177.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "skirts",
@@ -3371,8 +3519,12 @@ window.products = [
         "ratingCount": 302,
         "isNew": true,
         "colors": [
-            "#2ecc71",
-            "#282c3f"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3381,7 +3533,7 @@ window.products = [
         "price": 1833,
         "originalPrice": 2382,
         "discount": 20,
-        "image": "images/women/jeans/jeans2.jpg",
+        "image": "images/women/skirts/women_skirt_1_1774864652177.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "skirts",
@@ -3396,8 +3548,12 @@ window.products = [
         "ratingCount": 367,
         "isNew": false,
         "colors": [
+            "#000000",
             "#ffffff",
-            "#3498db"
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3406,7 +3562,7 @@ window.products = [
         "price": 6971,
         "originalPrice": 9062,
         "discount": 22,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/gowns/women_gown_1_1774863030565.png",
         "category": "women",
         "mood": "party",
         "subcategory": "gowns",
@@ -3421,8 +3577,12 @@ window.products = [
         "ratingCount": 463,
         "isNew": true,
         "colors": [
-            "#ff3f6c",
-            "#000000"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3431,7 +3591,7 @@ window.products = [
         "price": 4957,
         "originalPrice": 6444,
         "discount": 36,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/gowns/women_gown_2_1774863061340.png",
         "category": "women",
         "mood": "party",
         "subcategory": "gowns",
@@ -3446,8 +3606,12 @@ window.products = [
         "ratingCount": 273,
         "isNew": false,
         "colors": [
-            "#282c3f",
-            "#000000"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3456,7 +3620,7 @@ window.products = [
         "price": 3080,
         "originalPrice": 4004,
         "discount": 36,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/gowns/women_gown_1_1774863030565.png",
         "category": "women",
         "mood": "party",
         "subcategory": "gowns",
@@ -3471,8 +3635,12 @@ window.products = [
         "ratingCount": 162,
         "isNew": false,
         "colors": [
-            "#3498db",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3481,7 +3649,7 @@ window.products = [
         "price": 3804,
         "originalPrice": 4945,
         "discount": 35,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/gowns/women_gown_2_1774863061340.png",
         "category": "women",
         "mood": "party",
         "subcategory": "gowns",
@@ -3497,7 +3665,11 @@ window.products = [
         "isNew": false,
         "colors": [
             "#000000",
-            "#ffffff"
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3506,7 +3678,7 @@ window.products = [
         "price": 5738,
         "originalPrice": 7459,
         "discount": 30,
-        "image": "images/women/kurti/kurti1.jpg",
+        "image": "images/women/gowns/women_gown_1_1774863030565.png",
         "category": "women",
         "mood": "party",
         "subcategory": "gowns",
@@ -3521,8 +3693,12 @@ window.products = [
         "ratingCount": 479,
         "isNew": false,
         "colors": [
-            "#2ecc71",
-            "#282c3f"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3531,7 +3707,7 @@ window.products = [
         "price": 2153,
         "originalPrice": 2798,
         "discount": 13,
-        "image": "images/women/tops/top2.jpg",
+        "image": "images/women/sweaters/women_sweater_1_1774863095448.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "sweaters",
@@ -3547,7 +3723,11 @@ window.products = [
         "isNew": false,
         "colors": [
             "#000000",
-            "#282c3f"
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3556,7 +3736,7 @@ window.products = [
         "price": 1724,
         "originalPrice": 2241,
         "discount": 39,
-        "image": "images/women/tops/top2.jpg",
+        "image": "images/women/sweaters/women_sweater_2_1774863124545.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "sweaters",
@@ -3571,8 +3751,12 @@ window.products = [
         "ratingCount": 435,
         "isNew": false,
         "colors": [
-            "#2ecc71",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3581,7 +3765,7 @@ window.products = [
         "price": 1515,
         "originalPrice": 1969,
         "discount": 21,
-        "image": "images/women/tops/top2.jpg",
+        "image": "images/women/sweaters/women_sweater_1_1774863095448.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "sweaters",
@@ -3596,8 +3780,12 @@ window.products = [
         "ratingCount": 456,
         "isNew": true,
         "colors": [
-            "#282c3f",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3606,7 +3794,7 @@ window.products = [
         "price": 1684,
         "originalPrice": 2189,
         "discount": 32,
-        "image": "images/women/tops/top2.jpg",
+        "image": "images/women/sweaters/women_sweater_2_1774863124545.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "sweaters",
@@ -3621,8 +3809,12 @@ window.products = [
         "ratingCount": 213,
         "isNew": false,
         "colors": [
-            "#3498db",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -3631,7 +3823,7 @@ window.products = [
         "price": 1692,
         "originalPrice": 2199,
         "discount": 21,
-        "image": "images/women/tops/top2.jpg",
+        "image": "images/women/sweaters/women_sweater_1_1774863095448.png",
         "category": "women",
         "mood": "casual",
         "subcategory": "sweaters",
@@ -3646,8 +3838,12 @@ window.products = [
         "ratingCount": 362,
         "isNew": false,
         "colors": [
-            "#3498db",
-            "#ffffff"
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     },
     {
@@ -4623,6 +4819,64 @@ window.products = [
         "colors": [
             "#ffffff",
             "#ff3f6c"
+        ]
+    },
+    {
+        "id": 187,
+        "name": "Beautiful Embroidered Kurti",
+        "price": 999,
+        "originalPrice": 1999,
+        "discount": 50,
+        "image": "images/women/kurti/women_kurti_1_1774863790316.png",
+        "category": "women",
+        "mood": "casual",
+        "subcategory": "kurti",
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "rating": "4.6",
+        "ratingCount": 305,
+        "isNew": true,
+        "colors": [
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
+        ]
+    },
+    {
+        "id": 188,
+        "name": "Casual Printed Kurti",
+        "price": 799,
+        "originalPrice": 1499,
+        "discount": 46,
+        "image": "images/women/kurti/women_kurti_1_1774863790316.png",
+        "category": "women",
+        "mood": "casual",
+        "subcategory": "kurti",
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "rating": "4.4",
+        "ratingCount": 198,
+        "isNew": false,
+        "colors": [
+            "#000000",
+            "#ffffff",
+            "#000080",
+            "#800000",
+            "#808000",
+            "#F5F5DC"
         ]
     }
 ];
