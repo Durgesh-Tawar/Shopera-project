@@ -497,15 +497,19 @@
                 const orderData = JSON.parse(pendingOrderData);
                 
                 try {
-                    const response = await fetch('/api/orders', {
+                    const token = localStorage.getItem('token');
+                    const selectedAddressId = sessionStorage.getItem('selectedAddressId');
+                    
+                    const response = await fetch('/api/order/place', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
                         },
                         body: JSON.stringify({
-                            items: orderData.items,
-                            total: orderData.total,
-                            loyalty: orderData.loyalty,
+                            products: orderData.items,
+                            totalAmount: orderData.total,
+                            addressId: selectedAddressId, // Send address ID if needed
                             paymentId: paymentId,
                             paymentStatus: 'completed'
                         })

@@ -2,7 +2,7 @@
 // SOPERA - Orders JavaScript with API & Tracking
 // =========================================
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://localhost:5000/api';
 
 let ordersList = document.getElementById("ordersList");
 let totalPointsEl = document.getElementById("totalPoints");

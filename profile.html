@@ -373,13 +373,24 @@
                     <span class="menu-arrow">→</span>
                 </div>
 
-                <div class="menu-card" onclick="showEditProfile()">
-                    <div class="menu-icon">👤</div>
+                <div class="menu-card" id="addressMenuBtn">
+                    <div class="menu-icon">📍</div>
                     <div class="menu-content">
-                        <h3>Edit Profile</h3>
-                        <p>Update your details</p>
+                        <h3>Saved Addresses</h3>
+                        <p>Manage your delivery addresses</p>
                     </div>
                     <span class="menu-arrow">→</span>
+                </div>
+            </div>
+
+            <!-- Addresses Section -->
+            <div id="addressSection" style="display: none; margin-top: 30px;">
+                <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="font-size: 18px; font-weight: 700; color: #282c3f;">My Addresses</h3>
+                    <button class="add-address-btn" onclick="showAddAddress()" style="padding: 8px 16px; background: #fff; border: 1px solid #d4d5d9; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; color: #ff3f6c;">+ ADD NEW ADDRESS</button>
+                </div>
+                <div id="addressList" class="address-list">
+                    <!-- Addresses will be loaded here -->
                 </div>
             </div>
 
@@ -406,6 +417,59 @@
                             <input type="tel" id="editPhone" placeholder="Enter phone number">
                         </div>
                         <button type="submit" class="save-btn">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add Address Modal -->
+            <div class="edit-profile-modal" id="addressModal" style="display: none;">
+                <div class="modal-overlay" onclick="closeAddressModal()"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Add New Address</h3>
+                        <button class="modal-close" onclick="closeAddressModal()">✕</button>
+                    </div>
+                    <form id="addressForm" class="edit-form">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="addrName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="addrPhone" required>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="form-group" style="flex: 1;">
+                                <label>Pincode</label>
+                                <input type="text" id="addrPincode" required>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>Locality</label>
+                                <input type="text" id="addrLocality" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Address (Area and Street)</label>
+                            <textarea id="addrText" required style="width: 100%; padding: 10px; border: 1px solid #d4d5d9; border-radius: 4px;"></textarea>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="form-group" style="flex: 1;">
+                                <label>City/District/Town</label>
+                                <input type="text" id="addrCity" required>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>State</label>
+                                <input type="text" id="addrState" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Address Type</label>
+                            <div style="display: flex; gap: 20px;">
+                                <label><input type="radio" name="addrType" value="Home" checked> Home</label>
+                                <label><input type="radio" name="addrType" value="Work"> Work</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="save-btn">Save Address</button>
                     </form>
                 </div>
             </div>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - SOPERA</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .checkout-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+        }
+        .address-section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #282c3f;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .address-card {
+            border: 1px solid #eaeaec;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .address-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .address-card.selected {
+            border-color: #ff3f6c;
+            background: #fffafa;
+        }
+        .address-card input[type="radio"] {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            display: none;
+        }
+        .address-info {
+            padding-left: 0;
+        }
+        .addr-type {
+            font-size: 12px;
+            font-weight: 600;
+            color: #696e79;
+            background: #f5f5f6;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        .addr-name {
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #282c3f;
+        }
+        .order-summary {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #696e79;
+        }
+        .summary-total {
+            border-top: 1px solid #eaeaec;
+            padding-top: 12px;
+            margin-top: 12px;
+            font-weight: 700;
+            color: #282c3f;
+            font-size: 16px;
+        }
+        .continue-btn {
+            width: 100%;
+            padding: 14px;
+            background: #ff3f6c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .continue-btn:disabled {
+            background: #ffd3e0;
+            cursor: not-allowed;
+        }
+        .add-btn {
+            color: #ff3f6c;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        /* Modal for adding address */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 14px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #d4d5d9; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <div class="address-section">
+            <div class="section-title">
+                Select Delivery Address
+                <span class="add-btn" onclick="showModal()">+ ADD NEW ADDRESS</span>
+            </div>
+            <div id="addressList">
+                <!-- Addresses will be loaded here -->
+            </div>
+        </div>
+
+        <div class="order-summary">
+            <h3 style="margin-bottom: 20px;">Price Details</h3>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotal">₹0</span>
+            </div>
+            <div class="summary-row">
+                <span>Discount</span>
+                <span id="discount" style="color: #03a685;">-₹0</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery Fee</span>
+                <span style="color: #03a685;">FREE</span>
+            </div>
+            <div class="summary-total summary-row">
+                <span>Total Amount</span>
+                <span id="total">₹0</span>
+            </div>
+            <button class="continue-btn" id="continueBtn" disabled onclick="proceedToPayment()">CONTINUE</button>
+        </div>
+    </div>
+
+    <!-- Add Address Modal -->
+    <div class="modal" id="addressModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 20px;">Add New Address</h3>
+            <form id="addressForm">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Pincode</label>
+                        <input type="text" id="pincode" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Locality</label>
+                        <input type="text" id="locality" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Address (Area and Street)</label>
+                    <textarea id="address" required></textarea>
+                </div>
+                <button type="submit" class="continue-btn" style="margin-top: 10px;">SAVE ADDRESS</button>
+                <button type="button" onclick="hideModal()" style="width: 100%; background: none; border: none; color: #696e79; margin-top: 10px; cursor: pointer;">CANCEL</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let selectedAddressId = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html?redirect=checkout.html';
+                return;
+            }
+
+            loadOrderSummary();
+            loadAddresses();
+        });
+
+        async function loadAddresses() {
+            const token = localStorage.getItem('token');
+            const res = await fetch('/api/user/addresses', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const addresses = await res.json();
+            
+            const list = document.getElementById('addressList');
+            if (addresses.length === 0) {
+                list.innerHTML = '<p style="color: #696e79; text-align: center; margin: 40px 0;">No saved addresses found. Please add one.</p>';
+                return;
+            }
+
+            list.innerHTML = addresses.map(addr => `
+                <div class="address-card" onclick="selectAddress('${addr._id}')" id="addr-${addr._id}">
+                    <span class="addr-type">${addr.addressType || 'Home'}</span>
+                    <div class="addr-name">${addr.name}</div>
+                    <div style="font-size: 14px; color: #282c3f; line-height: 1.4;">
+                        ${addr.address}, ${addr.locality}<br>
+                        ${addr.city}, ${addr.state} - ${addr.pincode}
+                    </div>
+                    <div style="font-size: 14px; margin-top: 10px;">Mobile: <b>${addr.phone}</b></div>
+                </div>
+            `).join('');
+        }
+
+        function selectAddress(id) {
+            document.querySelectorAll('.address-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('addr-' + id).classList.add('selected');
+            selectedAddressId = id;
+            document.getElementById('continueBtn').disabled = false;
+        }
+
+        function loadOrderSummary() {
+            const pending = JSON.parse(sessionStorage.getItem('pendingOrder'));
+            if (!pending) {
+                window.location.href = 'cart.html';
+                return;
+            }
+
+            document.getElementById('subtotal').textContent = '₹' + pending.subtotal.toLocaleString();
+            document.getElementById('discount').textContent = '-₹' + (pending.subtotal - pending.total).toLocaleString();
+            document.getElementById('total').textContent = '₹' + pending.total.toLocaleString();
+        }
+
+        function showModal() { document.getElementById('addressModal').style.display = 'flex'; }
+        function hideModal() { document.getElementById('addressModal').style.display = 'none'; }
+
+        document.getElementById('addressForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            const addrData = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                pincode: document.getElementById('pincode').value,
+                locality: document.getElementById('locality').value,
+                address: document.getElementById('address').value,
+                city: 'City', // Placeholder/Could be expanded
+                state: 'State',
+                addressType: 'Home'
+            };
+
+            await fetch('/api/user/addresses', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(addrData)
+            });
+
+            hideModal();
+            loadAddresses();
+        });
+
+        function proceedToPayment() {
+            sessionStorage.setItem('selectedAddressId', selectedAddressId);
+            const pending = JSON.parse(sessionStorage.getItem('pendingOrder'));
+            window.location.href = `payment.html?amount=${pending.total}`;
+        }
+    </script>
+</body>
+</html>

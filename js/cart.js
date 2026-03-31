@@ -2,7 +2,7 @@
 // SOPERA - Cart JavaScript (API Connected)
 // =========================================
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://localhost:5000/api';
 
 let cartItems = document.getElementById("cartItems");
 let subtotalEl = document.getElementById("subtotal");
@@ -87,7 +87,7 @@ if (placeOrderBtn) {
         // Save to sessionStorage for payment page to access
         sessionStorage.setItem('pendingOrder', JSON.stringify(orderData));
         
-        // Redirect to payment page with total amount
-        window.location.href = `payment.html?amount=${total}`;
+        // Redirect to checkout page for address selection
+        window.location.href = `checkout.html`;
     });
 }

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Shopera</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Shopera Admin</span>
+            </div>
+            <nav>
+                <a href="#" id="showDashboard" class="active"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="#" id="showOrders"><i class="fas fa-box"></i> Orders</a>
+                <a href="#" id="showUsers"><i class="fas fa-users"></i> Users</a>
+                <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
+                <a href="#"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search orders, users...">
+                </div>
+                <div class="user-profile">
+                    <span id="adminName">Admin</span>
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=random" alt="Admin">
+                </div>
+            </header>
+
+            <section id="dashboardSection">
+                <section class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Orders</h3>
+                            <p id="totalOrders">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon pending"><i class="fas fa-clock"></i></div>
+                        <div class="stat-info">
+                            <h3>Pending</h3>
+                            <p id="pendingOrders">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon completed"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-info">
+                            <h3>Completed</h3>
+                            <p id="completedOrders">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon revenue"><i class="fas fa-wallet"></i></div>
+                        <div class="stat-info">
+                            <h3>Revenue</h3>
+                            <p id="totalRevenue">₹0</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="recent-orders">
+                    <div class="section-header">
+                        <h2>Manage Orders</h2>
+                        <button class="refresh-btn" onclick="fetchOrders()"><i class="fas fa-sync"></i> Refresh</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="ordersTable">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersBody">
+                                <!-- Orders will be injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Users Section (Hidden by Default) -->
+            <section id="usersSection" style="display: none;">
+                <section class="recent-orders">
+                    <div class="section-header">
+                        <h2>Registered Users</h2>
+                        <button class="refresh-btn" onclick="fetchUsers()"><i class="fas fa-sync"></i> Refresh</button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Joined Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersBody">
+                                <!-- Users will be injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <!-- Edit Order Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Update Order Status</h2>
+            <form id="editForm">
+                <input type="hidden" id="editOrderId">
+                <div class="form-group">
+                    <label>Order Status</label>
+                    <select id="editStatus">
+                        <option value="Placed">Placed</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Processing">Processing</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Out for Delivery">Out for Delivery</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tracking Number</label>
+                    <input type="text" id="editTracking" placeholder="e.g. TRK123456789">
+                </div>
+                <div class="form-group">
+                    <label>Carrier</label>
+                    <input type="text" id="editCarrier" placeholder="e.g. BlueDart, Delhivery">
+                </div>
+                <div class="form-group">
+                    <label>Update Message</label>
+                    <textarea id="editMessage" placeholder="Optional message for the customer..."></textarea>
+                </div>
+                <button type="submit" class="save-btn">Update Order</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

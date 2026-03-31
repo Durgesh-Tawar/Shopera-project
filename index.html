@@ -267,15 +267,19 @@
     </div>
 
     <div class="nav-actions">
-        <a href="profile.html" class="action-btn">
+        <a href="profile.html" class="action-btn" id="userProfileLink">
             <span class="action-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
             </span>
-            <span class="action-text">Profile</span>
+            <span class="action-text" id="userActionText">Profile</span>
         </a>
+        <button id="logoutBtn" class="action-btn" style="display: none; border: none; background: none; cursor: pointer;">
+            <span class="action-icon">🚪</span>
+            <span class="action-text">Logout</span>
+        </button>
         <a href="wishlist.html" class="action-btn">
             <span class="action-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -368,7 +372,7 @@
                 </div>
             </a>
             <a href="index.html?category=women" class="deal-card">
-                <img src="images/women/saree/women_saree_1_1774863807182.png" alt="Ethnic Deals">
+                <img src="images/women/sarees/women_saree_1_1774863807182.png" alt="Ethnic Deals">
                 <div class="deal-info">
                     <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/United_Colors_of_Benetton_logo.svg/1200px-United_Colors_of_Benetton_logo.svg.png" alt="Benetton" class="brand-logo" onerror="this.style.display='none'">
                     <h3>40-70% OFF</h3>
@@ -456,7 +460,7 @@
         <div class="category-banners">
             <a href="index.html?category=women&subcategory=sarees" class="category-card">
                 <div class="category-card-image">
-                    <img src="images/women/saree/women_saree_1_1774863807182.png" alt="Women Indian Wear" onerror="this.src='images/women/kurti/women_kurti_1_1774863790316.png'">
+                    <img src="images/women/sarees/women_saree_1_1774863807182.png" alt="Women Indian Wear" onerror="this.src='images/women/kurti/women_kurti_1_1774863790316.png'">
                     <span class="category-card-badge">✨</span>
                 </div>
                 <div class="category-card-content">
@@ -949,5 +953,24 @@ navLinks.querySelectorAll('a').forEach(link => {
 });
 </script>
 
+    <script>
+        // Check Login Status
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token = localStorage.getItem('token');
+        
+        if (user && token) {
+            document.getElementById('userActionText').textContent = user.name.split(' ')[0];
+            document.getElementById('logoutBtn').style.display = 'flex';
+        } else {
+            document.getElementById('userProfileLink').href = 'login.html';
+            document.getElementById('userActionText').textContent = 'Login';
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            window.location.reload();
+        });
+    </script>
 </body>
 </html>

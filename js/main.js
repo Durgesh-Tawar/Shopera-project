@@ -10,7 +10,7 @@ const searchBar = document.getElementById("searchBar");
 const tabBtns = document.querySelectorAll(".tab-btn");
 
 // API Base URL
-const API_URL = 'http://localhost:3000/api';
+const API_URL = '/api';
 
 // =========================================
 // SEARCH ALIASES & MAPPING CONFIGURATION
@@ -74,6 +74,7 @@ checkWishlistReminder();
 // Initialize products and search
 fetchProducts();
 initializeSearch();
+showAdminLink();
 
 // Initialize voice search if supported
 if (typeof initializeVoiceSearch === 'function') {
@@ -1220,3 +1221,40 @@ function initializeVoiceSearch() {
         searchBarElement.placeholder = "Search for products, brands and more";
     };
 }
+
+// =========================================
+// ADMIN ACCESS CONTROL
+// =========================================
+
+function showAdminLink() {
+    const userString = localStorage.getItem('user');
+    if (!userString) return;
+
+    try {
+        const user = JSON.parse(userString);
+        if (user.role === 'admin') {
+            const navActions = document.querySelector('.nav-actions');
+            if (navActions && !document.getElementById('adminLink')) {
+                const adminA = document.createElement('a');
+                adminA.href = 'admin.html';
+                adminA.id = 'adminLink';
+                adminA.className = 'action-btn';
+                adminA.style.color = '#ff3f6c'; // Highlight admin link
+                adminA.style.display = 'flex';
+                adminA.style.flexDirection = 'column';
+                adminA.style.alignItems = 'center';
+                adminA.style.textDecoration = 'none';
+                
+                adminA.innerHTML = `
+                    <span class="action-icon">🛠️</span>
+                    <span class="action-text">Admin</span>
+                `;
+                // Insert before profile link
+                navActions.insertBefore(adminA, navActions.firstChild);
+            }
+        }
+    } catch (e) {
+        console.error('Error checking admin role:', e);
+    }
+}
+
