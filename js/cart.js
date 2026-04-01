@@ -2,7 +2,7 @@
 // SOPERA - Cart JavaScript (API Connected)
 // =========================================
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = `${CONFIG.API_BASE_URL}/api`;
 
 let cartItems = document.getElementById("cartItems");
 let subtotalEl = document.getElementById("subtotal");

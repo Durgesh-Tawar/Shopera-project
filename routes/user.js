@@ -17,21 +17,10 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
-// Add Address
+// Add or Update Address
 router.post('/addresses', authenticateToken, async (req, res) => {
     try {
-        const { fullName, mobile, pincode, city, state, addressLine, type } = req.body;
-        
-        const address = await Address.create({
-            userId: req.user.id,
-            fullName,
-            mobile,
-            pincode,
-            city,
-            state,
-            addressLine,
-            type
-        });
+        const address = await Address.upsert(req.user.id, req.body);
         
         res.status(201).json({ success: true, message: 'Address saved successfully', address });
     } catch (error) {

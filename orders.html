@@ -32,77 +32,76 @@
             color: #495057;
         }
 
-        .tracking-progress {
-            display: flex;
-            justify-content: space-between;
+        /* Myntra Style Vertical Timeline */
+        .myntra-timeline {
             position: relative;
-            margin: 30px 0;
+            margin: 25px 0 20px 20px;
+            padding-left: 20px;
+            border-left: 2px dashed #e9ecef;
         }
 
-        .tracking-progress::before {
+        .myntra-step {
+            position: relative;
+            padding-bottom: 25px;
+        }
+        
+        .myntra-step:last-child {
+            padding-bottom: 0;
+            border-left: 2px solid #fff;
+            margin-left: -2px;
+        }
+
+        .myntra-step::before {
             content: '';
             position: absolute;
-            top: 20px;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: #e9ecef;
-            z-index: 1;
-        }
-
-        .tracking-progress-line {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #ff3f6c, #ff6b9d);
-            z-index: 2;
-            transition: width 0.5s ease;
-        }
-
-        .tracking-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 3;
-            flex: 1;
-        }
-
-        .step-icon {
-            width: 40px;
-            height: 40px;
+            left: -27px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            background: #e9ecef;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            margin-bottom: 8px;
+            background-color: #e9ecef;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 1px #dee2e6;
+            z-index: 2;
             transition: all 0.3s ease;
         }
 
-        .tracking-step.active .step-icon {
-            background: linear-gradient(45deg, #ff3f6c, #ff6b9d);
-            color: white;
-            box-shadow: 0 5px 15px rgba(255, 63, 108, 0.4);
+        .myntra-step.completed::before, .myntra-step.active::before {
+            background-color: #03a685;
+            box-shadow: 0 0 0 2px rgba(3, 166, 133, 0.3);
+            border-color: #fff;
         }
 
-        .tracking-step.completed .step-icon {
-            background: #28a745;
-            color: white;
-        }
-
-        .step-label {
-            font-size: 0.75rem;
-            color: #6c757d;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .tracking-step.active .step-label {
-            color: #ff3f6c;
+        .myntra-step .step-title {
+            font-size: 14.5px;
             font-weight: 600;
+            color: #282c3f;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+        }
+
+        .myntra-step.active .step-title {
+            color: #03a685;
+        }
+
+        .myntra-step .step-date {
+            font-size: 12px;
+            color: #7e818c;
+            margin-bottom: 5px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .myntra-step .step-desc {
+            font-size: 13px;
+            color: #535766;
+            background: #f4f5f6;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 4px;
+            line-height: 1.4;
         }
 
         .estimated-delivery {
@@ -345,6 +344,7 @@
     <div id="ordersList"></div>
 </section>
 
+<script src="js/config.js"></script>
 <script src="js/orders.js"></script>
 <script>
     const hamburger = document.getElementById('hamburger');
@@ -375,5 +375,61 @@
         });
     });
 </script>
+
+<!-- Return Modal -->
+<div id="returnModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:25px; border-radius:12px; width:90%; max-width:400px; text-align:center;">
+        <h3 style="margin-bottom: 20px;">Return Request ↩️</h3>
+        <div id="returnProductSummary"></div>
+        <p style="margin-bottom: 15px; color:#535766;">Please select a reason for returning this item.</p>
+        <select id="returnReason" style="width:100%; padding:10px; margin-bottom:15px; border-radius:6px; border:1px solid #eaeaec;">
+            <option value="Damaged Product">Damaged Product</option>
+            <option value="Wrong Item Received">Wrong Item Received</option>
+            <option value="Size/Fit Issue">Size/Fit Issue</option>
+            <option value="Quality not as expected">Quality not as expected</option>
+            <option value="Other">Other</option>
+        </select>
+        <div style="display:flex; justify-content:space-between; gap:10px;">
+            <button onclick="closeReturnModal()" style="padding:10px; flex:1; background:#e9ecef; border:none; border-radius:6px; cursor:pointer;">Cancel</button>
+            <button onclick="submitReturn()" style="padding:10px; flex:1; background:#dc3545; color:#fff; border:none; border-radius:6px; cursor:pointer;">Submit Return</button>
+        </div>
+    </div>
+</div>
+
+<!-- Feedback Modal -->
+<div id="feedbackModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:25px; border-radius:12px; width:90%; max-width:400px; text-align:center;">
+        <h3 style="margin-bottom: 20px;">Leave Feedback ⭐</h3>
+        <div id="feedbackProductSummary"></div>
+        <p style="margin-bottom: 15px; color:#535766;">Please rate your experience and upload photos of the product.</p>
+        
+        <div style="margin-bottom:15px; text-align:left;">
+            <label style="display:block; margin-bottom:5px; font-weight:600;">Rating (1-5)</label>
+            <select id="feedbackRating" style="width:100%; padding:10px; border-radius:6px; border:1px solid #eaeaec;">
+                <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+                <option value="4">⭐⭐⭐⭐ (Good)</option>
+                <option value="3">⭐⭐⭐ (Average)</option>
+                <option value="2">⭐⭐ (Poor)</option>
+                <option value="1">⭐ (Very Poor)</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom:15px; text-align:left;">
+            <label style="display:block; margin-bottom:5px; font-weight:600;">Comment</label>
+            <textarea id="feedbackComment" rows="3" placeholder="Tell us about the product quality..." style="width:100%; padding:10px; border-radius:6px; border:1px solid #eaeaec; resize:none;"></textarea>
+        </div>
+
+        <div style="margin-bottom:20px; text-align:left;">
+            <label style="display:block; margin-bottom:5px; font-weight:600;">Upload Photos</label>
+            <input type="file" id="feedbackImages" multiple accept="image/*" style="width:100%; padding:10px; border:1px solid #eaeaec; border-radius:6px;">
+        </div>
+
+        <div style="display:flex; justify-content:space-between; gap:10px;">
+            <button onclick="closeFeedbackModal()" style="padding:10px; flex:1; background:#e9ecef; border:none; border-radius:6px; cursor:pointer;">Cancel</button>
+            <button onclick="submitFeedback()" style="padding:10px; flex:1; background:#03a685; color:#fff; border:none; border-radius:6px; cursor:pointer;">Submit Review</button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

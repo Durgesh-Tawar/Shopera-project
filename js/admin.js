@@ -18,9 +18,11 @@ function setupNavigation() {
     const dashboardLink = document.getElementById('showDashboard');
     const ordersLink = document.getElementById('showOrders');
     const usersLink = document.getElementById('showUsers');
+    const feedbacksLink = document.getElementById('showFeedbacks');
 
     const dashboardSection = document.getElementById('dashboardSection');
     const usersSection = document.getElementById('usersSection');
+    const feedbacksSection = document.getElementById('feedbacksSection');
 
     dashboardLink.onclick = (e) => {
         e.preventDefault();
@@ -38,13 +40,21 @@ function setupNavigation() {
         fetchUsers();
     };
 
+    feedbacksLink.onclick = (e) => {
+        e.preventDefault();
+        showSection('feedbacks');
+        fetchFeedbacks();
+    };
+
     function showSection(section) {
         dashboardSection.style.display = section === 'dashboard' ? 'block' : 'none';
         usersSection.style.display = section === 'users' ? 'block' : 'none';
+        feedbacksSection.style.display = section === 'feedbacks' ? 'block' : 'none';
 
         dashboardLink.classList.toggle('active', section === 'dashboard');
         ordersLink.classList.toggle('active', section === 'dashboard');
         usersLink.classList.toggle('active', section === 'users');
+        feedbacksLink.classList.toggle('active', section === 'feedbacks');
     }
 }
 
@@ -70,7 +80,7 @@ async function checkAdminAccess() {
 async function fetchStats() {
     try {
         const token = localStorage.getItem('token');
-        const res = await fetch('/api/admin/stats', {
+        const res = await fetch(`${CONFIG.API_BASE_URL}/api/admin/stats`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -89,7 +99,7 @@ async function fetchStats() {
 async function fetchOrders() {
     try {
         const token = localStorage.getItem('token');
-        const res = await fetch('/api/admin/orders', {
+        const res = await fetch(`${CONFIG.API_BASE_URL}/api/admin/orders`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -107,6 +117,12 @@ function renderOrders(orders) {
     tbody.innerHTML = '';
     
     orders.forEach(order => {
+        let returnInfo = '';
+        const returnStatuses = ['Return Requested', 'Return Approved', 'Out for Pickup', 'Picked Up', 'Returned', 'Refunded'];
+        if (returnStatuses.includes(order.status) && order.returnReason) {
+            returnInfo = `<br><small style="color:#d9534f; font-weight:bold;">Reason: ${order.returnReason}</small>`;
+        }
+        
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>#${order._id.slice(-6)}</td>
@@ -115,7 +131,11 @@ function renderOrders(orders) {
                 <small>${order.userId?.email || 'N/A'}</small>
             </td>
             <td>₹${order.totalAmount.toLocaleString()}</td>
-            <td><span class="status-badge status-${order.status.toLowerCase().replace(/ /g, '-')}">${order.status}</span></td>
+            <td>
+                <span class="status-badge status-${order.status.toLowerCase().replace(/ /g, '-')}">${order.status}</span>
+                ${returnInfo}
+            </td>
+            <td><span class="status-badge status-${(order.paymentStatus || 'Pending').toLowerCase()}">${order.paymentStatus || 'Pending'}</span></td>
             <td>${new Date(order.createdAt).toLocaleDateString()}</td>
             <td>
                 <button class="edit-btn" onclick="openEditModal('${order._id}', '${order.status}', '${order.trackingNumber || ''}', '${order.carrier || ''}')">
@@ -187,7 +207,7 @@ async function updateOrderStatus(e) {
 async function fetchUsers() {
     try {
         const token = localStorage.getItem('token');
-        const res = await fetch('/api/admin/users', {
+        const res = await fetch(`${CONFIG.API_BASE_URL}/api/admin/users`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -212,6 +232,45 @@ function renderUsers(users) {
             <td>${user.email}</td>
             <td><span class="status-badge ${user.role === 'admin' ? 'status-delivered' : 'status-placed'}">${user.role.toUpperCase()}</span></td>
             <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+async function fetchFeedbacks() {
+    try {
+        const res = await fetch(`${CONFIG.API_BASE_URL}/api/reviews/all`);
+        const data = await res.json();
+        
+        if (data.success) {
+            renderFeedbacks(data.reviews);
+        }
+    } catch (error) {
+        console.error('Error fetching feedbacks:', error);
+    }
+}
+
+function renderFeedbacks(feedbacks) {
+    const tbody = document.getElementById('feedbacksBody');
+    tbody.innerHTML = '';
+    
+    feedbacks.forEach(fb => {
+        let stars = '⭐'.repeat(fb.rating);
+        let imagesHtml = '';
+        if(fb.images && fb.images.length > 0) {
+            imagesHtml = fb.images.map(img => {
+                let imgSrc = img.startsWith('/') ? `${CONFIG.API_BASE_URL}${img}` : img;
+                return `<a href="${imgSrc}" target="_blank" style="color:#03a685; text-decoration:underline; margin-right:5px;">[Image]</a>`;
+            }).join('');
+        }
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>#${fb.orderId ? (fb.orderId._id ? fb.orderId._id.slice(-6) : fb.orderId.slice(-6)) : 'N/A'}</td>
+            <td><strong>${fb.userId ? fb.userId.name : 'Unknown User'}</strong></td>
+            <td>${stars}</td>
+            <td>${fb.comment || '-'}</td>
+            <td>${imagesHtml || '-'}</td>
+            <td>${new Date(fb.createdAt).toLocaleDateString()}</td>
         `;
         tbody.appendChild(row);
     });

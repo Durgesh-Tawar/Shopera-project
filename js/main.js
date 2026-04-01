@@ -10,7 +10,7 @@ const searchBar = document.getElementById("searchBar");
 const tabBtns = document.querySelectorAll(".tab-btn");
 
 // API Base URL
-const API_URL = '/api';
+const API_URL = `${CONFIG.API_BASE_URL}/api`;
 
 // =========================================
 // SEARCH ALIASES & MAPPING CONFIGURATION
@@ -874,14 +874,17 @@ function addToCart(id) {
 function buyNow(id) {
     const product = products.find(p => p.id === id);
     if (product) {
-        cart.push(product);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        updateCartBadge();
+        const orderData = {
+            items: [{...product, quantity: 1}],
+            total: product.price,
+            loyalty: Math.floor(product.price / 100),
+            subtotal: product.price,
+            discount: 0,
+            date: new Date().toISOString()
+        };
+        sessionStorage.setItem('pendingOrder', JSON.stringify(orderData));
         showToast(`Redirecting to checkout...`);
-        // Redirect to cart page after a brief delay
-        setTimeout(() => {
-            window.location.href = 'cart.html';
-        }, 500);
+        setTimeout(() => window.location.href = 'checkout.html', 500);
     }
 }
 

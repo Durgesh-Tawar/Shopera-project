@@ -20,6 +20,7 @@
                 <a href="#" id="showDashboard" class="active"><i class="fas fa-th-large"></i> Dashboard</a>
                 <a href="#" id="showOrders"><i class="fas fa-box"></i> Orders</a>
                 <a href="#" id="showUsers"><i class="fas fa-users"></i> Users</a>
+                <a href="#" id="showFeedbacks"><i class="fas fa-star"></i> Feedbacks</a>
                 <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
                 <a href="#"><i class="fas fa-cog"></i> Settings</a>
             </nav>
@@ -86,6 +87,7 @@
                                     <th>Customer</th>
                                     <th>Total</th>
                                     <th>Status</th>
+                                    <th>Payment</th>
                                     <th>Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -123,6 +125,33 @@
                     </div>
                 </section>
             </section>
+
+            <!-- Feedbacks Section (Hidden by Default) -->
+            <section id="feedbacksSection" style="display: none;">
+                <section class="recent-orders">
+                    <div class="section-header">
+                        <h2>User Feedbacks & Reviews</h2>
+                        <button class="refresh-btn" onclick="fetchFeedbacks()"><i class="fas fa-sync"></i> Refresh</button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>User</th>
+                                    <th>Rating</th>
+                                    <th>Comment</th>
+                                    <th>Photos</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="feedbacksBody">
+                                <!-- Feedbacks will be injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
         </main>
     </div>
 
@@ -142,6 +171,12 @@
                         <option value="Shipped">Shipped</option>
                         <option value="Out for Delivery">Out for Delivery</option>
                         <option value="Delivered">Delivered</option>
+                        <option value="Return Requested">Return Requested</option>
+                        <option value="Return Approved">Return Approved (Pickup Scheduled)</option>
+                        <option value="Out for Pickup">Out for Pickup</option>
+                        <option value="Picked Up">Picked Up</option>
+                        <option value="Returned">Returned to Warehouse</option>
+                        <option value="Refunded">Refunded</option>
                         <option value="Cancelled">Cancelled</option>
                     </select>
                 </div>
@@ -162,6 +197,7 @@
         </div>
     </div>
 
+    <script src="js/config.js"></script>
     <script src="js/admin.js"></script>
 </body>
 </html>

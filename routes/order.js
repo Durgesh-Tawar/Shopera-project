@@ -52,4 +52,34 @@ router.get('/my-orders', authenticateToken, async (req, res) => {
     }
 });
 
+router.post('/:id/cancel', authenticateToken, async (req, res) => {
+    try {
+        const order = await Order.findOneAndUpdate(
+            { _id: req.params.id, userId: req.user.id },
+            { status: 'Cancelled' },
+            { new: true }
+        );
+        res.json({ success: true, order });
+    } catch (e) {
+        res.status(500).json({ success: false, message: e.message });
+    }
+});
+
+router.post('/:id/return', authenticateToken, async (req, res) => {
+    try {
+        const { reason } = req.body;
+        const order = await Order.findOneAndUpdate(
+            { _id: req.params.id, userId: req.user.id },
+            { 
+                status: 'Return Requested',
+                returnReason: reason || 'Not specified'
+            },
+            { new: true }
+        );
+        res.json({ success: true, order });
+    } catch (e) {
+        res.status(500).json({ success: false, message: e.message });
+    }
+});
+
 module.exports = router;

@@ -99,6 +99,7 @@
         </div>
     </div>
 
+    <script src="js/config.js"></script>
     <script>
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -108,7 +109,7 @@
             const errorDiv = document.getElementById('signupError');
 
             try {
-                const response = await fetch('http://localhost:5000/signup', {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, password })
@@ -128,7 +129,7 @@
                     console.error('Backend Error:', data);
                 }
             } catch (error) {
-                errorDiv.textContent = '❌ Connection Error: Is the server running on port 5000?';
+                errorDiv.textContent = '❌ Connection Error: Backend server is unreachable.';
                 errorDiv.style.display = 'block';
                 console.error('Fetch Error:', error);
             }

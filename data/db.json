@@ -1,5 +1,19 @@
 {
   "users": [],
-  "addresses": [],
+  "addresses": [
+    {
+      "_id": "1775053742697",
+      "userId": "69cbe974de380b2bf68ec3a9",
+      "name": "Arjun Kushwah",
+      "phone": "74703667911",
+      "pincode": "452001",
+      "locality": "indore",
+      "address": "Indore",
+      "city": "City",
+      "state": "State",
+      "addressType": "Home",
+      "createdAt": "2026-04-01T14:29:02.698Z"
+    }
+  ],
   "orders": []
 }

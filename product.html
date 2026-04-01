@@ -553,6 +553,100 @@
     color: #666;
 }
 
+/* Customer Reviews Section */
+.reviews-section {
+    margin-top: 40px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+.reviews-header h2 {
+    font-size: 1.5rem;
+    color: #1a1a2e;
+}
+.bought-count {
+    font-size: 0.95rem;
+    color: #fff;
+    background: #03a685;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+.review-card {
+    padding: 15px 0;
+    border-bottom: 1px dashed #eee;
+}
+.review-card:last-child {
+    border-bottom: none;
+}
+.review-user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f0f0f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #666;
+}
+.user-name {
+    font-weight: 600;
+    color: #282c3f;
+}
+.review-date {
+    font-size: 0.8rem;
+    color: #888;
+}
+.review-rating {
+    margin-bottom: 8px;
+    color: #ff9800;
+}
+.review-comment {
+    color: #444;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+.review-images {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.review-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    transition: transform 0.2s;
+}
+.review-image:hover {
+    transform: scale(1.05);
+}
+.no-reviews {
+    text-align: center;
+    padding: 30px;
+    color: #888;
+    font-style: italic;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .product-main {
@@ -887,6 +981,17 @@
         </div>
     </div>
     
+    <!-- Customer Reviews Section -->
+    <div class="reviews-section" id="reviewsSection">
+        <div class="reviews-header">
+            <h2>Customer Photos & Reviews</h2>
+            <span class="bought-count" id="boughtCount">...</span>
+        </div>
+        <div id="reviewsList">
+            <div class="no-reviews">Loading reviews...</div>
+        </div>
+    </div>
+    
     <!-- Similar Products -->
     <div class="similar-products-section">
         <h2>🔥 Similar Products</h2>
@@ -897,8 +1002,9 @@
 </div>
 
 <script src="js/data.js?v=1774864078408"></script>
+<script src="js/config.js"></script>
 <script>
-const API_URL = 'http://localhost:3000/api';
+const API_URL = `${CONFIG.API_BASE_URL}/api`;
 let quantity = 1;
 let selectedSize = null;
 let product = null;
@@ -945,6 +1051,9 @@ function displayProductDetails() {
     
     // Load similar products
     loadSimilarProducts();
+    
+    // Fetch product reviews
+    fetchProductReviews(product.id || productId);
 }
 
 function showProductNotFound() {
@@ -1035,8 +1144,93 @@ function addToCartFromDetail() {
 }
 
 function buyNow() {
-    addToCartFromDetail();
-    window.location.href = 'cart.html';
+    if (!selectedSize) {
+        showToast('Please select a size first!');
+        return;
+    }
+    
+    let items = [];
+    for (let i = 0; i < quantity; i++) {
+        items.push({
+            ...product,
+            productId: product.id,
+            selectedSize: selectedSize,
+            quantity: 1
+        });
+    }
+    
+    let totalValue = product.price * quantity;
+    
+    const orderData = {
+        items: items,
+        total: totalValue,
+        loyalty: Math.floor(totalValue / 100),
+        subtotal: totalValue,
+        discount: 0,
+        date: new Date().toISOString()
+    };
+    
+    sessionStorage.setItem('pendingOrder', JSON.stringify(orderData));
+    showToast(`Redirecting to checkout...`);
+    setTimeout(() => window.location.href = 'checkout.html', 500);
+}
+
+// Fetch Product Reviews
+async function fetchProductReviews(prodId) {
+    try {
+        const res = await fetch(`${API_URL}/reviews/product/${prodId}`);
+        const data = await res.json();
+        
+        let boughtCountStr = '';
+        if (data.success && data.reviews && data.reviews.length > 0) {
+            let count = (parseInt(prodId) * 17 % 500) + 50 + data.reviews.length;
+            if (isNaN(count)) count = Math.floor(Math.random() * 500) + 50;
+            boughtCountStr = `🔥 ${count}+ people bought this`;
+            renderReviews(data.reviews);
+        } else {
+            let count = (parseInt(prodId) % 50) + 10;
+            if (isNaN(count)) count = 25;
+            boughtCountStr = `🔥 ${count}+ people bought this`;
+            document.getElementById('reviewsList').innerHTML = '<div class="no-reviews">No reviews yet. Be the first to buy and review!</div>';
+        }
+        document.getElementById('boughtCount').textContent = boughtCountStr;
+    } catch (error) {
+        console.error('Failed to fetch reviews', error);
+        document.getElementById('reviewsList').innerHTML = '<div class="no-reviews">Could not load reviews.</div>';
+    }
+}
+
+function renderReviews(reviews) {
+    const list = document.getElementById('reviewsList');
+    list.innerHTML = reviews.map(r => {
+        let stars = '⭐'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+        let initials = r.userId && r.userId.name ? r.userId.name.charAt(0).toUpperCase() : 'U';
+        let userName = r.userId && r.userId.name ? r.userId.name : 'Unknown User';
+        let imagesHtml = '';
+        if (r.images && r.images.length > 0) {
+            imagesHtml = `<div class="review-images">` + 
+                r.images.map(img => {
+                    let imgSrc = img.startsWith('/') ? `${CONFIG.API_BASE_URL}${img}` : img;
+                    return `<a href="${imgSrc}" target="_blank"><img src="${imgSrc}" class="review-image" alt="Review Image"></a>`;
+                }).join('') +
+            `</div>`;
+        }
+        
+        return `
+            <div class="review-card">
+                <div class="review-user-info">
+                    <div class="user-avatar">${initials}</div>
+                    <div>
+                        <div class="user-name">${userName}</div>
+                        <div class="review-date">${new Date(r.createdAt).toLocaleDateString()}</div>
+                    </div>
+                </div>
+                <div class="review-rating">${stars}</div>
+                <div class="review-comment">${r.comment || ''}</div>
+                ${imagesHtml}
+            </div>
+        `;
+    }).join('');
 }
 
 // Fit Calculator Function

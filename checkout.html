@@ -205,6 +205,7 @@
         </div>
     </div>
 
+    <script src="js/config.js"></script>
     <script>
         let selectedAddressId = null;
 
@@ -219,30 +220,41 @@
             loadAddresses();
         });
 
+        let existingAddress = null;
+
         async function loadAddresses() {
             const token = localStorage.getItem('token');
-            const res = await fetch('/api/user/addresses', {
+            const res = await fetch(`${CONFIG.API_BASE_URL}/api/user/addresses`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            const addresses = await res.json();
+            const data = await res.json();
+            const addresses = data.addresses || [];
+            const addBtn = document.querySelector('.add-btn');
             
             const list = document.getElementById('addressList');
             if (addresses.length === 0) {
+                addBtn.textContent = '+ ADD NEW ADDRESS';
+                addBtn.onclick = () => showModal();
                 list.innerHTML = '<p style="color: #696e79; text-align: center; margin: 40px 0;">No saved addresses found. Please add one.</p>';
                 return;
             }
 
-            list.innerHTML = addresses.map(addr => `
-                <div class="address-card" onclick="selectAddress('${addr._id}')" id="addr-${addr._id}">
-                    <span class="addr-type">${addr.addressType || 'Home'}</span>
-                    <div class="addr-name">${addr.name}</div>
+            existingAddress = addresses[0];
+            addBtn.innerHTML = '&#9998; EDIT ADDRESS';
+            addBtn.onclick = () => showModal(existingAddress);
+
+            list.innerHTML = `
+                <div class="address-card" onclick="selectAddress('${existingAddress._id}')" id="addr-${existingAddress._id}">
+                    <span class="addr-type">${existingAddress.addressType || 'Home'}</span>
+                    <div class="addr-name">${existingAddress.name || existingAddress.fullName}</div>
                     <div style="font-size: 14px; color: #282c3f; line-height: 1.4;">
-                        ${addr.address}, ${addr.locality}<br>
-                        ${addr.city}, ${addr.state} - ${addr.pincode}
+                        ${existingAddress.address || existingAddress.addressLine}, ${existingAddress.locality || ''}<br>
+                        ${existingAddress.city || 'City'}, ${existingAddress.state || 'State'} - ${existingAddress.pincode}
                     </div>
-                    <div style="font-size: 14px; margin-top: 10px;">Mobile: <b>${addr.phone}</b></div>
+                    <div style="font-size: 14px; margin-top: 10px;">Mobile: <b>${existingAddress.phone || existingAddress.mobile}</b></div>
                 </div>
-            `).join('');
+            `;
+            selectAddress(existingAddress._id);
         }
 
         function selectAddress(id) {
@@ -264,7 +276,21 @@
             document.getElementById('total').textContent = '₹' + pending.total.toLocaleString();
         }
 
-        function showModal() { document.getElementById('addressModal').style.display = 'flex'; }
+        function showModal(addr = null) { 
+            const title = document.querySelector('#addressModal h3');
+            if (addr) {
+                title.textContent = 'Edit Address';
+                document.getElementById('name').value = addr.name || addr.fullName || '';
+                document.getElementById('phone').value = addr.phone || addr.mobile || '';
+                document.getElementById('pincode').value = addr.pincode || '';
+                document.getElementById('locality').value = addr.locality || '';
+                document.getElementById('address').value = addr.address || addr.addressLine || '';
+            } else {
+                title.textContent = 'Add New Address';
+                document.getElementById('addressForm').reset();
+            }
+            document.getElementById('addressModal').style.display = 'flex'; 
+        }
         function hideModal() { document.getElementById('addressModal').style.display = 'none'; }
 
         document.getElementById('addressForm').addEventListener('submit', async (e) => {
@@ -281,7 +307,7 @@
                 addressType: 'Home'
             };
 
-            await fetch('/api/user/addresses', {
+            await fetch(`${CONFIG.API_BASE_URL}/api/user/addresses`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',

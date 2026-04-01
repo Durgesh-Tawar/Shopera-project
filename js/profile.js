@@ -62,7 +62,7 @@ function showAuthForms() {
 async function loadAddresses() {
     const token = localStorage.getItem('token');
     try {
-        const response = await fetch('/api/user/addresses', {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/user/addresses`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const addresses = await response.json();
@@ -106,7 +106,7 @@ async function handleAddAddress(e) {
     };
 
     try {
-        const response = await fetch('/api/user/addresses', {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/user/addresses`, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
@@ -197,7 +197,7 @@ async function handleLogin(e) {
     const password = document.getElementById('loginPassword').value;
     
     try {
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -228,7 +228,7 @@ async function handleRegister(e) {
     const password = document.getElementById('registerPassword').value;
     
     try {
-        const response = await fetch('/api/auth/signup', {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/auth/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password })

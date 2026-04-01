@@ -2,7 +2,7 @@
 // SOPERA - Spin & Win JavaScript (API Connected)
 // =========================================
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = `${CONFIG.API_BASE_URL}/api`;
 
 let spinResult = document.getElementById("spinResult");
 let wheel = document.getElementById("wheel");
