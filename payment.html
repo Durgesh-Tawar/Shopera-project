@@ -397,15 +397,15 @@
             try {
                 const mockPaymentId = 'cod_' + Date.now();
                 
-                // Create order with COD payment status
-                const order = await createOrderAfterPayment(mockPaymentId);
+                // Create order with COD payment status - pass the actual total including COD fee
+                const order = await createOrderAfterPayment(mockPaymentId, totalWithCodFee);
                 
                 showStatus(`✅ Order Placed with Cash on Delivery! Total: ₹${totalWithCodFee} (Includes ₹${codFee} COD fee)`, 'success');
                 
                 setTimeout(() => {
                     const pendingData = sessionStorage.getItem('pendingOrder');
                     const itemCount = pendingData ? JSON.parse(pendingData).items?.length || 1 : 1;
-                    const loyalty = Math.floor(amount / 100);
+                    const loyalty = Math.floor(totalWithCodFee / 100);
                     
                     window.location.href = `success.html?orderId=${order?.trackingNumber || 'SOP' + Date.now()}&paymentId=${mockPaymentId}&amount=${totalWithCodFee}&items=${itemCount}&loyalty=${loyalty}&paymentMethod=COD`;
                 }, 2000);
@@ -491,7 +491,7 @@
         }
 
         // Create order in database after successful payment
-        async function createOrderAfterPayment(paymentId) {
+        async function createOrderAfterPayment(paymentId, finalAmount = null) {
             const pendingOrderData = sessionStorage.getItem('pendingOrder');
             
             if (pendingOrderData) {
@@ -512,10 +512,10 @@
                                 ...item,
                                 productId: item.productId || item.id || item._id
                             })),
-                            totalAmount: orderData.total,
+                            totalAmount: finalAmount || orderData.total,
                             addressId: selectedAddressId, 
                             paymentId: paymentId,
-                            paymentStatus: 'completed'
+                            paymentStatus: finalAmount ? 'pending' : 'completed' // COD is pending, Razorpay is completed
                         })
                     });
                     

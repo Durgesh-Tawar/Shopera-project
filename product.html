@@ -1159,14 +1159,16 @@ function buyNow() {
         });
     }
     
-    let totalValue = product.price * quantity;
+    const discountPercent = parseInt(localStorage.getItem("discount")) || 0;
+    const subtotalValue = product.price * quantity;
+    const totalValue = subtotalValue - (subtotalValue * discountPercent / 100);
     
     const orderData = {
         items: items,
         total: totalValue,
         loyalty: Math.floor(totalValue / 100),
-        subtotal: totalValue,
-        discount: 0,
+        subtotal: subtotalValue,
+        discount: discountPercent,
         date: new Date().toISOString()
     };
     

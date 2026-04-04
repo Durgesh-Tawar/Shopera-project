@@ -874,12 +874,16 @@ function addToCart(id) {
 function buyNow(id) {
     const product = products.find(p => p.id === id);
     if (product) {
+        const discountPercent = parseInt(localStorage.getItem("discount")) || 0;
+        const subtotal = product.price;
+        const total = subtotal - (subtotal * discountPercent / 100);
+        
         const orderData = {
             items: [{...product, quantity: 1}],
-            total: product.price,
-            loyalty: Math.floor(product.price / 100),
-            subtotal: product.price,
-            discount: 0,
+            total: total,
+            loyalty: Math.floor(total / 100),
+            subtotal: subtotal,
+            discount: discountPercent,
             date: new Date().toISOString()
         };
         sessionStorage.setItem('pendingOrder', JSON.stringify(orderData));
@@ -1065,7 +1069,8 @@ function filterCategory(category) {
 
 if (searchBar) {
     searchBar.addEventListener("input", () => {
-        let activeCat = document.querySelector(".tab-btn.active").dataset.category;
+        const activeBtn = document.querySelector(".tab-btn.active");
+        const activeCat = activeBtn ? activeBtn.dataset.category : "all";
         renderProducts(activeCat, searchBar.value);
     });
 }
