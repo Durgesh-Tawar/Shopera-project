@@ -339,10 +339,24 @@ function handleURLParams() {
         filterBySectionFromURL(section);
     }
     
-    // Handle search parameter (for search page)
+    // Handle search parameter (for search page or homepage direct search)
     if (params.has('search')) {
         const searchQuery = params.get('search');
-        performFullSearch(searchQuery);
+        
+        // Update product title to show search results
+        const productsTitle = document.querySelector('.products h2');
+        if (productsTitle) {
+            productsTitle.textContent = `Search Results for "${searchQuery}"`;
+        }
+        
+        // Scroll to products section
+        const productsSection = document.getElementById('products');
+        if (productsSection) {
+            productsSection.style.display = 'block';
+            productsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        renderProducts('all', searchQuery, '');
     }
 }
 
@@ -791,6 +805,13 @@ function renderProducts(filter = "all", search = "", subcategory = "") {
         if (subcategory) {
             subcatMatch = p.subcategory === subcategory;
         }
+        
+        // Hide exclusive Nike fitness collection from regular browsing
+        let isFitness = p.name.toLowerCase().includes('nike');
+        if (isFitness && !search.toLowerCase().includes('nike')) {
+            return false;
+        }
+
         return catMatch && searchMatch && subcatMatch;
     });
 

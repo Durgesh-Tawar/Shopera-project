@@ -86,5 +86,102 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 });
+// Initialize Nodemailer transporter
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
+const sendEmail = async (options) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+
+    const message = {
+        from: `Shopera Support <${process.env.EMAIL_USER}>`,
+        to: options.email,
+        subject: options.subject,
+        text: options.message
+    };
+
+    await transporter.sendMail(message);
+};
+
+// Forgot Password
+router.post('/forgot-password', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            // Return success even if user not found for security reasons
+            return res.status(200).json({ success: true, message: 'If an account with that email exists, we have sent a password reset link.' });
+        }
+
+        // Get reset token
+        const resetToken = user.getResetPasswordToken();
+        await user.save({ validateBeforeSave: false });
+
+        // Create reset url
+        // Defaulting to localhost:5000/reset-password.html if running locally
+        const host = req.get('host');
+        // Let's assume standard protocol is http for this demo, or derive from req
+        const protocol = req.protocol;
+        const resetUrl = `${protocol}://${host}/reset-password.html?token=${resetToken}`;
+
+        const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please click on the following link, or paste this into your browser to complete the process:\n\n${resetUrl}\n\nIf you did not request this, please ignore this email and your password will remain unchanged.`;
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: 'Shopera - Password Reset Token',
+                message
+            });
+
+            res.status(200).json({ success: true, message: 'If an account with that email exists, we have sent a password reset link.' });
+        } catch (err) {
+            console.error('🔥 EMAIL SEND ERROR:', err);
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpire = undefined;
+            await user.save({ validateBeforeSave: false });
+
+            return res.status(500).json({ success: false, message: 'Email could not be sent' });
+        }
+    } catch (error) {
+        console.error('🔥 FORGOT PASSWORD ERROR:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// Reset Password
+router.post('/reset-password', async (req, res) => {
+    try {
+        // Get hashed token
+        const resetPasswordToken = crypto
+            .createHash('sha256')
+            .update(req.body.token)
+            .digest('hex');
+
+        const user = await User.findOne({
+            resetPasswordToken,
+            resetPasswordExpire: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'Invalid or expired token' });
+        }
+
+        // Set new password
+        user.password = req.body.password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save();
+
+        res.status(200).json({ success: true, message: 'Password reset successful!' });
+    } catch (error) {
+        console.error('🔥 RESET PASSWORD ERROR:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
 
 module.exports = router;

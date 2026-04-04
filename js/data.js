@@ -1,11 +1,11 @@
 window.products = [
     {
         "id": 1,
-        "name": "Premium Graphic T-Shirt 1",
+        "name": "Nike Premium Graphic T-Shirt 1",
         "price": 887,
         "originalPrice": 1153,
         "discount": 39,
-        "image": "images/men/t-shirt/t-shirt1.jpg",
+        "image": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80",
         "category": "men",
         "mood": "casual",
         "subcategory": "t-shirts",
@@ -22,15 +22,16 @@ window.products = [
         "colors": [
             "#2ecc71",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "Nike"
     },
     {
         "id": 2,
-        "name": "Premium Graphic T-Shirt 2",
+        "name": "Nike Premium Graphic T-Shirt 2",
         "price": 798,
         "originalPrice": 1037,
         "discount": 20,
-        "image": "images/men/t-shirt/t-shirt2.jpg",
+        "image": "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=600&q=80",
         "category": "men",
         "mood": "casual",
         "subcategory": "t-shirts",
@@ -47,15 +48,16 @@ window.products = [
         "colors": [
             "#000000",
             "#2ecc71"
-        ]
+        ],
+        "brand": "Nike"
     },
     {
         "id": 3,
-        "name": "Premium Graphic T-Shirt 3",
+        "name": "Nike Premium Graphic T-Shirt 3",
         "price": 586,
         "originalPrice": 761,
         "discount": 18,
-        "image": "images/men/t-shirt/t-shirt3.jpg",
+        "image": "https://images.unsplash.com/photo-1558611848-73f7eb4001a1?auto=format&fit=crop&w=600&q=80",
         "category": "men",
         "mood": "casual",
         "subcategory": "t-shirts",
@@ -72,15 +74,16 @@ window.products = [
         "colors": [
             "#000000",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "Nike"
     },
     {
         "id": 4,
-        "name": "Premium Graphic T-Shirt 4",
+        "name": "Nike Premium Graphic T-Shirt 4",
         "price": 1006,
         "originalPrice": 1307,
         "discount": 21,
-        "image": "images/men/t-shirt/t-shirt9.jpg",
+        "image": "https://images.unsplash.com/photo-1608228064614-2dbfdf527716?auto=format&fit=crop&w=600&q=80",
         "category": "men",
         "mood": "casual",
         "subcategory": "t-shirts",
@@ -97,15 +100,16 @@ window.products = [
         "colors": [
             "#2ecc71",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "Nike"
     },
     {
         "id": 5,
-        "name": "Premium Graphic T-Shirt 5",
+        "name": "Nike Premium Graphic T-Shirt 5",
         "price": 947,
         "originalPrice": 1231,
         "discount": 30,
-        "image": "images/kids/boy/tee3.jpg",
+        "image": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=600&q=80",
         "category": "men",
         "mood": "casual",
         "subcategory": "t-shirts",
@@ -122,15 +126,16 @@ window.products = [
         "colors": [
             "#282c3f",
             "#2ecc71"
-        ]
+        ],
+        "brand": "Nike"
     },
     {
         "id": 6,
-        "name": "Premium Graphic T-Shirt 6",
+        "name": "Nike Premium Graphic T-Shirt 6",
         "price": 769,
         "originalPrice": 999,
         "discount": 10,
-        "image": "images/men/t-shirt/t-shirt8.jpg",
+        "image": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=600&q=80",
         "category": "men",
         "mood": "casual",
         "subcategory": "t-shirts",
@@ -147,15 +152,16 @@ window.products = [
         "colors": [
             "#000000",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "Nike"
     },
     {
         "id": 7,
-        "name": "Premium Graphic T-Shirt 7",
+        "name": "Nike Premium Graphic T-Shirt 7",
         "price": 962,
         "originalPrice": 1250,
         "discount": 17,
-        "image": "images/men/t-shirt/t-shirt14.png",
+        "image": "https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=600&q=80",
         "category": "men",
         "mood": "casual",
         "subcategory": "t-shirts",
@@ -172,15 +178,16 @@ window.products = [
         "colors": [
             "#ffffff",
             "#3498db"
-        ]
+        ],
+        "brand": "Nike"
     },
     {
         "id": 8,
-        "name": "Premium Graphic T-Shirt 8",
+        "name": "Nike Premium Graphic T-Shirt 8",
         "price": 710,
         "originalPrice": 923,
         "discount": 23,
-        "image": "images/kids/boy/tee1.jpg",
+        "image": "https://images.unsplash.com/photo-1554284126-aa88f22d8b74?auto=format&fit=crop&w=600&q=80",
         "category": "men",
         "mood": "casual",
         "subcategory": "t-shirts",
@@ -197,11 +204,12 @@ window.products = [
         "colors": [
             "#3498db",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "Nike"
     },
     {
         "id": 9,
-        "name": "Premium Graphic T-Shirt 9",
+        "name": "Premium Graphic T-Shirt 9 jack-jones",
         "price": 716,
         "originalPrice": 930,
         "discount": 29,
@@ -222,11 +230,12 @@ window.products = [
         "colors": [
             "#ff3f6c",
             "#ffffff"
-        ]
+        ],
+        "brand": "Jack & Jones"
     },
     {
         "id": 10,
-        "name": "Premium Graphic T-Shirt 10",
+        "name": "Premium Graphic T-Shirt 10 jack-jones",
         "price": 838,
         "originalPrice": 1089,
         "discount": 37,
@@ -247,15 +256,16 @@ window.products = [
         "colors": [
             "#ff3f6c",
             "#000000"
-        ]
+        ],
+        "brand": "Jack & Jones"
     },
     {
         "id": 11,
-        "name": "Slim Fit Casual Shirt 1",
+        "name": "Slim Fit Casual Shirt 1 roadster",
         "price": 812,
         "originalPrice": 1055,
         "discount": 14,
-        "image": "images/kids/boy/boy1.jpg",
+        "image": "images/men/shirt/shirt5.jpg",
         "category": "men",
         "mood": "combo",
         "subcategory": "casual-shirts",
@@ -272,15 +282,16 @@ window.products = [
         "colors": [
             "#282c3f",
             "#282c3f"
-        ]
+        ],
+        "brand": "Roadster"
     },
     {
         "id": 12,
-        "name": "Slim Fit Casual Shirt 2",
+        "name": "Slim Fit Casual Shirt 2 roadster",
         "price": 820,
         "originalPrice": 1066,
         "discount": 29,
-        "image": "images/kids/boy/boy5.jpg",
+        "image": "images/men/t-shirt/t-shirt1.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "casual-shirts",
@@ -297,11 +308,12 @@ window.products = [
         "colors": [
             "#2ecc71",
             "#000000"
-        ]
+        ],
+        "brand": "Roadster"
     },
     {
         "id": 13,
-        "name": "Slim Fit Casual Shirt 3",
+        "name": "Slim Fit Casual Shirt 3 roadster",
         "price": 1562,
         "originalPrice": 2030,
         "discount": 33,
@@ -322,11 +334,12 @@ window.products = [
         "colors": [
             "#000000",
             "#3498db"
-        ]
+        ],
+        "brand": "Roadster"
     },
     {
         "id": 14,
-        "name": "Slim Fit Casual Shirt 4",
+        "name": "Slim Fit Casual Shirt 4 roadster",
         "price": 1441,
         "originalPrice": 1873,
         "discount": 38,
@@ -347,11 +360,12 @@ window.products = [
         "colors": [
             "#2ecc71",
             "#000000"
-        ]
+        ],
+        "brand": "Roadster"
     },
     {
         "id": 15,
-        "name": "Slim Fit Casual Shirt 5",
+        "name": "Slim Fit Casual Shirt 5 roadster",
         "price": 956,
         "originalPrice": 1242,
         "discount": 29,
@@ -372,11 +386,12 @@ window.products = [
         "colors": [
             "#3498db",
             "#000000"
-        ]
+        ],
+        "brand": "Roadster"
     },
     {
         "id": 16,
-        "name": "Slim Fit Casual Shirt 6",
+        "name": "Slim Fit Casual Shirt 6 roadster",
         "price": 980,
         "originalPrice": 1274,
         "discount": 30,
@@ -397,11 +412,12 @@ window.products = [
         "colors": [
             "#282c3f",
             "#ffffff"
-        ]
+        ],
+        "brand": "Roadster"
     },
     {
         "id": 17,
-        "name": "Slim Fit Casual Shirt 7",
+        "name": "Slim Fit Casual Shirt 7 roadster",
         "price": 1245,
         "originalPrice": 1618,
         "discount": 25,
@@ -422,15 +438,16 @@ window.products = [
         "colors": [
             "#3498db",
             "#282c3f"
-        ]
+        ],
+        "brand": "Roadster"
     },
     {
         "id": 18,
-        "name": "Slim Fit Casual Shirt 8",
+        "name": "Slim Fit Casual Shirt 8 roadster",
         "price": 1202,
         "originalPrice": 1562,
         "discount": 24,
-        "image": "images/kids/boy/boy2.jpg",
+        "image": "images/men/shirt/shirt3.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "casual-shirts",
@@ -447,11 +464,12 @@ window.products = [
         "colors": [
             "#282c3f",
             "#3498db"
-        ]
+        ],
+        "brand": "Roadster"
     },
     {
         "id": 19,
-        "name": "Classic Formal Shirt 1",
+        "name": "Classic Formal Shirt 1 hrx",
         "price": 1312,
         "originalPrice": 1705,
         "discount": 36,
@@ -472,15 +490,16 @@ window.products = [
         "colors": [
             "#000000",
             "#3498db"
-        ]
+        ],
+        "brand": "HRX"
     },
     {
         "id": 20,
-        "name": "Classic Formal Shirt 2",
+        "name": "Classic Formal Shirt 2 hrx",
         "price": 1778,
         "originalPrice": 2311,
         "discount": 13,
-        "image": "images/kids/boy/boy10.jpg",
+        "image": "images/men/shirt/formal3.jpg",
         "category": "men",
         "mood": "combo",
         "subcategory": "formal-shirts",
@@ -497,11 +516,12 @@ window.products = [
         "colors": [
             "#2ecc71",
             "#2ecc71"
-        ]
+        ],
+        "brand": "HRX"
     },
     {
         "id": 21,
-        "name": "Classic Formal Shirt 3",
+        "name": "Classic Formal Shirt 3 hrx",
         "price": 1760,
         "originalPrice": 2288,
         "discount": 35,
@@ -522,15 +542,16 @@ window.products = [
         "colors": [
             "#3498db",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "HRX"
     },
     {
         "id": 22,
-        "name": "Classic Formal Shirt 4",
+        "name": "Classic Formal Shirt 4 hrx",
         "price": 1063,
         "originalPrice": 1381,
         "discount": 20,
-        "image": "images/kids/boy/boy8.jpg",
+        "image": "images/men/shirt/formal2.jpg",
         "category": "men",
         "mood": "formal",
         "subcategory": "formal-shirts",
@@ -547,11 +568,12 @@ window.products = [
         "colors": [
             "#3498db",
             "#ffffff"
-        ]
+        ],
+        "brand": "HRX"
     },
     {
         "id": 23,
-        "name": "Classic Formal Shirt 5",
+        "name": "Classic Formal Shirt 5 hrx",
         "price": 1177,
         "originalPrice": 1530,
         "discount": 12,
@@ -572,11 +594,12 @@ window.products = [
         "colors": [
             "#ffffff",
             "#ffffff"
-        ]
+        ],
+        "brand": "HRX"
     },
     {
         "id": 24,
-        "name": "Classic Formal Shirt 6",
+        "name": "Classic Formal Shirt 6 hrx",
         "price": 1605,
         "originalPrice": 2086,
         "discount": 10,
@@ -597,15 +620,16 @@ window.products = [
         "colors": [
             "#2ecc71",
             "#2ecc71"
-        ]
+        ],
+        "brand": "HRX"
     },
     {
         "id": 25,
-        "name": "Classic Formal Shirt 7",
+        "name": "Classic Formal Shirt 7 hrx",
         "price": 1304,
         "originalPrice": 1695,
         "discount": 27,
-        "image": "images/kids/boy/boy7.jpg",
+        "image": "images/men/shirt/formal3.jpg",
         "category": "men",
         "mood": "formal",
         "subcategory": "formal-shirts",
@@ -622,15 +646,16 @@ window.products = [
         "colors": [
             "#2ecc71",
             "#ffffff"
-        ]
+        ],
+        "brand": "HRX"
     },
     {
         "id": 26,
-        "name": "Classic Formal Shirt 8",
+        "name": "Classic Formal Shirt 8 hrx",
         "price": 1763,
         "originalPrice": 2291,
         "discount": 22,
-        "image": "images/kids/boy/boy9.jpg",
+        "image": "images/men/shirt/formal3.jpg",
         "category": "men",
         "mood": "formal",
         "subcategory": "formal-shirts",
@@ -647,11 +672,12 @@ window.products = [
         "colors": [
             "#3498db",
             "#000000"
-        ]
+        ],
+        "brand": "HRX"
     },
     {
         "id": 27,
-        "name": "Winter Knit Sweater 1",
+        "name": "Winter Knit Sweater 1 hrx",
         "price": 1633,
         "originalPrice": 2122,
         "discount": 19,
@@ -672,11 +698,12 @@ window.products = [
         "colors": [
             "#ffffff",
             "#ffffff"
-        ]
+        ],
+        "brand": "HRX"
     },
     {
         "id": 28,
-        "name": "Winter Knit Sweater 2",
+        "name": "Winter Knit Sweater 2 hrx",
         "price": 2907,
         "originalPrice": 3779,
         "discount": 26,
@@ -697,7 +724,8 @@ window.products = [
         "colors": [
             "#ff3f6c",
             "#282c3f"
-        ]
+        ],
+        "brand": "HRX"
     },
     {
         "id": 29,
@@ -730,7 +758,7 @@ window.products = [
         "price": 1924,
         "originalPrice": 2501,
         "discount": 27,
-        "image": "images/kids/boy/jacket1.jpg",
+        "image": "images/men/jacket/jacket6.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "sweaters",
@@ -880,7 +908,7 @@ window.products = [
         "price": 3546,
         "originalPrice": 4609,
         "discount": 25,
-        "image": "images/kids/boy/jacket1.jpg",
+        "image": "images/men/jacket/jacket2.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "jackets",
@@ -955,7 +983,7 @@ window.products = [
         "price": 3529,
         "originalPrice": 4587,
         "discount": 14,
-        "image": "images/kids/boy/set1.jpg",
+        "image": "images/men/jacket/jacket5.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "jackets",
@@ -1355,7 +1383,7 @@ window.products = [
         "price": 2374,
         "originalPrice": 3086,
         "discount": 29,
-        "image": "images/kids/boy/jacket1.jpg",
+        "image": "images/men/jacket/jacket6.jpg",
         "category": "men",
         "mood": "formal",
         "subcategory": "nehru-jackets",
@@ -1426,7 +1454,7 @@ window.products = [
     },
     {
         "id": 58,
-        "name": "Slim Fit Stretch Jeans 1",
+        "name": "Slim Fit Stretch Jeans 1 levis",
         "price": 2124,
         "originalPrice": 2761,
         "discount": 18,
@@ -1447,11 +1475,12 @@ window.products = [
         "colors": [
             "#2ecc71",
             "#000000"
-        ]
+        ],
+        "brand": "Levi\\'s"
     },
     {
         "id": 59,
-        "name": "Slim Fit Stretch Jeans 2",
+        "name": "Slim Fit Stretch Jeans 2 levis",
         "price": 1402,
         "originalPrice": 1822,
         "discount": 30,
@@ -1472,11 +1501,12 @@ window.products = [
         "colors": [
             "#000000",
             "#000000"
-        ]
+        ],
+        "brand": "Levi\\'s"
     },
     {
         "id": 60,
-        "name": "Slim Fit Stretch Jeans 3",
+        "name": "Slim Fit Stretch Jeans 3 levis",
         "price": 1325,
         "originalPrice": 1722,
         "discount": 24,
@@ -1497,11 +1527,12 @@ window.products = [
         "colors": [
             "#000000",
             "#000000"
-        ]
+        ],
+        "brand": "Levi\\'s"
     },
     {
         "id": 61,
-        "name": "Slim Fit Stretch Jeans 4",
+        "name": "Slim Fit Stretch Jeans 4 levis",
         "price": 1761,
         "originalPrice": 2289,
         "discount": 11,
@@ -1522,11 +1553,12 @@ window.products = [
         "colors": [
             "#ff3f6c",
             "#ffffff"
-        ]
+        ],
+        "brand": "Levi\\'s"
     },
     {
         "id": 62,
-        "name": "Slim Fit Stretch Jeans 5",
+        "name": "Slim Fit Stretch Jeans 5 levis",
         "price": 2054,
         "originalPrice": 2670,
         "discount": 33,
@@ -1547,11 +1579,12 @@ window.products = [
         "colors": [
             "#ffffff",
             "#282c3f"
-        ]
+        ],
+        "brand": "Levi\\'s"
     },
     {
         "id": 63,
-        "name": "Slim Fit Stretch Jeans 6",
+        "name": "Slim Fit Stretch Jeans 6 levis",
         "price": 1960,
         "originalPrice": 2548,
         "discount": 21,
@@ -1572,11 +1605,12 @@ window.products = [
         "colors": [
             "#ffffff",
             "#000000"
-        ]
+        ],
+        "brand": "Levi\\'s"
     },
     {
         "id": 64,
-        "name": "Slim Fit Stretch Jeans 7",
+        "name": "Slim Fit Stretch Jeans 7 levis",
         "price": 1638,
         "originalPrice": 2129,
         "discount": 12,
@@ -1597,11 +1631,12 @@ window.products = [
         "colors": [
             "#3498db",
             "#3498db"
-        ]
+        ],
+        "brand": "Levi\\'s"
     },
     {
         "id": 65,
-        "name": "Slim Fit Stretch Jeans 8",
+        "name": "Slim Fit Stretch Jeans 8 levis",
         "price": 1536,
         "originalPrice": 1996,
         "discount": 24,
@@ -1622,7 +1657,8 @@ window.products = [
         "colors": [
             "#ffffff",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "Levi\\'s"
     },
     {
         "id": 66,
@@ -2180,7 +2216,7 @@ window.products = [
         "price": 484,
         "originalPrice": 629,
         "discount": 11,
-        "image": "images/kids/boy/tee3.jpg",
+        "image": "images/men/t-shirt/t-shirt7.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "briefs",
@@ -2330,7 +2366,7 @@ window.products = [
         "price": 1856,
         "originalPrice": 2412,
         "discount": 10,
-        "image": "images/kids/boy/boy1.jpg",
+        "image": "images/men/shirt/shirt1.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "sleepwear",
@@ -2355,7 +2391,7 @@ window.products = [
         "price": 1632,
         "originalPrice": 2121,
         "discount": 31,
-        "image": "images/kids/boy/boy5.jpg",
+        "image": "images/men/shirt/shirt6.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "sleepwear",
@@ -2915,7 +2951,7 @@ window.products = [
     },
     {
         "id": 115,
-        "name": "High Waist Jeans 1",
+        "name": "High Waist Jeans 1 levis",
         "price": 1810,
         "originalPrice": 2353,
         "discount": 17,
@@ -2940,11 +2976,12 @@ window.products = [
             "#800000",
             "#808000",
             "#F5F5DC"
-        ]
+        ],
+        "brand": "Levi\\'s"
     },
     {
         "id": 116,
-        "name": "High Waist Jeans 2",
+        "name": "High Waist Jeans 2 levis",
         "price": 2275,
         "originalPrice": 2957,
         "discount": 23,
@@ -2969,7 +3006,8 @@ window.products = [
             "#800000",
             "#808000",
             "#F5F5DC"
-        ]
+        ],
+        "brand": "Levi\\'s"
     },
     {
         "id": 117,
@@ -4970,7 +5008,7 @@ window.products = [
     },
     {
         "id": 193,
-        "name": "Premium T Shirts 11",
+        "name": "Premium T Shirts 11 jack-jones",
         "price": 2576,
         "originalPrice": 3348,
         "discount": 23,
@@ -4991,11 +5029,12 @@ window.products = [
         "colors": [
             "#3498db",
             "#282c3f"
-        ]
+        ],
+        "brand": "Jack & Jones"
     },
     {
         "id": 194,
-        "name": "Premium T Shirts 12",
+        "name": "Premium T Shirts 12 jack-jones",
         "price": 1027,
         "originalPrice": 1335,
         "discount": 23,
@@ -5016,15 +5055,16 @@ window.products = [
         "colors": [
             "#000000",
             "#282c3f"
-        ]
+        ],
+        "brand": "Jack & Jones"
     },
     {
         "id": 195,
-        "name": "Premium T Shirts 13",
+        "name": "Premium T Shirts 13 jack-jones",
         "price": 1372,
         "originalPrice": 1783,
         "discount": 23,
-        "image": "images/kids/boy/tee2.jpg",
+        "image": "images/men/t-shirt/t-shirt12.png",
         "category": "men",
         "mood": "casual",
         "subcategory": "t-shirts",
@@ -5041,11 +5081,12 @@ window.products = [
         "colors": [
             "#ff3f6c",
             "#ffffff"
-        ]
+        ],
+        "brand": "Jack & Jones"
     },
     {
         "id": 196,
-        "name": "Premium T Shirts 14",
+        "name": "Premium T Shirts 14 jack-jones",
         "price": 2606,
         "originalPrice": 3387,
         "discount": 23,
@@ -5066,11 +5107,12 @@ window.products = [
         "colors": [
             "#3498db",
             "#ffffff"
-        ]
+        ],
+        "brand": "Jack & Jones"
     },
     {
         "id": 197,
-        "name": "Premium T Shirts 15",
+        "name": "Premium T Shirts 15 jack-jones",
         "price": 1246,
         "originalPrice": 1619,
         "discount": 23,
@@ -5091,11 +5133,12 @@ window.products = [
         "colors": [
             "#282c3f",
             "#ffffff"
-        ]
+        ],
+        "brand": "Jack & Jones"
     },
     {
         "id": 198,
-        "name": "Premium T Shirts 16",
+        "name": "Premium T Shirts 16 jack-jones",
         "price": 2198,
         "originalPrice": 2857,
         "discount": 23,
@@ -5116,11 +5159,12 @@ window.products = [
         "colors": [
             "#000000",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "Jack & Jones"
     },
     {
         "id": 199,
-        "name": "Premium T Shirts 17",
+        "name": "Premium T Shirts 17 jack-jones",
         "price": 2845,
         "originalPrice": 3698,
         "discount": 23,
@@ -5141,11 +5185,12 @@ window.products = [
         "colors": [
             "#282c3f",
             "#ffffff"
-        ]
+        ],
+        "brand": "Jack & Jones"
     },
     {
         "id": 200,
-        "name": "Premium T Shirts 18",
+        "name": "Premium T Shirts 18 jack-jones",
         "price": 1073,
         "originalPrice": 1394,
         "discount": 23,
@@ -5166,15 +5211,16 @@ window.products = [
         "colors": [
             "#282c3f",
             "#3498db"
-        ]
+        ],
+        "brand": "Jack & Jones"
     },
     {
         "id": 201,
-        "name": "Premium Casual Shirts 11",
+        "name": "Premium Casual Shirts 11 roadster",
         "price": 2225,
         "originalPrice": 2892,
         "discount": 23,
-        "image": "images/men/shirt/shirt4.jpg",
+        "image": "images/men/t-shirt/t-shirt1.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "casual-shirts",
@@ -5191,11 +5237,12 @@ window.products = [
         "colors": [
             "#000000",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "Roadster"
     },
     {
         "id": 202,
-        "name": "Premium Casual Shirts 12",
+        "name": "Premium Casual Shirts 12 roadster",
         "price": 2065,
         "originalPrice": 2684,
         "discount": 23,
@@ -5216,7 +5263,8 @@ window.products = [
         "colors": [
             "#3498db",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "Roadster"
     },
     {
         "id": 203,
@@ -5224,7 +5272,7 @@ window.products = [
         "price": 2113,
         "originalPrice": 2746,
         "discount": 23,
-        "image": "images/kids/boy/boy4.jpg",
+        "image": "images/men/shirt/shirt7.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "casual-shirts",
@@ -5324,7 +5372,7 @@ window.products = [
         "price": 1813,
         "originalPrice": 2356,
         "discount": 23,
-        "image": "images/kids/boy/boy3.jpg",
+        "image": "images/men/shirt/shirt10.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "casual-shirts",
@@ -5349,7 +5397,7 @@ window.products = [
         "price": 2968,
         "originalPrice": 3858,
         "discount": 23,
-        "image": "images/kids/boy/boy1.jpg",
+        "image": "images/men/shirt/shirt10.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "casual-shirts",
@@ -5370,7 +5418,7 @@ window.products = [
     },
     {
         "id": 209,
-        "name": "Premium Formal Shirts 11",
+        "name": "Premium Formal Shirts 11 allen-solly",
         "price": 2992,
         "originalPrice": 3889,
         "discount": 23,
@@ -5391,15 +5439,16 @@ window.products = [
         "colors": [
             "#3498db",
             "#ffffff"
-        ]
+        ],
+        "brand": "Allen Solly"
     },
     {
         "id": 210,
-        "name": "Premium Formal Shirts 12",
+        "name": "Premium Formal Shirts 12 allen-solly",
         "price": 574,
         "originalPrice": 746,
         "discount": 23,
-        "image": "images/kids/boy/boy6.jpg",
+        "image": "images/men/shirt/formal4.jpg",
         "category": "men",
         "mood": "formal",
         "subcategory": "formal-shirts",
@@ -5416,11 +5465,12 @@ window.products = [
         "colors": [
             "#ff3f6c",
             "#3498db"
-        ]
+        ],
+        "brand": "Allen Solly"
     },
     {
         "id": 211,
-        "name": "Premium Formal Shirts 13",
+        "name": "Premium Formal Shirts 13 allen-solly",
         "price": 733,
         "originalPrice": 952,
         "discount": 23,
@@ -5441,11 +5491,12 @@ window.products = [
         "colors": [
             "#ffffff",
             "#282c3f"
-        ]
+        ],
+        "brand": "Allen Solly"
     },
     {
         "id": 212,
-        "name": "Premium Formal Shirts 14",
+        "name": "Premium Formal Shirts 14 allen-solly",
         "price": 2664,
         "originalPrice": 3463,
         "discount": 23,
@@ -5466,15 +5517,16 @@ window.products = [
         "colors": [
             "#ff3f6c",
             "#282c3f"
-        ]
+        ],
+        "brand": "Allen Solly"
     },
     {
         "id": 213,
-        "name": "Premium Formal Shirts 15",
+        "name": "Premium Formal Shirts 15 allen-solly",
         "price": 620,
         "originalPrice": 806,
         "discount": 23,
-        "image": "images/kids/boy/boy10.jpg",
+        "image": "images/men/shirt/formal1.jpg",
         "category": "men",
         "mood": "formal",
         "subcategory": "formal-shirts",
@@ -5491,11 +5543,12 @@ window.products = [
         "colors": [
             "#000000",
             "#ffffff"
-        ]
+        ],
+        "brand": "Allen Solly"
     },
     {
         "id": 214,
-        "name": "Premium Formal Shirts 16",
+        "name": "Premium Formal Shirts 16 allen-solly",
         "price": 1120,
         "originalPrice": 1456,
         "discount": 23,
@@ -5516,15 +5569,16 @@ window.products = [
         "colors": [
             "#282c3f",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "Allen Solly"
     },
     {
         "id": 215,
-        "name": "Premium Formal Shirts 17",
+        "name": "Premium Formal Shirts 17 allen-solly",
         "price": 1631,
         "originalPrice": 2120,
         "discount": 23,
-        "image": "images/kids/boy/boy8.jpg",
+        "image": "images/men/shirt/formal2.jpg",
         "category": "men",
         "mood": "formal",
         "subcategory": "formal-shirts",
@@ -5541,11 +5595,12 @@ window.products = [
         "colors": [
             "#282c3f",
             "#ff3f6c"
-        ]
+        ],
+        "brand": "Allen Solly"
     },
     {
         "id": 216,
-        "name": "Premium Formal Shirts 18",
+        "name": "Premium Formal Shirts 18 allen-solly",
         "price": 793,
         "originalPrice": 1030,
         "discount": 23,
@@ -5566,7 +5621,8 @@ window.products = [
         "colors": [
             "#000000",
             "#ffffff"
-        ]
+        ],
+        "brand": "Allen Solly"
     },
     {
         "id": 217,
@@ -5574,7 +5630,7 @@ window.products = [
         "price": 785,
         "originalPrice": 1020,
         "discount": 23,
-        "image": "images/kids/boy/set1.jpg",
+        "image": "images/men/jacket/jacket3.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "sweaters",
@@ -5674,7 +5730,7 @@ window.products = [
         "price": 2388,
         "originalPrice": 3104,
         "discount": 23,
-        "image": "images/kids/boy/jacket2.jpg",
+        "image": "images/men/jacket/jacket1.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "sweaters",
@@ -5699,7 +5755,7 @@ window.products = [
         "price": 1202,
         "originalPrice": 1562,
         "discount": 23,
-        "image": "images/kids/boy/set2.jpg",
+        "image": "images/men/jacket/jacket10.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "sweaters",
@@ -5824,7 +5880,7 @@ window.products = [
         "price": 1204,
         "originalPrice": 1565,
         "discount": 23,
-        "image": "images/kids/boy/jacket2.jpg",
+        "image": "images/men/jacket/jacket10.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "jackets",
@@ -5849,7 +5905,7 @@ window.products = [
         "price": 1443,
         "originalPrice": 1875,
         "discount": 23,
-        "image": "images/kids/boy/set2.jpg",
+        "image": "images/men/jacket/jacket9.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "jackets",
@@ -6374,7 +6430,7 @@ window.products = [
         "price": 1681,
         "originalPrice": 2185,
         "discount": 23,
-        "image": "images/kids/boy/set1.jpg",
+        "image": "images/men/jacket/jacket10.jpg",
         "category": "men",
         "mood": "ethnic",
         "subcategory": "nehru-jackets",
@@ -6474,7 +6530,7 @@ window.products = [
         "price": 2768,
         "originalPrice": 3598,
         "discount": 23,
-        "image": "images/kids/boy/jacket2.jpg",
+        "image": "images/men/jacket/jacket4.jpg",
         "category": "men",
         "mood": "ethnic",
         "subcategory": "nehru-jackets",
@@ -6499,7 +6555,7 @@ window.products = [
         "price": 500,
         "originalPrice": 650,
         "discount": 23,
-        "image": "images/kids/boy/set2.jpg",
+        "image": "images/men/jacket/jacket1.jpg",
         "category": "men",
         "mood": "ethnic",
         "subcategory": "nehru-jackets",
@@ -6724,7 +6780,7 @@ window.products = [
         "price": 2114,
         "originalPrice": 2748,
         "discount": 23,
-        "image": "images/men/jeans/jeans10.jpg",
+        "image": "images/men/t-shirt/t-shirt1.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "jeans",
@@ -7424,7 +7480,7 @@ window.products = [
         "price": 1588,
         "originalPrice": 2064,
         "discount": 23,
-        "image": "images/kids/boy/tee1.jpg",
+        "image": "images/men/t-shirt/t-shirt3.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "briefs",
@@ -7549,7 +7605,7 @@ window.products = [
         "price": 1404,
         "originalPrice": 1825,
         "discount": 23,
-        "image": "images/kids/boy/tee2.jpg",
+        "image": "images/men/t-shirt/t-shirt9.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "briefs",
@@ -7824,7 +7880,7 @@ window.products = [
         "price": 2258,
         "originalPrice": 2935,
         "discount": 23,
-        "image": "images/kids/boy/boy2.jpg",
+        "image": "images/men/shirt/shirt3.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "sleepwear",
@@ -7849,7 +7905,7 @@ window.products = [
         "price": 2306,
         "originalPrice": 2997,
         "discount": 23,
-        "image": "images/men/shirt/shirt4.jpg",
+        "image": "images/men/t-shirt/t-shirt1.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "sleepwear",
@@ -7899,7 +7955,7 @@ window.products = [
         "price": 1588,
         "originalPrice": 2064,
         "discount": 23,
-        "image": "images/kids/boy/boy4.jpg",
+        "image": "images/men/shirt/shirt3.jpg",
         "category": "men",
         "mood": "casual",
         "subcategory": "sleepwear",

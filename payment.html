@@ -14,11 +14,20 @@
         }
         
         body {
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .page-wrapper {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
         }
         
         .payment-container {
@@ -231,7 +240,8 @@
     </style>
 </head>
 <body>
-    <div class="payment-container">
+    <div class="page-wrapper">
+        <div class="payment-container">
         <h1>🛍️ SOPERA</h1>
         <p class="subtitle">Secure Payment Gateway</p>
         
@@ -309,6 +319,7 @@
         </div>
         
         <div class="status" id="status"></div>
+        </div>
     </div>
 
     <script src="js/config.js"></script>
@@ -693,5 +704,7 @@ if(selectedMethod==='upi'&&!validateUPI()){ payButton.disabled=false; loading.cl
         // Initialize on page load
         fetchRazorpayKey();
     </script>
+
+<script src="js/footer.js"></script>
 </body>
 </html>

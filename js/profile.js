@@ -18,6 +18,11 @@ const addressList = document.getElementById('addressList');
 document.addEventListener('DOMContentLoaded', () => {
     checkAuthStatus();
     initializeFormHandlers();
+
+    // Check if user came from "Forgot Password?" link
+    if (window.location.hash === '#forgot') {
+        showForgotPassword();
+    }
 });
 
 // =========================================
@@ -180,6 +185,7 @@ function showForgotPassword(event) {
 function initializeFormHandlers() {
     document.getElementById('loginForm').addEventListener('submit', handleLogin);
     document.getElementById('registerForm').addEventListener('submit', handleRegister);
+    document.getElementById('forgotForm').addEventListener('submit', handleForgot);
     document.getElementById('addressForm').addEventListener('submit', handleAddAddress);
     
     document.getElementById('addressMenuBtn').addEventListener('click', () => {
@@ -197,7 +203,7 @@ async function handleLogin(e) {
     const password = document.getElementById('loginPassword').value;
     
     try {
-        const response = await fetch(`${CONFIG.API_BASE_URL}/api/auth/login`, {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -228,7 +234,7 @@ async function handleRegister(e) {
     const password = document.getElementById('registerPassword').value;
     
     try {
-        const response = await fetch(`${CONFIG.API_BASE_URL}/api/auth/signup`, {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password })
@@ -246,6 +252,43 @@ async function handleRegister(e) {
         }
     } catch (error) {
         showToast('Server error', 'error');
+    }
+}
+
+// Forgot Password Handler
+async function handleForgot(e) {
+    e.preventDefault();
+    
+    // profile.html has forgotEmail
+    const email = document.getElementById('forgotEmail').value.trim();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+    
+    btn.textContent = 'Sending link...';
+    btn.disabled = true;
+
+    try {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/forgot-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showToast(data.message, 'success');
+            setTimeout(() => {
+                showLogin();
+            }, 5000);
+        } else {
+            showToast(data.message || 'Error processing request', 'error');
+        }
+    } catch (error) {
+        showToast('Server error', 'error');
+    } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
     }
 }
 
