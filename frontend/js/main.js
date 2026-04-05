@@ -922,6 +922,7 @@ function buyNow(id) {
 // Toggle wishlist
 function toggleWishlist(event, id) {
     event.stopPropagation();
+    event.preventDefault();
     const product = products.find(p => p.id === id);
     
     if (!product) return;

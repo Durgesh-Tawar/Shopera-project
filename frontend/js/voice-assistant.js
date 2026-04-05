@@ -9,8 +9,10 @@ class VoiceAssistant {
         this.recognition = null;
         this.synth = window.speechSynthesis;
         this.isListening = false;
+        this.isStarted = false; // Flag to prevent multiple recognition.start() calls
         this.isManualClick = false; 
         this.isAssistantTriggered = false; // Flag to distinguish assistant mode from search dictation
+        this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // Detect mobile
         this.micBtn = document.getElementById('micIcon');
         this.searchBar = document.getElementById('searchBar');
         this.wakeWords = ['hello shopee', 'hello shoppee', 'hello shopy', 'hey shopy', 'hey shopee', 'hello shopping', 'hello sophia'];
@@ -62,25 +64,34 @@ class VoiceAssistant {
 
         this.recognition = new SpeechRecognition();
         
-        // Continuous listening for the wake word
-        this.recognition.continuous = true; 
+        // Continuous listening for the wake word (Desktop Only)
+        if (this.isMobile) {
+            this.recognition.continuous = false; // Standard on mobile
+        } else {
+            this.recognition.continuous = true; 
+        }
+        
         this.recognition.interimResults = true; // Use interim results for real-time transcription
         this.recognition.lang = 'en-IN'; // Indian English handles Hinglish nicely
 
         this.setupEventListeners();
         this.createPopup();
         
-        // Start continuous background listening immediately
-        this.startBackgroundListening();
+        // Start continuous background listening only on Desktop
+        if (!this.isMobile) {
+            this.startBackgroundListening();
+        } else {
+            if (this.wakeIndicator) this.wakeIndicator.style.display = 'none';
+        }
     }
 
     startBackgroundListening() {
+        if (this.isStarted) return; // Prevent duplicate starts
         try {
             this.isManualClick = false;
             this.recognition.start();
         } catch (e) {
-            // Usually happens if it's already started
-            console.warn("Recognition already started", e);
+            console.warn("Recognition start attempted while already running", e);
         }
     }
 
@@ -127,6 +138,7 @@ class VoiceAssistant {
         }
 
         this.recognition.onstart = () => {
+            this.isStarted = true;
             if (this.isManualClick) {
                 this.isListening = true;
                 if (this.micBtn) this.micBtn.classList.add('listening');
@@ -224,6 +236,8 @@ class VoiceAssistant {
         };
 
         this.recognition.onend = () => {
+            this.isStarted = false;
+            
             if (this.isManualClick) {
                 this.isListening = false;
                 if (this.micBtn) this.micBtn.classList.remove('listening');
@@ -231,8 +245,10 @@ class VoiceAssistant {
                 this.isManualClick = false;
             }
             
-            // Always try to restart background listening to keep "Hello Shopy" alive
-            setTimeout(() => this.startBackgroundListening(), 1000);
+            // Re-activate background mode ONLY on Desktop
+            if (!this.isMobile) {
+                setTimeout(() => this.startBackgroundListening(), 1500);
+            }
         };
     }
 

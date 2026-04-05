@@ -1717,9 +1717,10 @@ body {
     }
     
     .wishlist-btn {
-        width: 32px;
-        height: 32px;
-        font-size: 16px;
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+        padding: 5px;
     }
     
     .quick-view-btn {
