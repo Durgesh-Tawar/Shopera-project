@@ -938,7 +938,13 @@ function toggleWishlist(event, id) {
     
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
     updateWishlistBadge();
-    renderProducts();
+    
+    // Preserve current filter when re-rendering
+    const activeBtn = document.querySelector(".tab-btn.active");
+    const activeCat = activeBtn ? activeBtn.dataset.category : "all";
+    const currentSearch = searchBar ? searchBar.value : "";
+    
+    renderProducts(activeCat, currentSearch);
 }
 
 function updateCartBadge() {

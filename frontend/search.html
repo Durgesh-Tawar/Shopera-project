@@ -859,16 +859,45 @@ function toggleWishlist(id) {
     if (!product) return;
     
     const index = wishlist.findIndex(w => w.id === id);
+    const btn = event?.currentTarget || document.querySelector(`button[onclick*="toggleWishlist(${id})"]`);
     
     if (index > -1) {
         wishlist.splice(index, 1);
         showToast(`${product.name} removed from wishlist`);
+        if (btn) {
+            btn.textContent = '🤍';
+            btn.classList.remove('active');
+        }
     } else {
         wishlist.push(product);
         showToast(`${product.name} added to wishlist ❤️`);
+        if (btn) {
+            btn.textContent = '❤️';
+            btn.classList.add('active');
+        }
     }
     
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    if (typeof updateWishlistBadge === 'function') updateWishlistBadge();
+}
+
+function updateWishlistBadge() {
+    const wishlistLink = document.querySelector('a[href="wishlist.html"]');
+    if (wishlistLink) {
+        let badge = wishlistLink.querySelector('.wishlist-badge, .cart-badge');
+        const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+        
+        if (wishlist.length > 0) {
+            if (!badge) {
+                badge = document.createElement("span");
+                badge.className = "wishlist-badge cart-badge";
+                wishlistLink.appendChild(badge);
+            }
+            badge.textContent = wishlist.length;
+        } else if (badge) {
+            badge.remove();
+        }
+    }
 }
 
 function showToast(message) {

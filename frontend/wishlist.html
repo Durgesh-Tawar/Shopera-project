@@ -317,6 +317,7 @@
 <script src="js/main.js"></script>
 <script src="js/data.js?v=1774864078408"></script>
 <script>
+document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
     hamburger.addEventListener('click', () => {
@@ -387,14 +388,28 @@
     }
 
     function updateWishlistBadge() {
-        // Update badge if exists
-        let badge = document.getElementById('wishlistBadge');
-        if (badge) {
-            badge.innerText = wishlist.length;
+        const wishlistLink = document.querySelector('a[href="wishlist.html"]');
+        if (wishlistLink) {
+            let badge = wishlistLink.querySelector('.wishlist-badge, .cart-badge');
+            
+            if (wishlist.length > 0) {
+                if (!badge) {
+                    badge = document.createElement("span");
+                    badge.className = "wishlist-badge cart-badge";
+                    wishlistLink.appendChild(badge);
+                }
+                badge.textContent = wishlist.length;
+            } else if (badge) {
+                badge.remove();
+            }
         }
     }
 
+    window.removeFromWishlist = removeFromWishlist;
+    window.moveToCart = moveToCart;
+    
     renderWishlist();
+});
 </script>
 
 <script src="js/footer.js"></script>

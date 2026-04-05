@@ -9,7 +9,8 @@ class VoiceAssistant {
         this.recognition = null;
         this.synth = window.speechSynthesis;
         this.isListening = false;
-        this.isManualClick = false; // To differentiate between mic click and background listening
+        this.isManualClick = false; 
+        this.isAssistantTriggered = false; // Flag to distinguish assistant mode from search dictation
         this.micBtn = document.getElementById('micIcon');
         this.searchBar = document.getElementById('searchBar');
         this.wakeWords = ['hello shopee', 'hello shoppee', 'hello shopy', 'hey shopy', 'hey shopee', 'hello shopping', 'hello sophia'];
@@ -63,7 +64,7 @@ class VoiceAssistant {
         
         // Continuous listening for the wake word
         this.recognition.continuous = true; 
-        this.recognition.interimResults = false;
+        this.recognition.interimResults = true; // Use interim results for real-time transcription
         this.recognition.lang = 'en-IN'; // Indian English handles Hinglish nicely
 
         this.setupEventListeners();
@@ -111,8 +112,9 @@ class VoiceAssistant {
         if (this.micBtn) {
             this.micBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                // Manual click overrides background listening
+                // Manual click for search box (Dictation Mode)
                 this.isManualClick = true;
+                this.isAssistantTriggered = false; // Explicitly search mode
                 this.isListening = true;
                 this.micBtn.classList.add('listening');
                 this.showPopup("Listening...");
@@ -137,35 +139,66 @@ class VoiceAssistant {
         };
 
         this.recognition.onresult = (event) => {
-            // Get the latest result only (since continuous=true, results pile up)
-            const latestResultIdx = event.results.length - 1;
-            let transcript = event.results[latestResultIdx][0].transcript.toLowerCase().trim();
-            
-            // If manual click, process the command directly
-            if (this.isManualClick) {
-                this.handleCommand(transcript);
-                this.isManualClick = false; // Reset after handling
-            } else {
-                // Background mode - look for wake word
-                let triggered = false;
-                for (const word of this.wakeWords) {
-                    if (transcript.includes(word)) {
-                        triggered = true;
-                        // Extract the actual command by removing the wake word part
-                        let commandPart = transcript.split(word)[1].trim(); 
-                        
-                        if (commandPart.length > 0) {
-                            // Wake word + command spoken together: "Hello Shopy open reels"
-                            this.isManualClick = true; // Act as if they clicked
-                            this.showPopup("Listening...", "Wake Word Detected!");
-                            setTimeout(() => this.handleCommand(commandPart), 300);
-                        } else {
-                            // Just the wake word: "Hello Shopy"
-                            this.showPopup("Hello!", "I'm listening...");
-                            this.speak("Yes?");
-                            this.isManualClick = true; // Wait for next result as direct command
+            let finalTranscript = '';
+            let interimTranscript = '';
+
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    finalTranscript += event.results[i][0].transcript;
+                } else {
+                    interimTranscript += event.results[i][0].transcript;
+                }
+            }
+
+            const currentTranscript = (finalTranscript || interimTranscript).toLowerCase().trim();
+            if (!currentTranscript) return;
+
+            // Update UI/Search box in real-time if in Search/Manual Mode
+            if (this.isManualClick && !this.isAssistantTriggered) {
+                this.showPopup(currentTranscript, "Listening...");
+                if (this.searchBar) {
+                    this.searchBar.value = currentTranscript;
+                    this.searchBar.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            } else if (this.isManualClick && this.isAssistantTriggered) {
+                // Assistant is listening for a command
+                this.showPopup(currentTranscript, "I'm listening...");
+            }
+
+            // Only process final results
+            if (finalTranscript) {
+                const finalClean = finalTranscript.toLowerCase().trim();
+                
+                if (this.isManualClick) {
+                    // Important: Pass the trigger flag to handleCommand
+                    this.handleCommand(finalClean, this.isAssistantTriggered); 
+                    this.isManualClick = false; 
+                    this.isAssistantTriggered = false; // Reset after handling
+                } else {
+                    // Background mode - look for wake word
+                    for (const word of this.wakeWords) {
+                        if (finalClean.includes(word)) {
+                            // Extract command if spoken in one go
+                            let commandPart = finalClean.split(word)[1].trim(); 
+                            
+                            if (commandPart.length > 0) {
+                                this.isManualClick = true; 
+                                this.isAssistantTriggered = true;
+                                this.showPopup("Listening...", "Wake Word Detected!");
+                                setTimeout(() => {
+                                    this.handleCommand(commandPart, true);
+                                    this.isManualClick = false;
+                                    this.isAssistantTriggered = false;
+                                }, 300);
+                            } else {
+                                // Just the wake word
+                                this.showPopup("Hello!", "I'm listening...");
+                                this.speak("Yes?");
+                                this.isManualClick = true; 
+                                this.isAssistantTriggered = true; // Wait for next result as assistant command
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
             }
@@ -203,7 +236,7 @@ class VoiceAssistant {
         };
     }
 
-    handleCommand(transcript) {
+    handleCommand(transcript, isWakeWord = false) {
         // Remove trailing dot if browser added it
         let cleanTranscript = transcript.replace(/\.$/, '').trim().toLowerCase();
         
@@ -215,6 +248,34 @@ class VoiceAssistant {
         
         this.transcriptEl.textContent = `"${cleanTranscript}"`;
         
+        // Show transcript in search bar visually
+        if (this.searchBar && document.getElementById('searchBar')) {
+            const searchBarElem = document.getElementById('searchBar');
+            searchBarElem.value = cleanTranscript;
+            searchBarElem.dispatchEvent(new Event('input', { bubbles: true }));
+            searchBarElem.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        // If it's a manual click (Dictation Mode), we trigger AUTO-SUBMIT.
+        if (!isWakeWord) {
+            this.actionEl.textContent = "Searching...";
+            setTimeout(() => {
+                this.hidePopup();
+                if (this.micBtn) this.micBtn.classList.remove('listening');
+                
+                // Execute standard search logic (redirect to results)
+                if (typeof handleSmartSearch === 'function') {
+                    handleSmartSearch(cleanTranscript);
+                } else if (typeof performSearch === 'function') {
+                    performSearch(cleanTranscript, false);
+                } else {
+                    window.location.href = `index.html?search=${encodeURIComponent(cleanTranscript)}`;
+                }
+            }, 600); // Short delay to let user see final result
+            return;
+        }
+
+        // --- Assistant Mode (Wake Word) Logic ---
         let foundUrl = null;
         let actionMessage = "";
         let commandKeyLabel = "";
@@ -238,13 +299,6 @@ class VoiceAssistant {
         if (foundUrl === 'spin.html') actionMessage = 'Opening Spin & Win...';
         if (foundUrl === 'mood.html') actionMessage = 'Opening Mood Shop...';
 
-        // Show transcript in search bar visually
-        if (this.searchBar && document.getElementById('searchBar')) {
-            const searchBarElem = document.getElementById('searchBar');
-            searchBarElem.value = cleanTranscript;
-            searchBarElem.dispatchEvent(new Event('input', { bubbles: true }));
-        }
-
         if (foundUrl) {
             this.actionEl.textContent = actionMessage;
             
@@ -256,7 +310,7 @@ class VoiceAssistant {
                 window.location.href = foundUrl;
             });
         } else {
-            // Fallback to Search
+            // Fallback to Search for assistant
             this.actionEl.textContent = `Searching...`;
             
             // Hide popup gracefully since we are just showing dropdown or navigating
