@@ -1,0 +1,102 @@
+/* Voice Assistant Styles */
+
+/* Glowing Mic Animation */
+.mic-icon.listening {
+    position: relative;
+    z-index: 1001;
+}
+
+.mic-icon.listening svg {
+    stroke: #ff3f6c !important;
+    filter: drop-shadow(0 0 8px rgba(255, 63, 108, 0.8));
+    animation: micPulse 1.5s ease-infinite;
+}
+
+@keyframes micPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Voice Feedback Popup */
+.voice-assistant-popup {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    border-radius: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid rgba(255, 63, 108, 0.2);
+    animation: popupSlideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+.voice-assistant-popup.hidden {
+    display: none;
+}
+
+.voice-assistant-popup.fade-out {
+    animation: popupFadeOut 0.5s forwards;
+}
+
+.voice-assistant-popup .mic-wave {
+    width: 30px;
+    height: 30px;
+    background: #ff3f6c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+.voice-assistant-popup .transcript-text {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: #282c3f;
+    font-size: 0.95rem;
+}
+
+.voice-assistant-popup .action-text {
+    font-family: 'Poppins', sans-serif;
+    color: #ff3f6c;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+@keyframes popupSlideDown {
+    from { transform: translate(-50%, -100%); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+@keyframes popupFadeOut {
+    to { opacity: 0; transform: translate(-50%, -20px); }
+}
+
+/* Mic Wave Animation in Popup */
+.mic-wave {
+    position: relative;
+}
+
+.mic-wave::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(255, 63, 108, 0.3);
+    animation: wavePulse 1.5s infinite;
+}
+
+@keyframes wavePulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2); opacity: 0; }
+}
