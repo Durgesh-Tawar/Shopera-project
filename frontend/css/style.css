@@ -2622,3 +2622,46 @@ body {
         height: 120px;
     }
 }
+/* ================== Floating Assistant Button (Mobile) ================== */
+.assistant-fab {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff3f6c 0%, #ff6b9d 100%);
+    border: none;
+    color: white;
+    font-size: 28px;
+    display: none; /* Hidden by default, shown via JS on mobile */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(255, 63, 108, 0.4);
+    z-index: 9999;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: fabPulse 2s infinite;
+}
+
+.assistant-fab:active {
+    transform: scale(0.9);
+}
+
+.assistant-fab .fab-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fabPulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 63, 108, 0.6); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 63, 108, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 63, 108, 0); }
+}
+
+@media (max-width: 768px) {
+    .assistant-fab {
+        display: flex;
+    }
+}

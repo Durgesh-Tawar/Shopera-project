@@ -66,7 +66,11 @@ class VoiceAssistant {
                     <div class="action-text" id="voiceAction"></div>
                 </div>
             </div>
-            <div id="wakeIndicator" style="position: fixed; bottom: 80px; right: 20px; background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 30px; font-size: 12px; z-index: 9999; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+            <!-- Floating Assistant Button for Mobile -->
+            <button id="assistantFab" class="assistant-fab">
+                <div class="fab-icon">🤖</div>
+            </button>
+            <div id="wakeIndicator" style="position: fixed; bottom: 80px; right: 20px; background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 30px; font-size: 11px; z-index: 9999; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
                 <div style="width:10px; height:10px; background:#4CAF50; border-radius:50%; margin-right:10px; box-shadow: 0 0 8px #4CAF50;"></div>
                 <span id="wakeStatus">"Hello Shopy"</span>
             </div>
@@ -76,6 +80,15 @@ class VoiceAssistant {
         this.transcriptEl = document.getElementById('voiceTranscript');
         this.actionEl = document.getElementById('voiceAction');
         this.wakeIndicator = document.getElementById('wakeIndicator');
+        this.assistantFab = document.getElementById('assistantFab');
+        
+        if (this.assistantFab) {
+            this.assistantFab.onclick = (e) => {
+                e.preventDefault();
+                this.isAssistant = true;
+                this.start(true);
+            };
+        }
     }
 
     bindEvents() {
@@ -92,6 +105,10 @@ class VoiceAssistant {
             if (this.isManual) {
                 this.popup.classList.remove('hidden');
                 if (this.micBtn) this.micBtn.classList.add('listening');
+            }
+            // Only show wake indicator on Desktop or if background listening is allowed
+            if (this.wakeIndicator) {
+                this.wakeIndicator.style.display = (this.isMobile && !this.isManual) ? 'none' : 'flex';
             }
         };
 
@@ -148,8 +165,11 @@ class VoiceAssistant {
                 setTimeout(() => this.popup.classList.add('hidden'), 2000);
             }
             // Auto-restart delay (Slower on mobile for battery, faster on desktop)
-            const restartDelay = this.isMobile ? 3000 : 5000;
-            setTimeout(() => this.start(false), restartDelay);
+            // DISABLED background restart on Mobile to stop the annoyance
+            if (!this.isMobile) {
+                const restartDelay = 5000;
+                setTimeout(() => this.start(false), restartDelay);
+            }
         };
     }
 
