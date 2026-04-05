@@ -10,7 +10,10 @@ class VoiceAssistant {
         this.isStarted = false; 
         this.isManual = false; 
         this.isAssistant = false; 
-        this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        // Improved mobile detection
+        this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (window.innerWidth <= 1024);
+        console.log("SOPERA: Assistant Initialized. Mobile Mode:", this.isMobile);
+        
         this.micBtn = document.getElementById('micIcon');
         this.searchBar = document.getElementById('searchBar');
         
@@ -43,7 +46,14 @@ class VoiceAssistant {
 
         this.createUI();
         this.bindEvents();
-        this.start(false); // Initial background start
+        
+        // Background listening: ONLY on Desktop
+        if (!this.isMobile) {
+            console.log("SOPERA: Starting background mode (Desktop)");
+            this.start(false); 
+        } else {
+            console.log("SOPERA: Background mode disabled (Mobile)");
+        }
     }
 
     start(isManual = false) {
