@@ -76,9 +76,9 @@ class VoiceAssistant {
                     <div class="action-text" id="voiceAction"></div>
                 </div>
             </div>
-            <!-- Floating Assistant Button for Mobile -->
-            <button id="assistantFab" class="assistant-fab">
-                <div class="fab-icon">🤖</div>
+            <!-- Floating Assistant Button with Inline Styles to bypass caching -->
+            <button id="assistantFab" style="position: fixed; bottom: 85px; right: 20px; width: 65px; height: 65px; border-radius: 50%; background: linear-gradient(135deg, #ff3f6c 0%, #fa1a43 100%); border: 3px solid white; color: white; font-size: 30px; display: none; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 100000; cursor: pointer; animation: fabPulse 2s infinite;">
+                <div style="pointer-events: none;">🤖</div>
             </button>
             <div id="wakeIndicator" style="position: fixed; bottom: 80px; right: 20px; background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 30px; font-size: 11px; z-index: 9999; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
                 <div style="width:10px; height:10px; background:#4CAF50; border-radius:50%; margin-right:10px; box-shadow: 0 0 8px #4CAF50;"></div>
