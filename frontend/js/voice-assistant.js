@@ -99,6 +99,11 @@ class VoiceAssistant {
                 this.start(true);
             };
         }
+        
+        // Initial visibility check
+        if (this.assistantFab) {
+            this.assistantFab.style.display = this.isMobile ? 'flex' : 'none';
+        }
     }
 
     bindEvents() {
@@ -119,6 +124,9 @@ class VoiceAssistant {
             // Only show wake indicator on Desktop or if background listening is allowed
             if (this.wakeIndicator) {
                 this.wakeIndicator.style.display = (this.isMobile && !this.isManual) ? 'none' : 'flex';
+            }
+            if (this.assistantFab) {
+                this.assistantFab.style.display = this.isMobile ? 'flex' : 'none';
             }
         };
 
