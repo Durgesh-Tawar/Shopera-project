@@ -7,7 +7,7 @@ const path = require('path');
 // Load products dynamically
 let products = [];
 try {
-    const dataJsContent = fs.readFileSync(path.join(__dirname, '..', '..', 'frontend', 'js', 'data.js'), 'utf8');
+    const dataJsContent = fs.readFileSync(path.join(__dirname, '..', 'data.js'), 'utf8');
     
     // Robust parsing of window.products variable
     let jsonStr = dataJsContent.trim();

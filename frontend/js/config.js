@@ -1,8 +1,8 @@
 const CONFIG = {
-    // Replace with your actual backend URL after deployment (e.g., https://your-backend.onrender.com)
+    // Render backend URL: https://shopera-project.onrender.com
     API_BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
         ? 'http://localhost:5000' 
-        : 'https://your-backend.onrender.com' // <-- CHANGE THIS AFTER DEPLOYING BACKEND
+        : 'https://shopera-project.onrender.com'
 };
 
 // Export for use in other scripts
